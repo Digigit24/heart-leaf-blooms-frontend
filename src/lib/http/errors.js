@@ -1,0 +1,1 @@
+export const handleErrors = (error) => console.error(error);
