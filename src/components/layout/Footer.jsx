@@ -1,86 +1,97 @@
 import { Link } from 'react-router-dom';
-import { Facebook, Twitter, Instagram, Mail, Phone, MapPin } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Mail, ArrowRight } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="bg-surface-2 border-t border-border mt-auto">
-      <div className="max-w-container mx-auto px-4 md:px-6 py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12">
+    <footer className="bg-[#F5F3EF] pt-24 pb-12 border-t border-[#E6E4DF]">
+      <div className="max-w-container mx-auto px-4 sm:px-6 lg:px-8">
 
-          {/* Brand */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-heading font-bold text-lg">
-                H
-              </div>
-              <span className="font-heading font-bold text-xl text-primary">
+        {/* Top Section: Newsletter & Brand */}
+        <div className="flex flex-col lg:flex-row justify-between items-start gap-12 mb-20">
+          {/* Brand Area */}
+          <div className="max-w-md">
+            <Link to="/" className="inline-block group">
+              <span className="font-serif text-3xl font-bold text-[#0F3D2E] mb-2 block group-hover:opacity-80 transition-opacity">
                 Heart Leaf Blooms
               </span>
-            </div>
-            <p className="text-muted text-sm leading-relaxed">
-              Bringing nature's elegance to your doorstep with premium plants and floral arrangements.
+            </Link>
+            <p className="text-[#0F3D2E]/70 leading-relaxed mt-4">
+              Elevating your living spaces with nature's finest creations. Sustainably sourced, carefully curated, and delivered with love.
             </p>
           </div>
 
-          {/* Links 1 */}
+          {/* Newsletter - Minimal */}
+          <div className="w-full max-w-sm">
+            <h4 className="font-serif text-lg font-medium text-[#0F3D2E] mb-2">Join our newsletter</h4>
+            <div className="flex border-b border-[#0F3D2E] pb-2">
+              <input
+                type="email"
+                placeholder="Your email address"
+                className="w-full bg-transparent border-none p-0 text-[#0F3D2E] placeholder-[#0F3D2E]/40 focus:ring-0 text-sm"
+              />
+              <button className="text-[#0F3D2E] hover:text-[#C6A15B] transition-colors">
+                <ArrowRight className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Middle Section: Links Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20">
           <div>
-            <h3 className="font-heading font-bold text-primary mb-4">Shop</h3>
-            <ul className="space-y-2 text-sm text-muted">
-              <li><Link to="/products" className="hover:text-primary transition-colors">All Products</Link></li>
-              <li><Link to="/products?category=flowers" className="hover:text-primary transition-colors">Flowers</Link></li>
-              <li><Link to="/products?category=plants" className="hover:text-primary transition-colors">Plants</Link></li>
-              <li><Link to="/vendors" className="hover:text-primary transition-colors">Our Vendors</Link></li>
+            <h4 className="font-bold text-[#0F3D2E] text-sm uppercase tracking-wider mb-6">Shop</h4>
+            <ul className="space-y-3 text-sm text-[#0F3D2E]/70">
+              <li><Link to="/products" className="hover:text-[#0F3D2E] transition-colors">All Plants</Link></li>
+              <li><Link to="/products?category=new" className="hover:text-[#0F3D2E] transition-colors">New Arrivals</Link></li>
+              <li><Link to="/products?category=bestsellers" className="hover:text-[#0F3D2E] transition-colors">Bestsellers</Link></li>
+              <li><Link to="/accessories" className="hover:text-[#0F3D2E] transition-colors">Accessories</Link></li>
             </ul>
           </div>
 
-          {/* Links 2 */}
           <div>
-            <h3 className="font-heading font-bold text-primary mb-4">Support</h3>
-            <ul className="space-y-2 text-sm text-muted">
-              <li><Link to="/about" className="hover:text-primary transition-colors">About Us</Link></li>
-              <li><Link to="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
-              <li><Link to="/faq" className="hover:text-primary transition-colors">FAQs</Link></li>
-              <li><Link to="/shipping" className="hover:text-primary transition-colors">Shipping Policy</Link></li>
+            <h4 className="font-bold text-[#0F3D2E] text-sm uppercase tracking-wider mb-6">Learn</h4>
+            <ul className="space-y-3 text-sm text-[#0F3D2E]/70">
+              <li><Link to="/care" className="hover:text-[#0F3D2E] transition-colors">Plant Care Guide</Link></li>
+              <li><Link to="/blog" className="hover:text-[#0F3D2E] transition-colors">The Journal</Link></li>
+              <li><Link to="/about" className="hover:text-[#0F3D2E] transition-colors">Our Story</Link></li>
+              <li><Link to="/workshops" className="hover:text-[#0F3D2E] transition-colors">Workshops</Link></li>
             </ul>
           </div>
 
-          {/* Contact */}
           <div>
-            <h3 className="font-heading font-bold text-primary mb-4">Stay Connected</h3>
-            <ul className="space-y-3 text-sm text-muted">
-              <li className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-primary" />
-                <span>123 Blossom Lane, Garden City</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-primary" />
-                <span>+1 (555) 123-4567</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-primary" />
-                <span>hello@heartleaf.com</span>
-              </li>
+            <h4 className="font-bold text-[#0F3D2E] text-sm uppercase tracking-wider mb-6">Support</h4>
+            <ul className="space-y-3 text-sm text-[#0F3D2E]/70">
+              <li><Link to="/contact" className="hover:text-[#0F3D2E] transition-colors">Contact Us</Link></li>
+              <li><Link to="/shipping" className="hover:text-[#0F3D2E] transition-colors">Shipping & Returns</Link></li>
+              <li><Link to="/faq" className="hover:text-[#0F3D2E] transition-colors">FAQ</Link></li>
+              <li><Link to="/terms" className="hover:text-[#0F3D2E] transition-colors">Terms of Service</Link></li>
             </ul>
-            <div className="flex gap-4 mt-6">
-              <a href="#" className="w-8 h-8 flex items-center justify-center rounded-full bg-white border border-border text-muted hover:text-primary hover:border-primary transition-colors">
-                <Instagram className="w-4 h-4" />
+          </div>
+
+          <div>
+            <h4 className="font-bold text-[#0F3D2E] text-sm uppercase tracking-wider mb-6">Follow Us</h4>
+            <div className="flex gap-4">
+              <a href="#" className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#0F3D2E] hover:bg-[#0F3D2E] hover:text-white transition-all shadow-sm">
+                <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="w-8 h-8 flex items-center justify-center rounded-full bg-white border border-border text-muted hover:text-primary hover:border-primary transition-colors">
-                <Facebook className="w-4 h-4" />
+              <a href="#" className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#0F3D2E] hover:bg-[#0F3D2E] hover:text-white transition-all shadow-sm">
+                <Facebook className="w-5 h-5" />
               </a>
-              <a href="#" className="w-8 h-8 flex items-center justify-center rounded-full bg-white border border-border text-muted hover:text-primary hover:border-primary transition-colors">
-                <Twitter className="w-4 h-4" />
+              <a href="#" className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#0F3D2E] hover:bg-[#0F3D2E] hover:text-white transition-all shadow-sm">
+                <Twitter className="w-5 h-5" />
               </a>
             </div>
           </div>
-
         </div>
 
-        <div className="border-t border-border mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted">
-          <p>© {new Date().getFullYear()} Heart Leaf Blooms. All rights reserved.</p>
-          <div className="flex gap-6">
-            <Link to="/privacy" className="hover:text-primary">Privacy Policy</Link>
-            <Link to="/terms" className="hover:text-primary">Terms of Service</Link>
+        {/* Bottom Section */}
+        <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-[#0F3D2E]/10">
+          <p className="text-[#0F3D2E]/50 text-xs">
+            © {new Date().getFullYear()} Heart Leaf Blooms. All rights reserved.
+          </p>
+          <div className="flex gap-6 mt-4 md:mt-0">
+            <Link to="/privacy" className="text-[#0F3D2E]/50 text-xs hover:text-[#0F3D2E] transition-colors">Privacy Policy</Link>
+            <Link to="/cookie" className="text-[#0F3D2E]/50 text-xs hover:text-[#0F3D2E] transition-colors">Cookie Policy</Link>
           </div>
         </div>
       </div>

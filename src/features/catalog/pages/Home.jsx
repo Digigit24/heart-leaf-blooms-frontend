@@ -1,6 +1,7 @@
 import Hero from '../components/Hero';
 import TrendingProducts from '../components/TrendingProducts';
 import AboutSection from '../components/AboutSection';
+import TestimonialSection from '../components/TestimonialSection';
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
       <Hero />
       <AboutSection />
       <TrendingProducts />
+      <TestimonialSection />
     </div>
   );
 }

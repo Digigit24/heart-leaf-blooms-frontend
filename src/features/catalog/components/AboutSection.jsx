@@ -8,7 +8,7 @@ export default function AboutSection() {
                 <div className="flex flex-col md:flex-row items-center gap-12 lg:gap-20">
                     {/* Image Side */}
                     <div className="w-full md:w-1/2 relative group">
-                        <div className="relative rounded-2xl overflow-hidden aspect-[4/5] shadow-2xl">
+                        <div className="relative rounded-2xl overflow-hidden aspect-4/5 shadow-2xl">
                             <img
                                 src="/images/about-us.png"
                                 alt="Florist arranging plants"

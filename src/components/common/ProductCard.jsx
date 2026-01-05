@@ -14,7 +14,7 @@ export default function ProductCard({ product }) {
   return (
     <Link to={`/products/${product.id}`} className="group relative block bg-surface rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 border border-transparent hover:border-border">
       {/* Image container */}
-      <div className="relative aspect-[3/4] overflow-hidden bg-surface-2">
+      <div className="relative aspect-3/4 overflow-hidden bg-surface-2">
         {product.image ? (
           <img
             src={product.image}

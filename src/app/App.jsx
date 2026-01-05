@@ -3,7 +3,7 @@ import AppRoutes from './routes';
 import QueryProvider from './providers/QueryProvider';
 import ThemeProvider from './providers/ThemeProvider';
 import Header from '@/components/layout/Header';
-
+import Footer from '@/components/layout/Footer';
 
 function App() {
     return (
@@ -15,7 +15,7 @@ function App() {
                         <main className="grow">
                             <AppRoutes />
                         </main>
-
+                        <Footer />
                     </div>
                 </QueryProvider>
             </ThemeProvider>
