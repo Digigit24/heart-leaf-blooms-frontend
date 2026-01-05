@@ -42,7 +42,7 @@ export default function Header() {
   return (
     <>
       {/* Announcement Bar - Premium Touch */}
-      <div className="bg-primary text-white text-[11px] uppercase tracking-wider py-2 font-medium">
+      <div className="bg-[#0F3D2E] text-white text-[11px] uppercase tracking-wider py-2 font-medium">
         <div className="max-w-container mx-auto px-4 flex justify-between items-center">
           <p className="hidden sm:block">Free shipping on orders over $75</p>
           <div className="flex items-center gap-6 mx-auto sm:mx-0">
@@ -173,7 +173,7 @@ export default function Header() {
               ) : (
                 <Link
                   to={PATHS.LOGIN}
-                  className="hidden sm:inline-flex items-center justify-center h-10 px-6 text-xs font-bold text-white uppercase tracking-widest transition-all bg-primary hover:bg-primary-2 rounded-full shadow-lg shadow-primary/20 hover:shadow-primary/30 active:scale-95"
+                  className="hidden sm:inline-flex items-center justify-center h-10 px-6 text-xs font-bold text-white uppercase tracking-widest transition-all bg-[#0F3D2E] hover:bg-[#1C5B45] rounded-full shadow-lg shadow-primary/20 hover:shadow-primary/30 active:scale-95"
                 >
                   Login
                 </Link>
@@ -219,7 +219,7 @@ export default function Header() {
               {!isAuthenticated ? (
                 <Link
                   to={PATHS.LOGIN}
-                  className="flex w-full items-center justify-center px-4 py-4 text-sm font-bold text-white uppercase tracking-widest bg-primary hover:bg-primary-2 rounded-xl transition-all shadow-md active:scale-95"
+                  className="flex w-full items-center justify-center px-4 py-4 text-sm font-bold text-white uppercase tracking-widest bg-[#0F3D2E] hover:bg-[#1C5B45] rounded-xl transition-all shadow-md active:scale-95"
                 >
                   Sign In
                 </Link>
