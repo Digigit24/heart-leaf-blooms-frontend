@@ -29,9 +29,9 @@ export default function Header() {
 
   const navLinks = [
     { name: 'Home', path: PATHS.HOME },
-    { name: 'Shop', path: '/products' },
-    { name: 'Vendors', path: '/vendors' },
-    { name: 'About', path: '/about' },
+    { name: 'Shop', path: PATHS.PRODUCTS },
+    { name: 'Vendors', path: PATHS.VENDORS },
+    { name: 'About', path: PATHS.ABOUT },
   ];
 
   const handleLogout = () => {

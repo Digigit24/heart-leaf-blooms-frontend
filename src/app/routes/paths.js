@@ -7,6 +7,7 @@ export const PATHS = {
     PRODUCT_DETAILS: (id) => `/products/${id}`,
     CART: '/cart',
     CHECKOUT: '/checkout',
+    VENDORS: '/vendors',
     ORDERS: '/orders',
     ORDER_DETAILS: (id) => `/orders/${id}`,
     VENDOR_DASHBOARD: '/vendor/dashboard',
