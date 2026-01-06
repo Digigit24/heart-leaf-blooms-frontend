@@ -1,0 +1,378 @@
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { Eye, Sprout, Target } from 'lucide-react';
+
+// --- Animation Variants ---
+
+const transition = { duration: 0.8, ease: [0.22, 1, 0.36, 1] };
+
+const fadeInUp = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: { ...transition, duration: 1 }
+    }
+};
+
+const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.2,
+            delayChildren: 0.1
+        }
+    }
+};
+
+const scaleIn = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: {
+        opacity: 1,
+        scale: 1,
+        transition: { ...transition, duration: 1.2 }
+    }
+};
+
+// --- Helper Components ---
+
+const SplitText = ({ children, className }) => {
+    const letter = {
+        visible: { y: 0, opacity: 1, transition: { type: "spring", damping: 12, stiffness: 100 } },
+        hidden: { y: 20, opacity: 0, transition: { type: "spring", damping: 12, stiffness: 100 } },
+    };
+
+    const container = {
+        hidden: { opacity: 0 },
+        visible: (i = 1) => ({ opacity: 1, transition: { staggerChildren: 0.05, delayChildren: 0.04 * i } }),
+    };
+
+    return (
+        <motion.span variants={container} initial="hidden" whileInView="visible" viewport={{ once: true }} className={`inline-block ${className}`}>
+            {children.split("").map((char, index) => (
+                <motion.span variants={letter} key={index} className="inline-block">
+                    {char === " " ? "\u00A0" : char}
+                </motion.span>
+            ))}
+        </motion.span>
+    );
+};
+
+// Realistic Neem Leaf Component (Serrated, Elongated, Curvy)
+const NeemLeaf = ({ className, style }) => (
+    <motion.svg
+        viewBox="0 0 100 200"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={className}
+        style={style}
+    >
+        {/* Elongated leaf shape with serrated edges */}
+        <path
+            d="M50 0 C60 20 80 50 85 100 C88 130 75 160 55 190 L50 200 L45 190 C25 160 12 130 15 100 C20 50 40 20 50 0 Z"
+            fill="url(#neemGradient)"
+        />
+
+        {/* Serrated Edges Detail - stylised overlay */}
+        <path d="M85 100 L90 105 L83 115" fill="none" class="hidden" />
+
+        {/* Central Vein */}
+        <path d="M50 5 L50 195" stroke="#14532d" strokeWidth="1.5" strokeLinecap="round" opacity="0.6" />
+
+        {/* Side Veins - Asymmetric and angled */}
+        <path d="M50 30 C50 30 70 40 75 45" stroke="#164e3b" strokeWidth="0.8" opacity="0.4" />
+        <path d="M50 50 C50 50 25 60 20 65" stroke="#164e3b" strokeWidth="0.8" opacity="0.4" />
+        <path d="M50 70 C50 70 78 80 82 85" stroke="#164e3b" strokeWidth="0.8" opacity="0.4" />
+        <path d="M50 90 C50 90 22 100 18 105" stroke="#164e3b" strokeWidth="0.8" opacity="0.4" />
+        <path d="M50 110 C50 110 75 120 78 125" stroke="#164e3b" strokeWidth="0.8" opacity="0.4" />
+        <path d="M50 130 C50 130 25 140 22 145" stroke="#164e3b" strokeWidth="0.8" opacity="0.4" />
+        <path d="M50 150 C50 150 65 160 68 165" stroke="#164e3b" strokeWidth="0.8" opacity="0.4" />
+
+        <defs>
+            <linearGradient id="neemGradient" x1="50" y1="0" x2="50" y2="200" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stopColor="#86EFAC" />
+                <stop offset="0.6" stopColor="#22C55E" />
+                <stop offset="1" stopColor="#15803D" />
+            </linearGradient>
+            <filter id="leafShadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur in="SourceAlpha" stdDeviation="2" />
+                <feOffset dx="2" dy="2" result="offsetblur" />
+                <feComponentTransfer>
+                    <feFuncA type="linear" slope="0.2" />
+                </feComponentTransfer>
+                <feMerge>
+                    <feMergeNode in="offsetblur" />
+                    <feMergeNode in="SourceGraphic" />
+                </feMerge>
+            </filter>
+        </defs>
+    </motion.svg>
+);
+
+const About = () => {
+    // Refs for tracking elements
+    const containerRef = useRef(null);
+    const heroRef = useRef(null); // Added heroRef
+    const goalCardRef = useRef(null);
+
+    // Scroll progress for the entire container
+    // Using a slightly longer offset to ensure full travel
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start start", "end end"]
+    });
+
+    // Ultra-smooth physics (Lenis-like feel)
+    // Higher mass = more inertia, Lower stiffness = softer movement
+    const smoothScroll = useSpring(scrollYProgress, {
+        stiffness: 25,
+        damping: 18,
+        mass: 1.2
+    });
+
+    // --- Path Calculations ---
+
+    // Vertical (Y):
+    // Starts high (0), Falls down to the Goal Card (~850px-950px range).
+    const y = useTransform(smoothScroll, [0, 1], [0, 920]);
+
+    // Horizontal (X) - Swaying "S" Curve:
+    // Increased amplitude for a "Large S" shape.
+    // 0.0 (Start): Right side
+    // 0.3 (First Turn): Swing deeply Left (-550px) towards center/image
+    // 0.6 (Second Turn): Swing back Right (-50px)
+    // 0.8 (Third Turn): Slight Left adjustment
+    // 1.0 (End): Land on Top-Right Corner of Goal Card
+    const x = useTransform(smoothScroll,
+        [0, 0.35, 0.6, 0.85, 1],
+        [0, -550, -50, -200, 10]
+    );
+
+    // Rotation - Aggressive banking for wider turns
+    const rotate = useTransform(smoothScroll,
+        [0, 0.3, 0.6, 0.9, 1],
+        [15, -45, 30, -15, 45]
+    );
+
+    // Scale:
+    // Starts detached (normal), maybe slight flutter scale variation?
+    const scale = useTransform(smoothScroll, [0, 1], [1.2, 1.0]);
+
+    return (
+        <div ref={containerRef} className="min-h-screen bg-bg relative overflow-x-hidden selection:bg-primary/20">
+            {/* Gradient Overlay for atmosphere (simulating light filtering through canopy) */}
+            <div className="fixed inset-0 pointer-events-none z-0 bg-linear-to-b from-transparent via-sage/5 to-transparent"></div>
+
+            {/* --- The Guided Neem Leaf Animation --- */}
+            {/* Starting Position: Top Right, aligned with "Welcome to" header area approximately. */}
+            <div
+                className="absolute z-40 pointer-events-none hidden lg:block will-change-transform"
+                style={{
+                    top: '120px',
+                    right: '12%', // Moved slightly inward to start near the text block
+                }}
+            >
+                <NeemLeaf
+                    className="w-16 h-32 drop-shadow-xl" // Narrower and taller for Neem
+                    style={{
+                        y,
+                        x,
+                        rotate,
+                        scale,
+                    }}
+                />
+            </div>
+
+            <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
+                {/* Hero Section */}
+                <div ref={heroRef} className="flex flex-col md:flex-row items-center gap-16 md:gap-24 mb-32">
+
+                    {/* Image Section - Left */}
+                    <div className="w-full md:w-1/2 flex justify-center md:justify-start relative md:pl-8">
+                        <motion.div
+                            variants={scaleIn}
+                            initial="hidden"
+                            animate="visible"
+                            className="relative z-10 w-full max-w-lg"
+                        >
+                            {/* Decorative ring */}
+                            <motion.div
+                                initial={{ opacity: 0, rotate: -15 }}
+                                animate={{ opacity: 1, rotate: 0 }}
+                                transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
+                                className="absolute -inset-4 border border-sage/30 rounded-full z-0 transform scale-110"
+                            />
+
+                            {/* Main Image Container */}
+                            <div className="relative overflow-hidden rounded-2xl group cursor-pointer shadow-2xl shadow-sage/20">
+                                <motion.div
+                                    whileHover={{ scale: 1.03 }}
+                                    transition={{ duration: 0.7, ease: "easeOut" }}
+                                    className="bg-linear-to-br from-transparent to-sage/10 rounded-2xl border border-white/50 backdrop-blur-sm"
+                                >
+                                    <img
+                                        src="/images/about-us.png"
+                                        alt="About Heart Leaf Blooms"
+                                        className="relative z-10 w-full object-contain drop-shadow-2xl"
+                                    />
+                                </motion.div>
+                            </div>
+
+                            {/* Floating Badge */}
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 1, duration: 0.8 }}
+                                className="absolute -bottom-6 -right-6 md:right-0 bg-surface/90 backdrop-blur-xl p-6 rounded-2xl shadow-xl border border-white/60 max-w-[180px]"
+                            >
+                                <div className="flex items-center gap-3 mb-2">
+                                    <div className="p-2 bg-primary/10 rounded-full text-primary">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-leaf"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" /><path d="M2 21c0-3 1.85-5.36 5.08-6L9 14" /></svg>
+                                    </div>
+                                    <span className="text-xs font-bold text-primary uppercase tracking-wider">Est. 2020</span>
+                                </div>
+                                <p className="text-[11px] text-muted leading-tight font-medium">Cultivating nature for over 10,000 happy homes globally.</p>
+                            </motion.div>
+                        </motion.div>
+                    </div>
+
+                    {/* Text Content - Right */}
+                    <div className="w-full md:w-1/2 space-y-12 relative z-0">
+                        <div className="space-y-6 relative">
+                            <div className="overflow-hidden">
+                                <motion.div
+                                    initial={{ y: "100%" }}
+                                    animate={{ y: 0 }}
+                                    transition={{ ...transition, delay: 0.2 }}
+                                    className="flex flex-col gap-1"
+                                >
+                                    <span className="text-sm font-bold tracking-[0.3em] text-sage uppercase pl-1">Who We Are</span>
+                                    <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-black text-primary leading-[0.95] tracking-tight">
+                                        <span className="block overflow-hidden pb-2"><SplitText>Welcome to</SplitText></span>
+                                        <span className="block text-transparent bg-clip-text bg-linear-to-r from-sage to-primary overflow-hidden pb-4"><SplitText>Heart Leaf</SplitText></span>
+                                    </h1>
+                                </motion.div>
+                            </div>
+
+                            {/* This is the gap the leaf will pass through */}
+                            <div className="h-4"></div>
+
+                            <motion.p
+                                variants={fadeInUp}
+                                initial="hidden"
+                                animate="visible"
+                                className="text-muted text-lg leading-relaxed font-body max-w-xl pl-1 border-l-2 border-sage/30 bg-bg/50 backdrop-blur-[2px] rounded-r-lg"
+                            >
+                                We bring the serenity of nature directly to your home.
+                                <span className="text-primary font-medium"> Heart Leaf Blooms</span> is more than a plant shop; it's a movement towards sustainable, greener living.
+                                Each leaf tells a story of care, resilience, and beauty.
+                            </motion.p>
+                        </div>
+
+                        <motion.div
+                            variants={fadeInUp}
+                            initial="hidden"
+                            animate="visible"
+                            className="bg-white/40 backdrop-blur-sm p-6 rounded-2xl border border-white/50 inline-block"
+                        >
+                            <div className="flex items-center gap-4">
+                                <span className="text-4xl">🏆</span>
+                                <div>
+                                    <h2 className="text-lg font-heading font-bold text-primary">
+                                        Best Online Plant Shop 2024
+                                    </h2>
+                                    <p className="text-muted text-sm font-medium">Recognized for Excellence in Quality</p>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </div>
+                </div>
+
+                {/* Core Values Grid */}
+                <motion.div
+                    variants={staggerContainer}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-50px" }}
+                    className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32 relative"
+                >
+                    {[
+                        {
+                            title: "Our Vision",
+                            text: "To create a greener world where every indoor space is transformed into a sanctuary of life and calm.",
+                            icon: Eye,
+                            color: "text-blue-900/80"
+                        },
+                        {
+                            title: "Our Mission",
+                            text: "To provide healthy, sustainable, and beautiful plants while educating our community on the joy of plant parenthood.",
+                            icon: Sprout,
+                            color: "text-primary"
+                        },
+                        {
+                            id: "goal-card", // Target for the leaf
+                            title: "Our Goal",
+                            text: "To be the most reliable and inspiring partner in your indoor gardening journey, offering quality you can trust.",
+                            icon: Target,
+                            color: "text-amber-700/80"
+                        }
+                    ].map((item, index) => (
+                        <motion.div
+                            key={index}
+                            ref={item.id ? goalCardRef : null}
+                            variants={fadeInUp}
+                            whileHover={{ y: -8 }}
+                            className="relative bg-surface/60 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-white shadow-[0_4px_20px_-10px_rgba(0,0,0,0.02)] hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08)] transition-all duration-300 group overflow-hidden z-20"
+                        >
+                            {/* Hover Gradient Background */}
+                            <div className="absolute inset-0 bg-linear-to-br from-transparent to-sage/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                            {/* Icon */}
+                            <div className="relative z-10 w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-300 border border-sage/10">
+                                <item.icon className={`w-8 h-8 ${item.color} stroke-[1.5px]`} />
+                            </div>
+
+                            {/* Target Anchor for the Leaf Land */}
+                            {item.id === 'goal-card' && (
+                                <div className="absolute top-0 right-0 w-8 h-8 opacity-0" id="goal-target-anchor"></div>
+                            )}
+
+                            <h3 className="relative z-10 text-xl font-heading font-bold text-primary mb-3 bg-clip-text">
+                                {item.title}
+                            </h3>
+                            <p className="relative z-10 text-muted leading-relaxed font-body text-sm">
+                                {item.text}
+                            </p>
+                        </motion.div>
+                    ))}
+                </motion.div>
+
+                {/* Brands / Featured In */}
+                <div className="border-t border-border/60 pt-20 relative">
+                    <p className="text-center text-xs font-bold tracking-[0.2em] text-muted uppercase mb-16 opacity-60">As Featured In</p>
+                    <motion.div
+                        variants={staggerContainer}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        className="flex flex-wrap justify-center items-center gap-x-16 gap-y-12"
+                    >
+                        {['Vogue Living', 'Architectural Digest', 'Plant Life', 'Modern Home', 'Green Spaces'].map((brand, i) => (
+                            <motion.span
+                                key={brand}
+                                variants={fadeInUp}
+                                whileHover={{ scale: 1.05, color: "var(--primary)" }}
+                                className={`text-2xl md:text-3xl font-serif font-medium text-muted/40 hover:text-primary transition-all duration-300 cursor-default select-none ${i % 2 === 0 ? 'italic' : ''}`}
+                            >
+                                {brand}
+                            </motion.span>
+                        ))}
+                    </motion.div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default About;

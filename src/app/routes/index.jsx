@@ -13,11 +13,13 @@ import OrderDetails from '@/features/orders/pages/OrderDetails';
 import VendorDashboard from '@/features/vendorPanel/pages/Dashboard';
 import AdminDashboard from '@/features/admin/pages/AdminDashboard';
 import ProductDetails from '@/features/catalog/pages/ProductDetails';
+import About from '@/features/info/pages/About';
 
 const AppRoutes = () => {
     return (
         <Routes>
             <Route path={PATHS.HOME} element={<Home />} />
+            <Route path={PATHS.ABOUT} element={<About />} />
             <Route path={PATHS.LOGIN} element={<Login />} />
             <Route path={PATHS.REGISTER} element={<Register />} />
             <Route path={PATHS.FORGOT_PASSWORD} element={<ForgotPassword />} />

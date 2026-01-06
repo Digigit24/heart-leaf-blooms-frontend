@@ -11,4 +11,5 @@ export const PATHS = {
     ORDER_DETAILS: (id) => `/orders/${id}`,
     VENDOR_DASHBOARD: '/vendor/dashboard',
     ADMIN_DASHBOARD: '/admin/dashboard',
+    ABOUT: '/about',
 };
