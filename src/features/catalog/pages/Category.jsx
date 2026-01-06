@@ -66,7 +66,7 @@ export default function Category() {
     const [currentPage, setCurrentPage] = useState(1);
     const [searchQuery, setSearchQuery] = useState('');
     const [showMobileFilters, setShowMobileFilters] = useState(false);
-    const itemsPerPage = 8;
+    const itemsPerPage = 12;
 
     const toggleFilter = (type, id) => {
         setSelectedFilters(prev => {
@@ -431,8 +431,8 @@ export default function Category() {
                         {/* Product Grid */}
                         <div className="min-h-[400px]">
                             {paginatedProducts.length > 0 ? (
-                                <div className={`grid gap-8 ${viewMode === 'grid'
-                                    ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3'
+                                <div className={`grid gap-6 ${viewMode === 'grid'
+                                    ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
                                     : 'grid-cols-1'
                                     }`}>
                                     <AnimatePresence mode="popLayout">
