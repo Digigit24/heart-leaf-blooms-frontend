@@ -16,8 +16,10 @@ export default function ProductCard({ product }) {
   return (
     <Link
       to={`/products/${product.id}`}
-      className={`group relative block bg-transparent transition-all duration-300 ${!inStock ? 'opacity-75 grayscale-[0.5]' : ''}`}
+      className={`group relative block bg-transparent transition-all duration-300 ${!inStock ? 'opacity-75 grayscale-[0.5]' : ''} overflow-hidden`}
     >
+      {/* Steel Shine Effect */}
+      <div className="absolute inset-0 z-10 -translate-x-full group-hover:animate-[shine_0.75s_ease-in-out_one] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
       {/* Image Container */}
       <div className="relative aspect-[4/5] overflow-hidden rounded-[20px] bg-[#F3F4F1]">
         {product.image ? (
