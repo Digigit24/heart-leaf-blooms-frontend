@@ -362,7 +362,7 @@ export default function Category() {
                         </div>
 
                         {/* Top Controls Bar */}
-                        <div className="bg-[#F7F4EE] px-6 p-4 rounded-xl border border-border/50 shadow-sm mb-8 sticky top-24 z-20 bg-opacity-100">
+                        <div className="bg-[#F7F4EE] px-6 p-4 rounded-xl border border-border/50 shadow-sm mb-8 top-24 z-20 bg-opacity-100">
                             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                                 <div className="flex items-center gap-4 w-full md:w-auto">
                                     <p className="text-sm font-medium text-muted">

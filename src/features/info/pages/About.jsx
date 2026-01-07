@@ -348,6 +348,60 @@ const About = () => {
                     ))}
                 </motion.div>
 
+                {/* Founder's Story Section */}
+                <motion.div
+                    variants={fadeInUp}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    className="mb-32 max-w-5xl mx-auto"
+                >
+                    <div className="flex flex-col md:flex-row items-center gap-12 bg-surface/50 backdrop-blur-sm rounded-[40px] p-8 md:p-16 border border-white shadow-sm relative overflow-hidden">
+
+                        {/* Background Decoration */}
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-sage/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+
+                        {/* Image */}
+                        <div className="w-48 h-48 md:w-64 md:h-64 shrink-0 relative group">
+                            <div className="absolute inset-0 rounded-full border border-primary/10 transform rotate-6 transition-transform group-hover:rotate-12"></div>
+                            <div className="absolute inset-0 rounded-full border border-sage/20 transform -rotate-3 transition-transform group-hover:-rotate-6"></div>
+                            <img
+                                src="/images/avatar-1.png"
+                                alt="xyz"
+                                className="w-full h-full object-cover rounded-full border-4 border-white shadow-2xl relative z-10 grayscale-[10%] group-hover:grayscale-0 transition-all duration-500"
+                            />
+                            <div className="absolute bottom-4 right-4 z-20 bg-white p-2 rounded-full shadow-lg text-primary">
+                                <Sprout size={20} />
+                            </div>
+                        </div>
+
+                        {/* Content */}
+                        <div className="flex-1 text-center md:text-left relative z-10">
+                            <span className="inline-block py-1 px-3 rounded-full bg-primary/5 text-primary text-[10px] font-bold uppercase tracking-widest mb-4">The Root of It All</span>
+                            <h2 className="text-3xl md:text-4xl font-heading font-black text-primary mb-2">blooms</h2>
+                            <p className="text-sm font-bold text-sage uppercase tracking-widest mb-8">Founder & Head Gardener</p>
+
+                            <div className="space-y-6">
+                                <p className="text-text/80 leading-relaxed font-serif text-lg italic border-l-4 border-accent/30 pl-6 my-6">
+                                    "I didn't choose this path; the plants chose me. It started with a single dying pothos I nursed back to health, and in its new leaf, I found a new purpose."
+                                </p>
+                                <p className="text-muted leading-relaxed">
+                                    Before Heart Leaf Blooms, I was caught in the concrete jungle, disconnected from nature. My small balcony garden became my sanctuary—a place where time slowed down. I realized that plants are more than just decor; they are living companions that heal our spaces and spirits.
+                                </p>
+                                <p className="text-muted leading-relaxed">
+                                    I founded this company with a simple mission: <span className="text-primary font-semibold">to bridge the gap between people and nature</span>, making plant parenthood accessible, rewarding, and undeniably beautiful for everyone.
+                                </p>
+                            </div>
+
+                            {/* Signoff */}
+                            <div className="mt-8 pt-8 border-t border-border/40 flex items-center justify-center md:justify-start gap-4">
+                                <div className="h-px w-12 bg-primary/20"></div>
+                                <span className="font-serif italic text-2xl text-primary/80 transform -rotate-2">blooms.</span>
+                            </div>
+                        </div>
+                    </div>
+                </motion.div>
+
                 {/* Brands / Featured In */}
                 <div className="border-t border-border/60 pt-20 relative">
                     <p className="text-center text-xs font-bold tracking-[0.2em] text-muted uppercase mb-16 opacity-60">As Featured In</p>
