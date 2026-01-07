@@ -10,7 +10,8 @@ const CATEGORIES = [
     "Indoor Plants",
     "Large Plants",
     "Flowering Plants",
-    "Hanging Plants"
+    "Hanging Plants",
+    "Flower Pots"
 ];
 
 const FILTERS = {
@@ -50,6 +51,9 @@ const PRODUCTS = [
     { id: 10, name: 'Pothos Marble', price: 549.00, rating: 5, reviews: 312, image: '/images/hero-1.png', category: 'Hanging Plants', brand: 'Green Life', color: 'variegated', inStock: true },
     { id: 11, name: 'Snake Plant', price: 999.00, rating: 4, reviews: 96, image: '/images/hero-2.png', category: 'Cactus & Succulents', brand: 'Plant Co', color: 'variegated', inStock: true },
     { id: 12, name: 'ZZ Plant', price: 1199.00, rating: 5, reviews: 180, image: '/images/hero-1.png', tag: 'Sale', category: 'Indoor Plants', brand: 'Nature@Home', color: 'dark_green', inStock: false },
+    { id: 13, name: 'Modern Clay Pot', price: 450.00, rating: 4, reviews: 22, image: '/images/hero-3.png', category: 'Flower Pots', brand: 'Nature@Home', color: 'terracotta', inStock: true },
+    { id: 14, name: 'Ceramic Planter', price: 1250.00, rating: 5, reviews: 40, image: '/images/hero-1.png', tag: 'New', category: 'Flower Pots', brand: 'Green Life', color: 'white', inStock: true },
+    { id: 99, name: 'Artisan Clay Pot', price: 850.00, rating: 5, reviews: 45, image: '/images/hero-3.png', category: 'Flower Pots', brand: 'Earth & Fire', color: 'terracotta', inStock: true },
 ];
 
 export default function Category() {
@@ -357,75 +361,80 @@ export default function Category() {
                             </div>
                         </div>
 
-                        {/* Toolbar */}
-                        <div className="sticky top-14 z-30 bg-surface shadow-sm py-4 mb-6 transition-all">
-                            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-                                <div className="flex items-center gap-4 w-full sm:w-auto">
-                                    <div className="relative w-full sm:w-64">
-                                        <input
-                                            type="text"
-                                            placeholder="Search plants..."
-                                            value={searchQuery}
-                                            onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
-                                            className="w-full pl-10 pr-4 py-2.5 bg-surface-2 border-transparent focus:bg-surface border focus:border-primary/30 rounded-full text-sm text-primary placeholder:text-muted/60 focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all shadow-inner"
-                                        />
-                                        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
-                                    </div>
-                                    <p className="hidden lg:block text-sm text-muted whitespace-nowrap">
-                                        Showing <span className="font-bold text-primary">{paginatedProducts.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0}</span>–<span className="font-bold text-primary">{Math.min(currentPage * itemsPerPage, sortedProducts.length)}</span> of {sortedProducts.length}
+                        {/* Top Controls Bar */}
+                        <div className="bg-[#F7F4EE] px-6 p-4 rounded-xl border border-border/50 shadow-sm mb-8 sticky top-24 z-20 bg-opacity-100">
+                            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+                                <div className="flex items-center gap-4 w-full md:w-auto">
+                                    <p className="text-sm font-medium text-muted">
+                                        Showing <span className="font-bold text-primary">{paginatedProducts.length}</span> of <span className="font-bold text-primary">{filteredProducts.length}</span> results
                                     </p>
                                 </div>
+                                <div className="relative w-full sm:w-64">
+                                    <input
+                                        type="text"
+                                        placeholder="Search plants..."
+                                        value={searchQuery}
+                                        onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
+                                        className="w-full pl-10 pr-4 py-2.5 bg-surface-2 border-transparent focus:bg-surface border focus:border-primary/30 rounded-full text-sm text-primary placeholder:text-muted/60 focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all shadow-inner"
+                                    />
+                                    <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
+                                </div>
+                                <p className="hidden lg:block text-sm text-muted whitespace-nowrap">
+                                    Showing <span className="font-bold text-primary">{paginatedProducts.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0}</span>–<span className="font-bold text-primary">{Math.min(currentPage * itemsPerPage, sortedProducts.length)}</span> of {sortedProducts.length}
+                                </p>
+                            </div>
 
-                                <div className="flex items-center gap-4">
-                                    {/* View Toggle */}
-                                    <div className="hidden sm:flex items-center bg-surface border border-border rounded-lg p-1">
-                                        <button
-                                            onClick={() => setViewMode('grid')}
-                                            className={`p-1.5 rounded transition-all ${viewMode === 'grid' ? 'bg-primary/10 text-primary shadow-xs' : 'text-muted hover:text-primary'}`}
-                                        >
-                                            <Grid size={18} />
-                                        </button>
-                                        <button
-                                            onClick={() => setViewMode('list')}
-                                            className={`p-1.5 rounded transition-all ${viewMode === 'list' ? 'bg-primary/10 text-primary shadow-xs' : 'text-muted hover:text-primary'}`}
-                                        >
-                                            <List size={18} />
-                                        </button>
-                                    </div>
+                            <div className="flex items-center gap-4">
+                                {/* View Toggle */}
+                                <div className="hidden sm:flex items-center bg-surface border border-border rounded-lg p-1">
+                                    <button
+                                        onClick={() => setViewMode('grid')}
+                                        className={`p-1.5 rounded transition-all ${viewMode === 'grid' ? 'bg-primary/10 text-primary shadow-xs' : 'text-muted hover:text-primary'}`}
+                                    >
+                                        <Grid size={18} />
+                                    </button>
+                                    <button
+                                        onClick={() => setViewMode('list')}
+                                        className={`p-1.5 rounded transition-all ${viewMode === 'list' ? 'bg-primary/10 text-primary shadow-xs' : 'text-muted hover:text-primary'}`}
+                                    >
+                                        <List size={18} />
+                                    </button>
+                                </div>
 
-                                    {/* Sort Dropdown */}
-                                    <div className="relative group">
-                                        <button
-                                            onClick={() => setIsSortOpen(!isSortOpen)}
-                                            className="flex items-center gap-2 text-sm font-medium text-primary hover:opacity-80 bg-surface px-3 py-1.5 rounded-lg border border-border/50 shadow-xs"
-                                        >
-                                            <ArrowUpDown size={14} />
-                                            Sort by: <span className="underline">{sortBy.replace('_', ' ')}</span>
-                                            <ChevronDown size={14} />
-                                        </button>
+                                {/* Sort Dropdown */}
+                                <div className="relative group">
+                                    <button
+                                        onClick={() => setIsSortOpen(!isSortOpen)}
+                                        className="flex items-center gap-2 text-sm font-medium text-primary hover:opacity-80 bg-surface px-3 py-1.5 rounded-lg border border-border/50 shadow-xs"
+                                    >
+                                        <ArrowUpDown size={14} />
+                                        Sort by: <span className="underline">{sortBy.replace('_', ' ')}</span>
+                                        <ChevronDown size={14} />
+                                    </button>
 
-                                        {/* Simple Dropdown Logic (could be refined) */}
-                                        {isSortOpen && (
-                                            <div className="absolute right-0 mt-2 w-48 bg-surface rounded-xl shadow-xl border border-border/50 z-50 py-1 overflow-hidden" onMouseLeave={() => setIsSortOpen(false)}>
-                                                {[
-                                                    { val: 'featured', label: 'Featured' },
-                                                    { val: 'price_asc', label: 'Price: Low to High' },
-                                                    { val: 'price_desc', label: 'Price: High to Low' },
-                                                    { val: 'name_asc', label: 'Name: A-Z' },
-                                                ].map(opt => (
-                                                    <button
-                                                        key={opt.val}
-                                                        onClick={() => { setSortBy(opt.val); setIsSortOpen(false); }}
-                                                        className={`block w-full text-left px-4 py-2.5 text-sm hover:bg-sage/10 ${sortBy === opt.val ? 'text-primary font-bold bg-sage/5' : 'text-text/80'}`}
-                                                    >
-                                                        {opt.label}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        )}
-                                    </div>
+                                    {/* Simple Dropdown Logic (could be refined) */}
+                                    {isSortOpen && (
+                                        <div className="absolute right-0 mt-2 w-48 bg-surface rounded-xl shadow-xl border border-border/50 z-50 py-1 overflow-hidden" onMouseLeave={() => setIsSortOpen(false)}>
+                                            {[
+                                                { val: 'featured', label: 'Featured' },
+                                                { val: 'price_asc', label: 'Price: Low to High' },
+                                                { val: 'price_desc', label: 'Price: High to Low' },
+                                                { val: 'name_asc', label: 'Name: A-Z' },
+                                            ].map(opt => (
+                                                <button
+                                                    key={opt.val}
+                                                    onClick={() => { setSortBy(opt.val); setIsSortOpen(false); }}
+                                                    className={`block w-full text-left px-4 py-2.5 text-sm hover:bg-sage/10 ${sortBy === opt.val ? 'text-primary font-bold bg-sage/5' : 'text-text/80'}`}
+                                                >
+                                                    {opt.label}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
+
+
                         </div>
 
                         {/* Product Grid */}
@@ -500,40 +509,42 @@ export default function Category() {
                             )}
                         </div>
 
-                        {/* Pagination */}
+                        {/* Pagination - Premium Style */}
                         {totalPages > 1 && (
-                            <div className="mt-16 flex justify-center items-center gap-2">
-                                <button
-                                    onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                                    disabled={currentPage === 1}
-                                    className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted hover:border-primary hover:text-primary transition-colors disabled:opacity-30 disabled:hover:border-border disabled:hover:text-muted"
-                                >
-                                    &lt;
-                                </button>
-                                {[...Array(totalPages)].map((_, i) => (
+                            <div className="flex justify-center mt-12 bg-[#F7F4EE] px-6 py-4 rounded-xl shadow-sm border border-border/50 w-fit mx-auto">
+                                <div className="flex gap-2">
                                     <button
-                                        key={i + 1}
-                                        onClick={() => setCurrentPage(i + 1)}
-                                        className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all ${currentPage === i + 1
-                                            ? 'bg-primary text-white shadow-lg shadow-primary/30'
-                                            : 'text-muted hover:text-primary hover:bg-primary/5'
-                                            }`}
+                                        onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                                        disabled={currentPage === 1}
+                                        className="p-2 rounded-lg border border-border/60 hover:border-primary hover:text-primary disabled:opacity-30 disabled:hover:border-border/60 disabled:hover:text-text transition-all bg-surface"
                                     >
-                                        {i + 1}
+                                        <ChevronDown size={20} className="rotate-90" />
                                     </button>
-                                ))}
-                                <button
-                                    onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                                    disabled={currentPage === totalPages}
-                                    className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted hover:border-primary hover:text-primary transition-colors disabled:opacity-30 disabled:hover:border-border disabled:hover:text-muted"
-                                >
-                                    &gt;
-                                </button>
+                                    {[...Array(totalPages)].map((_, i) => (
+                                        <button
+                                            key={i + 1}
+                                            onClick={() => setCurrentPage(i + 1)}
+                                            className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all ${currentPage === i + 1
+                                                ? 'bg-primary text-white shadow-lg shadow-primary/30'
+                                                : 'text-muted hover:text-primary hover:bg-primary/5'
+                                                }`}
+                                        >
+                                            {i + 1}
+                                        </button>
+                                    ))}
+                                    <button
+                                        onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                                        disabled={currentPage === totalPages}
+                                        className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted hover:border-primary hover:text-primary transition-colors disabled:opacity-30 disabled:hover:border-border disabled:hover:text-muted"
+                                    >
+                                        &gt;
+                                    </button>
+                                </div>
                             </div>
                         )}
                     </main>
-                </div>
-            </div>
-        </div>
+                </div >
+            </div >
+        </div >
     );
 }

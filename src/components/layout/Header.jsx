@@ -53,12 +53,10 @@ export default function Header() {
       </div>
 
       <header
-        className={cn(
-          'sticky top-0 z-50 w-full transition-all duration-500',
-          isScrolled
-            ? 'bg-surface shadow-[0_4px_30px_-10px_rgba(0,0,0,0.05)] py-2'
-            : 'bg-transparent py-4'
-        )}
+        className={`sticky top-0 z-40 w-full transition-all duration-500 border-b ${isScrolled
+          ? 'bg-[#F7F4EE] shadow-sm border-border/60 py-2'
+          : 'bg-[#F7F4EE] border-transparent py-4'
+          }`}
       >
         <div className="max-w-container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
