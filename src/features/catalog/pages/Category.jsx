@@ -358,7 +358,7 @@ export default function Category() {
                         </div>
 
                         {/* Toolbar */}
-                        <div className="sticky top-[73px] md:top-20 z-30 bg-bg/95 backdrop-blur-md py-4 mb-6 border-b border-border/50">
+                        <div className="sticky top-14 z-30 bg-surface shadow-sm py-4 mb-6 transition-all">
                             <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
                                 <div className="flex items-center gap-4 w-full sm:w-auto">
                                     <div className="relative w-full sm:w-64">
@@ -367,7 +367,7 @@ export default function Category() {
                                             placeholder="Search plants..."
                                             value={searchQuery}
                                             onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
-                                            className="w-full pl-9 pr-4 py-2 bg-surface border border-border/50 rounded-lg text-sm text-primary placeholder:text-muted/60 focus:outline-none focus:border-primary/50 transition-all shadow-xs"
+                                            className="w-full pl-10 pr-4 py-2.5 bg-surface-2 border-transparent focus:bg-surface border focus:border-primary/30 rounded-full text-sm text-primary placeholder:text-muted/60 focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all shadow-inner"
                                         />
                                         <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
                                     </div>

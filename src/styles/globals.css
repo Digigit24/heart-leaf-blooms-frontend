@@ -78,3 +78,30 @@ h4 {
     outline: 2px solid var(--ring);
     outline-offset: 2px;
 }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(92, 107, 99, 0.3);
+    /* muted with opacity */
+    border-radius: 99px;
+    border: 2px solid transparent;
+    /* creates padding around thumb */
+    background-clip: content-box;
+    transition: background 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(92, 107, 99, 0.6);
+    /* muted darken */
+    border: 2px solid transparent;
+    background-clip: content-box;
+}

@@ -54,10 +54,10 @@ export default function Header() {
 
       <header
         className={cn(
-          'sticky top-0 z-50 w-full transition-all duration-500 border-b border-transparent',
+          'sticky top-0 z-50 w-full transition-all duration-500',
           isScrolled
-            ? 'bg-surface/90 backdrop-blur-xl shadow-[0_2px_20px_-10px_rgba(0,0,0,0.1)] border-border/50 py-2'
-            : 'bg-bg py-4'
+            ? 'bg-surface shadow-[0_4px_30px_-10px_rgba(0,0,0,0.05)] py-2'
+            : 'bg-transparent py-4'
         )}
       >
         <div className="max-w-container mx-auto px-4 sm:px-6 lg:px-8">
@@ -246,7 +246,7 @@ export default function Header() {
             </div>
           </div>
         </div>
-      </header>
+      </header >
     </>
   );
 }
