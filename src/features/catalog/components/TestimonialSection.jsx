@@ -60,16 +60,23 @@ export default function TestimonialSection() {
                 </div>
 
                 {/* Marquee Wrapper */}
-                <div className="relative w-full overflow-hidden mask-linear-fade">
-                    <motion.div
-                        className="flex gap-8 w-max"
-                        animate={{ x: "-50%" }}
-                        transition={{
-                            duration: 40,
-                            repeat: Infinity,
-                            ease: "linear",
-                            repeatType: "loop"
-                        }}
+                <div className="relative w-full overflow-hidden mask-linear-fade group/marquee">
+                    <style>
+                        {`
+                        @keyframes marquee {
+                            0% { transform: translateX(0); }
+                            100% { transform: translateX(-50%); }
+                        }
+                        .animate-marquee {
+                            animation: marquee 40s linear infinite;
+                        }
+                        .animate-marquee:hover {
+                            animation-play-state: paused;
+                        }
+                        `}
+                    </style>
+                    <div
+                        className="flex gap-8 w-max animate-marquee"
                     >
                         {/* Duplicate Key workaround for seamless loop - rendering list twice */}
                         {[...testimonials, ...testimonials].map((testimonial, index) => (
@@ -102,7 +109,7 @@ export default function TestimonialSection() {
                                 </div>
                             </div>
                         ))}
-                    </motion.div>
+                    </div>
 
                     {/* Horizontal Fade Masks */}
                     <div className="absolute inset-y-0 left-0 w-20 bg-linear-to-r from-surface-2 to-transparent z-10 pointer-events-none"></div>

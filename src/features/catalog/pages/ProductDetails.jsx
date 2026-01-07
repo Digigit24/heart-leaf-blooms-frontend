@@ -519,8 +519,8 @@ export default function ProductDetails() {
         </div>
 
         {/* --- Bottom Tabs --- */}
-        <div className="mt-20 lg:mt-32 max-w-4xl mx-auto border-t border-border/20 pt-16">
-          <div className="flex justify-center gap-10 mb-12">
+        <div className="mt-12 lg:mt-16 max-w-4xl mx-auto border-t border-border/20 pt-8">
+          <div className="flex justify-center gap-10 mb-8">
             {['Care Guide', 'Reviews'].map(t => (
               <button
                 key={t}
@@ -548,8 +548,8 @@ export default function ProductDetails() {
           </AnimatePresence>
         </div>
 
-        <div className="mt-24 mb-12">
-          <div className="flex items-center justify-center mb-12 relative">
+        <div className="mt-12 mb-8">
+          <div className="flex items-center justify-center mb-8 relative">
             <h3 className="text-3xl font-serif text-primary relative z-10 px-6 bg-[#FDFBF7]">You May Also Like</h3>
             <div className="absolute inset-0 flex items-center z-0">
               <div className="w-full h-px bg-border/20"></div>

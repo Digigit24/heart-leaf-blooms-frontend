@@ -53,7 +53,7 @@ export default function ProductCard({ product }) {
           <button
             onClick={handleAddToCart}
             disabled={!inStock}
-            className="flex-1 h-9 bg-primary text-white rounded-full flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider hover:bg-primary/90 shadow-lg disabled:cursor-not-allowed disabled:bg-stone-400"
+            className="flex-1 h-9 bg-primary/90 backdrop-blur-md text-white rounded-full flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider hover:bg-primary/95 shadow-lg disabled:cursor-not-allowed disabled:bg-stone-400"
           >
             <ShoppingBag size={14} />
             {inStock ? 'Add to Cart' : 'Sold Out'}
