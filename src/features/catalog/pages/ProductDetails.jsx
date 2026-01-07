@@ -241,7 +241,7 @@ export default function ProductDetails() {
       </div>
 
       <main className="max-w-container mx-auto px-4 py-8 lg:py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 xl:gap-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
 
           {/* --- Left: Image Carousel --- */}
           <div className="lg:col-span-7 flex flex-col items-center">
@@ -390,7 +390,7 @@ export default function ProductDetails() {
                           onClick={() => setActiveSize(size)}
                           className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 cursor-pointer ${isActive
                             ? 'bg-primary text-white shadow-lg shadow-primary/30 scale-110'
-                            : 'bg-white border border-border/40 text-muted hover:border-primary hover:text-primary'
+                            : 'bg-white border border-border/40 text-muted hover:border-primary hover:bg-primary hover:text-white'
                             }`}
                           title={`${size.label} (+₹${size.priceMod})`}
                         >
@@ -448,7 +448,7 @@ export default function ProductDetails() {
                           onClick={() => setActiveSize(size)}
                           className={`px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 cursor-pointer ${isActive
                             ? 'bg-primary text-white shadow-md'
-                            : 'bg-white border border-border/40 text-muted hover:border-primary hover:text-primary hover:bg-white'
+                            : 'bg-white border border-border/40 text-muted hover:border-primary hover:bg-primary hover:text-white'
                             }`}
                         >
                           {size.label}
