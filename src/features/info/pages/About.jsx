@@ -134,29 +134,26 @@ const About = () => {
     // --- Path Calculations ---
 
     // Vertical (Y):
-    // Starts high (0), Falls down to the Goal Card (~850px-950px range).
-    const y = useTransform(smoothScroll, [0, 1], [0, 920]);
+    // Starts high (0), Falls down to the Founder's Story card (Middle-Bottom).
+    // Adjusted to 1650px to land on the right side of the Founder/Blooms card.
+    const y = useTransform(smoothScroll, [0, 1], [0, 1650]);
 
     // Horizontal (X) - Swaying "S" Curve:
-    // Increased amplitude for a "Large S" shape.
-    // 0.0 (Start): Right side
-    // 0.3 (First Turn): Swing deeply Left (-550px) towards center/image
-    // 0.6 (Second Turn): Swing back Right (-50px)
-    // 0.8 (Third Turn): Slight Left adjustment
-    // 1.0 (End): Land on Top-Right Corner of Goal Card
+    // Weaves Left/Right through content sections.
+    // Ends at -60px (Moved left from start) to overlap the right edge of the Founder card.
     const x = useTransform(smoothScroll,
-        [0, 0.35, 0.6, 0.85, 1],
-        [0, -550, -50, -200, 10]
+        [0, 0.25, 0.5, 0.75, 1],
+        [0, -300, 50, -200, -60]
     );
 
-    // Rotation - Aggressive banking for wider turns
+    // Rotation - Synced with the S-curve turns
     const rotate = useTransform(smoothScroll,
-        [0, 0.3, 0.6, 0.9, 1],
-        [15, -45, 30, -15, 45]
+        [0, 0.25, 0.5, 0.75, 1],
+        [15, -30, 25, -20, 15]
     );
 
     // Scale:
-    // Starts detached (normal), maybe slight flutter scale variation?
+    // Starts detached (normal), slight flutter.
     const scale = useTransform(smoothScroll, [0, 1], [1.2, 1.0]);
 
     return (
