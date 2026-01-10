@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Star, Minus, Plus, ShoppingBag, Heart,
   ArrowLeft, Sun, Droplets,
-  Sprout, Thermometer, ChevronLeft, ChevronRight, Share2, Box
+  Sprout, Thermometer, ChevronLeft, ChevronRight, Share2, Box, ShieldCheck
 } from 'lucide-react';
 import { useCartStore } from '@/app/store/cart.store';
 import { useAuthStore } from '@/app/store/auth.store';
@@ -43,20 +43,24 @@ export default function ProductDetails() {
   const [activeTab, setActiveTab] = useState('care guide');
   const [activeSize, setActiveSize] = useState(null);
   const [activePot, setActivePot] = useState(null);
+  const [isAdded, setIsAdded] = useState(false);
 
   // Set default variants when product loads
   useEffect(() => {
     if (product) {
       if (product.sizes?.length > 0 && !activeSize) setActiveSize(product.sizes[0]);
-      if (product.pots?.length > 0 && !activePot) setActivePot(product.pots[0]);
+      // Only set activePot if it's a Flower Pot
+      if (product.category === 'Flower Pots' && product.pots?.length > 0 && !activePot) setActivePot(product.pots[0]);
     }
   }, [product]);
 
   // Derived State
   const basePrice = product ? product.price : 0;
   const sizeMod = activeSize ? activeSize.priceMod : 0;
-  const potMod = (activePot && activePot.id !== 'grower') ? 350 : 0;
-  const currentPrice = basePrice + sizeMod + potMod;
+  // Pot mod is 0 for plants (no selector) and 0 for pots (included in base logic assumed, or handled by backend price)
+  const effectivePotMod = 0;
+
+  const currentPrice = basePrice + sizeMod + effectivePotMod;
 
   // Auto-Carousel Logic
   useEffect(() => {
@@ -84,44 +88,62 @@ export default function ProductDetails() {
       price: currentPrice,
       image: product.image, // Use the primary string image
       quantity: quantity,
-      variant: activeSize && activePot ? `${activeSize.label} - ${activePot.label}` : activeSize ? activeSize.label : 'Standard',
+      variant: (product.category === 'Flower Pots' && activeSize && activePot)
+        ? `${activeSize.label} - ${activePot.label}`
+        : activeSize ? activeSize.label : 'Standard',
     }, user?.id || user?._id);
+
+    setIsAdded(true);
+    setTimeout(() => setIsAdded(false), 2000);
   };
 
   const tabContent = {
     "care guide": (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm leading-relaxed text-text">
-        {product.category === 'Flower Pots' ? (
-          // Flower Pot Specific Content
-          [
-            { title: "Material Care", icon: Box, text: "Wipe clean with a damp cloth. Avoid harsh chemicals that might degrade the natural clay finish." },
-            { title: "Outdoor Use", icon: Sun, text: "Frost resistant down to -5°C. For extreme winters, we recommend bringing it indoors." },
-            { title: "Drainage", icon: Droplets, text: "Ensure the drainage hole is not blocked to prevent waterlogging." },
-            { title: "Aging", icon: ShieldCheck, text: "Natural terracotta will develop a beautiful patina over time as it interacts with water and soil mineral salts." }
-          ].map((item, i) => (
-            <div key={i} className="space-y-2">
-              <h3 className="font-heading font-bold text-base text-primary flex items-center gap-2">
-                <item.icon size={18} /> {item.title}
-              </h3>
-              <p className="text-muted">{item.text}</p>
-            </div>
-          ))
-        ) : (
-          // Plant Specific Content
-          [
-            { title: "Light Requirements", icon: Sun, text: "Thrives in bright to medium indirect light. Not suited for intense, direct sun but can be extensively acclimated to withstand it." },
-            { title: "Watering Schedule", icon: Droplets, text: "Water every 1-2 weeks, allowing soil to dry out between waterings. Expect to water more often in brighter light." },
-            { title: "Humidity & Temp", icon: Thermometer, text: "Normal room humidity is fine. Keep away from drafts and vents." },
-            { title: "Bio-Facts", icon: Sprout, text: `${product.name} is a species native to tropical forests, bringing a lush, jungle vibe to your interior.` }
-          ].map((item, i) => (
-            <div key={i} className="space-y-2">
-              <h3 className="font-heading font-bold text-base text-primary flex items-center gap-2">
-                <item.icon size={18} /> {item.title}
-              </h3>
-              <p className="text-muted">{item.text}</p>
-            </div>
-          ))
+      <div className="space-y-8">
+        {product.guide && (
+          <div className="bg-surface-2/50 p-6 rounded-xl border border-border/50">
+            <h3 className="font-heading font-bold text-lg text-primary mb-3 flex items-center gap-2">
+              <Sprout size={20} /> Expert Care Guide
+            </h3>
+            <p className="whitespace-pre-wrap text-text/80 leading-relaxed text-sm">
+              {product.guide}
+            </p>
+          </div>
         )}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm leading-relaxed text-text">
+          {product.category === 'Flower Pots' ? (
+            // Flower Pot Specific Content
+            [
+              { title: "Material Care", icon: Box, text: "Wipe clean with a damp cloth. Avoid harsh chemicals that might degrade the natural clay finish." },
+              { title: "Outdoor Use", icon: Sun, text: "Frost resistant down to -5°C. For extreme winters, we recommend bringing it indoors." },
+              { title: "Drainage", icon: Droplets, text: "Ensure the drainage hole is not blocked to prevent waterlogging." },
+              { title: "Aging", icon: ShieldCheck, text: "Natural terracotta will develop a beautiful patina over time as it interacts with water and soil mineral salts." }
+            ].map((item, i) => (
+              <div key={i} className="space-y-2">
+                <h3 className="font-heading font-bold text-base text-primary flex items-center gap-2">
+                  <item.icon size={18} /> {item.title}
+                </h3>
+                <p className="text-muted">{item.text}</p>
+              </div>
+            ))
+          ) : (
+            // Plant Specific Content
+            [
+              { title: "Light Requirements", icon: Sun, text: "Thrives in bright to medium indirect light. Not suited for intense, direct sun but can be extensively acclimated to withstand it." },
+              { title: "Watering Schedule", icon: Droplets, text: "Water every 1-2 weeks, allowing soil to dry out between waterings. Expect to water more often in brighter light." },
+              { title: "Humidity & Temp", icon: Thermometer, text: "Normal room humidity is fine. Keep away from drafts and vents." },
+              { title: "Bio-Facts", icon: Sprout, text: `${product.name} is a species native to tropical forests, bringing a lush, jungle vibe to your interior.` }
+            ].map((item, i) => (
+              <div key={i} className="space-y-2">
+                <h3 className="font-heading font-bold text-base text-primary flex items-center gap-2">
+                  <item.icon size={18} /> {item.title}
+                </h3>
+                <p className="text-muted">{item.text}</p>
+              </div>
+            ))
+          )}
+        </div>
       </div>
     ),
     "reviews": (
@@ -134,7 +156,7 @@ export default function ProductDetails() {
             </div>
             <span className="text-xs text-muted mt-1 block">{product.reviews} Reviews</span>
           </div>
-          <div className="h-12 w-[1px] bg-border/20"></div>
+          <div className="h-12 w-px bg-border/20"></div>
           <p className="text-sm text-muted italic">"Based on honest reviews from our verified plant parents."</p>
         </div>
         {[1, 2].map(i => (
@@ -183,7 +205,7 @@ export default function ProductDetails() {
 
               {/* Main Carousel Frame */}
               <div
-                className="relative aspect-[4/5] lg:aspect-square bg-[#F3F4F1] rounded-[40px] overflow-hidden group shadow-[0_20px_40px_-10px_rgba(0,0,0,0.05)] cursor-zoom-in"
+                className="relative aspect-4/5 lg:aspect-square bg-[#F3F4F1] rounded-[40px] overflow-hidden group shadow-[0_20px_40px_-10px_rgba(0,0,0,0.05)] cursor-zoom-in"
                 onMouseEnter={() => setIsPaused(true)}
                 onMouseLeave={() => setIsPaused(false)}
               >
@@ -272,10 +294,17 @@ export default function ProductDetails() {
               <span className="inline-block px-3 py-1 rounded-md bg-secondary/10 text-secondary text-[10px] font-bold uppercase tracking-widest mb-3">
                 {product.category}
               </span>
-              <h1 className="font-serif font-medium text-5xl md:text-6xl text-primary leading-[1] mb-4 tracking-tight">
+              <h1 className="font-serif font-medium text-5xl md:text-6xl text-primary leading-none mb-4 tracking-tight">
                 {product.name}
               </h1>
               <p className="text-sm font-medium italic text-muted/80">{product.scientificName}</p>
+
+              {product.brand && (
+                <div className="flex items-center gap-2 mt-3 mb-1">
+                  <span className="w-5 h-px bg-border"></span>
+                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Sold by <span className="text-primary">{product.brand}</span></span>
+                </div>
+              )}
             </div>
 
             <div className="flex items-center justify-between mb-8 pb-8 border-b border-border/20">
@@ -284,10 +313,6 @@ export default function ProductDetails() {
                 {product.originalPrice && (
                   <span className="text-lg text-muted/40 line-through decoration-1">₹{product.originalPrice.toFixed(0)}</span>
                 )}
-              </div>
-              <div className="flex items-center gap-2 bg-white px-3 py-1 rounded-full border border-border/30">
-                <div className={`w-2 h-2 rounded-full ${product.availability === 'In Stock' ? 'bg-success animate-pulse' : 'bg-danger'}`}></div>
-                <span className="text-xs font-bold text-text uppercase tracking-wider">{product.availability}</span>
               </div>
             </div>
 
@@ -311,55 +336,60 @@ export default function ProductDetails() {
             </p>
 
             {/* Selectors Section */}
-            {(product.category !== 'Flower Pots' && activeSize && activePot) ? (
-              <div className="space-y-8 mb-10">
+            <div className="space-y-8 mb-10">
 
-                {/* Size Selector */}
+              {/* Size/Dimension Selector - Show for ALL if available */}
+              {product.sizes && product.sizes.length > 0 && (
                 <div>
                   <div className="flex justify-between items-end mb-4">
-                    <span className="text-sm font-heading font-bold text-primary uppercase tracking-wider">Size</span>
-                    <span className="text-xs font-medium text-primary/60 bg-surface-2 px-2 py-1 rounded">{activeSize.detail}</span>
+                    <span className="text-sm font-heading font-bold text-primary uppercase tracking-wider">
+                      {product.category === 'Flower Pots' ? 'Dimension' : 'Size'}
+                    </span>
+                    <span className="text-xs font-medium text-primary/60 bg-surface-2 px-2 py-1 rounded">{activeSize?.detail}</span>
                   </div>
                   <div className="flex items-center gap-3">
                     {product.sizes.map(size => {
-                      const isActive = activeSize.id === size.id;
-                      const abbr = size.label === 'Small' ? 'S' : size.label === 'Medium' ? 'M' : 'L';
+                      const isActive = activeSize?.id === size.id;
+                      const displayText = product.category === 'Flower Pots' ? size.label : (size.label === 'Small' ? 'S' : size.label === 'Medium' ? 'M' : 'L');
+
                       return (
                         <button
                           key={size.id}
                           onClick={() => setActiveSize(size)}
-                          className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 cursor-pointer ${isActive
-                            ? 'bg-primary text-white shadow-lg shadow-primary/30 scale-110'
-                            : 'bg-white border border-border/40 text-muted hover:border-primary hover:bg-primary hover:text-white'
+                          className={`min-w-[48px] h-12 px-3 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 cursor-pointer ${isActive
+                            ? 'bg-[#0F3D2E] text-white shadow-lg shadow-primary/30 scale-110'
+                            : 'bg-white border border-border/40 text-muted hover:border-primary hover:bg-[#0F3D2E] hover:text-white'
                             }`}
-                          title={`${size.label} (+₹${size.priceMod})`}
+                          title={`${size.label} ${size.priceMod > 0 ? `(+₹${size.priceMod})` : ''}`}
                         >
-                          {abbr}
+                          {displayText}
                         </button>
                       );
                     })}
                   </div>
                 </div>
+              )}
 
-                {/* Pot Selector */}
+              {/* Pot/Color Selector - ONLY for Flower Pots */}
+              {product.category === 'Flower Pots' && product.pots && product.pots.length > 0 && (
                 <div>
                   <div className="flex justify-between items-end mb-4">
-                    <span className="text-sm font-heading font-bold text-primary uppercase tracking-wider">Pot</span>
-                    <span className="text-xs font-medium text-primary/60">{activePot.detail}</span>
+                    <span className="text-sm font-heading font-bold text-primary uppercase tracking-wider">Color</span>
+                    <span className="text-xs font-medium text-primary/60">{activePot?.detail}</span>
                   </div>
                   <div className="flex flex-wrap gap-2.5">
                     {product.pots.map(pot => {
-                      const isActive = activePot.id === pot.id;
+                      const isActive = activePot?.id === pot.id;
                       return (
                         <button
                           key={pot.id}
                           onClick={() => setActivePot(pot)}
                           className={`group relative pl-2 pr-4 py-1.5 rounded-full border transition-all duration-300 flex items-center gap-3 cursor-pointer overflow-hidden ${isActive
-                            ? 'border-primary bg-primary/5 text-primary ring-1 ring-primary/20'
+                            ? 'border-[#0F3D2E] bg-primary/5 text-primary ring-1 ring-primary/20'
                             : 'border-border/40 bg-white text-muted hover:border-primary/50'
                             }`}
                         >
-                          {isActive && <div className="absolute inset-x-0 bottom-0 h-0.5 bg-primary/20" />}
+                          {isActive && <div className="absolute inset-x-0 bottom-0 h-0.5 bg-[#0F3D2E]/20" />}
                           <span
                             className="w-5 h-5 rounded-full shadow-inner border border-black/5"
                             style={{ backgroundColor: pot.color }}
@@ -370,67 +400,9 @@ export default function ProductDetails() {
                     })}
                   </div>
                 </div>
-              </div>
-            ) : product.category === 'Flower Pots' && product.sizes ? (
-              // Only Size selector for Pots
-              <>
-                <div className="mb-10">
-                  <div className="flex justify-between items-end mb-4">
-                    <span className="text-sm font-heading font-bold text-primary uppercase tracking-wider">Dimension</span>
-                    <span className="text-xs font-medium text-primary/60">{activeSize?.detail}</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    {product.sizes.map(size => {
-                      const isActive = activeSize?.id === size.id;
-                      return (
-                        <button
-                          key={size.id}
-                          onClick={() => setActiveSize(size)}
-                          className={`px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 cursor-pointer ${isActive
-                            ? 'bg-primary text-white shadow-md'
-                            : 'bg-white border border-border/40 text-muted hover:border-primary hover:bg-primary hover:text-white'
-                            }`}
-                        >
-                          {size.label}
-                        </button>
-                      )
-                    })}
-                  </div>
-                </div>
+              )}
 
-                {/* Color Selector for Pots */}
-                {product.pots && product.pots.length > 0 && (
-                  <div className="mb-10">
-                    <div className="flex justify-between items-end mb-4">
-                      <span className="text-sm font-heading font-bold text-primary uppercase tracking-wider">Color</span>
-                      <span className="text-xs font-medium text-primary/60">{activePot?.detail}</span>
-                    </div>
-                    <div className="flex flex-wrap gap-2.5">
-                      {product.pots.map(pot => {
-                        const isActive = activePot?.id === pot.id;
-                        return (
-                          <button
-                            key={pot.id}
-                            onClick={() => setActivePot(pot)}
-                            className={`group relative pl-2 pr-4 py-1.5 rounded-full border transition-all duration-300 flex items-center gap-3 cursor-pointer overflow-hidden ${isActive
-                              ? 'border-primary bg-primary/5 text-primary ring-1 ring-primary/20'
-                              : 'border-border/40 bg-white text-muted hover:border-primary/50'
-                              }`}
-                          >
-                            {isActive && <div className="absolute inset-x-0 bottom-0 h-0.5 bg-primary/20" />}
-                            <span
-                              className="w-5 h-5 rounded-full shadow-inner border border-black/5"
-                              style={{ backgroundColor: pot.color }}
-                            />
-                            <span className="text-xs font-bold">{pot.label}</span>
-                          </button>
-                        )
-                      })}
-                    </div>
-                  </div>
-                )}
-              </>
-            ) : null}
+            </div>
 
 
             {/* Action Bar */}
@@ -443,12 +415,24 @@ export default function ProductDetails() {
 
               <button
                 onClick={handleAddToCart}
-                className="flex-1 h-14 bg-primary text-white font-heading font-black uppercase tracking-widest text-sm rounded-full shadow-xl shadow-primary/20 hover:bg-primary-2 hover:shadow-primary/30 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-3 group cursor-pointer active:scale-[0.98]"
+                disabled={isAdded}
+                className={`flex-1 h-14 font-heading font-black uppercase tracking-widest text-sm rounded-full shadow-xl shadow-primary/20 transition-all flex items-center justify-center gap-3 group cursor-pointer active:scale-[0.98]
+                  ${isAdded ? 'bg-green-600 text-white' : 'bg-[#0F3D2E] text-white hover:bg-[#0F3D2E]/90 hover:-translate-y-0.5'}
+                `}
               >
-                <ShoppingBag size={18} className="group-hover:scale-110 transition-transform" />
-                <span className="hidden sm:inline">Add to Cart</span>
-                <span className="w-px h-4 bg-white/20 mx-1"></span>
-                <span>₹{(currentPrice * quantity).toFixed(0)}</span>
+                {isAdded ? (
+                  <>
+                    <ShoppingBag size={18} />
+                    <span>Added to Cart!</span>
+                  </>
+                ) : (
+                  <>
+                    <ShoppingBag size={18} className="group-hover:scale-110 transition-transform" />
+                    <span className="hidden sm:inline">Add to Cart</span>
+                    <span className="w-px h-4 bg-white/20 mx-1"></span>
+                    <span>₹{(currentPrice * quantity).toFixed(0)}</span>
+                  </>
+                )}
               </button>
 
               <button

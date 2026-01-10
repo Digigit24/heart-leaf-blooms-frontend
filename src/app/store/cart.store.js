@@ -3,6 +3,11 @@ import { cartApi } from '@/features/cart/api/cart.api';
 
 export const useCartStore = create((set, get) => ({
     items: [],
+    updateQuantity: (id, quantity) => {
+        set((state) => ({
+            items: state.items.map((i) => (i.id === id ? { ...i, quantity: Math.max(1, quantity) } : i)),
+        }));
+    },
     addItem: async (item, userId) => {
         // Optimistic UI update
         const currentItems = get().items;

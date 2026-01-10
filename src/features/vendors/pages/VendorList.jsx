@@ -2,10 +2,11 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, MapPin, ArrowRight, ShieldCheck, X, Leaf, Sprout, Crown } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useVendors } from '@/features/vendors/hooks/useVendors';
 
 export default function VendorList() {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const { data: vendors = [], isLoading: loading } = useVendors();
 
@@ -92,7 +93,8 @@ export default function VendorList() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.4, type: "spring", bounce: 0.3 }}
-                className="group relative flex flex-col bg-white rounded-3xl overflow-hidden shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-gray-100 hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-500"
+                onClick={() => navigate(`/products?vendor=${vendor.id}`)}
+                className="group relative flex flex-col bg-white rounded-3xl overflow-hidden shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-gray-100 hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-500 cursor-pointer"
               >
                 {/* --- Cover Image Area (50%) --- */}
                 <div className="h-64 relative bg-gray-100 overflow-hidden capitalize">
@@ -161,12 +163,11 @@ export default function VendorList() {
 
                   {/* Action Button */}
                   <div className="mb-8">
-                    <Link
-                      to={`/products?vendor=${vendor.id}`}
+                    <button
                       className="inline-flex w-full items-center justify-center gap-2 px-6 py-3 bg-[#F4F7F4] text-[#0F3D2E] text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-[#0F3D2E] hover:text-white hover:shadow-lg transition-all duration-300 group-hover:scale-105"
                     >
                       Visit Store <ArrowRight size={14} />
-                    </Link>
+                    </button>
                   </div>
 
                   {/* Divider */}

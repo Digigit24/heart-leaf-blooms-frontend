@@ -7,10 +7,10 @@ import { Eye, EyeOff, Loader2 } from 'lucide-react';
 export default function Register() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    mobile: ''
+    username: '',
+    user_email: '',
+    user_password: '',
+    user_mobile: ''
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -57,8 +57,8 @@ export default function Register() {
               required
               className="w-full h-12 px-4 rounded-xl border border-gray-200 focus:border-[#0F3D2E] focus:ring-1 focus:ring-[#0F3D2E] outline-none transition-all bg-surface-2/50"
               placeholder="John Doe"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              value={formData.username}
+              onChange={(e) => setFormData({ ...formData, username: e.target.value })}
             />
           </div>
 
@@ -69,8 +69,8 @@ export default function Register() {
               required
               className="w-full h-12 px-4 rounded-xl border border-gray-200 focus:border-[#0F3D2E] focus:ring-1 focus:ring-[#0F3D2E] outline-none transition-all bg-surface-2/50"
               placeholder="you@example.com"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              value={formData.user_email}
+              onChange={(e) => setFormData({ ...formData, user_email: e.target.value })}
             />
           </div>
 
@@ -82,8 +82,8 @@ export default function Register() {
                 required
                 className="w-full h-12 px-4 rounded-xl border border-gray-200 focus:border-[#0F3D2E] focus:ring-1 focus:ring-[#0F3D2E] outline-none transition-all bg-surface-2/50 pr-12"
                 placeholder="••••••••"
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                value={formData.user_password}
+                onChange={(e) => setFormData({ ...formData, user_password: e.target.value })}
               />
               <button
                 type="button"
@@ -101,8 +101,8 @@ export default function Register() {
               type="tel"
               className="w-full h-12 px-4 rounded-xl border border-gray-200 focus:border-[#0F3D2E] focus:ring-1 focus:ring-[#0F3D2E] outline-none transition-all bg-surface-2/50"
               placeholder="+91 98765 43210"
-              value={formData.mobile}
-              onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
+              value={formData.user_mobile}
+              onChange={(e) => setFormData({ ...formData, user_mobile: e.target.value })}
             />
           </div>
 

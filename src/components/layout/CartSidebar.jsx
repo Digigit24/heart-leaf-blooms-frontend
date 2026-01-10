@@ -7,7 +7,7 @@ import { Minus, Plus, Trash2, ShoppingBag } from 'lucide-react';
 export default function CartSidebar() {
     const navigate = useNavigate();
     const { isCartOpen, closeCart } = useUIStore();
-    const { items, removeItem, addItem } = useCartStore(); // Assuming addItem handles quantity updates
+    const { items, removeItem, addItem, updateQuantity } = useCartStore();
 
     const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
@@ -42,13 +42,15 @@ export default function CartSidebar() {
                                     <div className="flex items-center justify-between">
                                         <span className="font-bold text-primary">₹{item.price}</span>
                                         <div className="flex items-center gap-3">
-                                            {/* Simple quantity update simulation if store doesn't support specific update action yet, 
-                             usually addItem logic adds to existing. Using logic from store inspection.
-                         */}
-                                            <span className="text-sm text-gray-500">Qty: {item.quantity}</span>
+                                            <div className="flex items-center bg-gray-100 rounded-lg h-7 px-2">
+                                                <button onClick={() => updateQuantity(item.id, item.quantity - 1)} disabled={item.quantity <= 1} className="w-6 h-full flex items-center justify-center text-muted hover:text-primary disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"><Minus size={12} /></button>
+                                                <span className="w-6 text-center text-xs font-bold text-primary">{item.quantity}</span>
+                                                <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="w-6 h-full flex items-center justify-center text-muted hover:text-primary cursor-pointer"><Plus size={12} /></button>
+                                            </div>
                                             <button
                                                 onClick={() => removeItem(item.id)}
                                                 className="text-red-400 hover:text-red-600 transition-colors p-1"
+                                                title="Remove Item"
                                             >
                                                 <Trash2 size={16} />
                                             </button>
@@ -66,7 +68,7 @@ export default function CartSidebar() {
                         </div>
                         <button
                             onClick={handleCheckout}
-                            className="w-full h-12 bg-primary text-white font-bold rounded-xl hover:bg-primary/90 transition-all flex items-center justify-center gap-2 uppercase tracking-widest text-sm shadow-lg shadow-primary/20"
+                            className="w-full h-12 bg-black text-white font-bold rounded-xl hover:opacity-90 transition-all flex items-center justify-center gap-2 uppercase tracking-widest text-sm shadow-lg"
                         >
                             Checkout <ShoppingBag size={18} />
                         </button>

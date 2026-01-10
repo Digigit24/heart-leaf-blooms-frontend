@@ -10,6 +10,10 @@ const client = axios.create({
 
 // Add logging interceptors
 client.interceptors.request.use(request => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    request.headers.Authorization = `Bearer ${token}`;
+  }
   console.log('Starting Request:', request.method.toUpperCase(), request.url);
   return request;
 });

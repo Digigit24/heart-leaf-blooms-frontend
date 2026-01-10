@@ -28,12 +28,6 @@ export default function TrendingProducts() {
                     <div className="text-center space-y-2">
                         <span className="text-accent text-sm font-bold tracking-widest uppercase">Shop Our Collections</span>
                         <h2 className="font-serif text-3xl md:text-5xl font-bold text-primary">Trending Products</h2>
-                        {/* DEBUG INFO */}
-                        <div className="text-xs text-red-500 font-mono mt-2 p-2 bg-red-50 rounded border border-red-200">
-                            Status: {loading ? 'Loading...' : 'Ready'} |
-                            Products: {products.length} |
-                            API: {import.meta.env.VITE_API_URL || 'Default'}
-                        </div>
                     </div>
 
                     <div className="flex flex-wrap justify-center gap-2 p-1.5 bg-surface-2/50 backdrop-blur-sm rounded-full border border-border/50">

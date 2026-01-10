@@ -11,6 +11,10 @@ import LeafLoader from '@/components/ui/LeafLoader';
 
 
 import { useProducts } from '@/features/catalog/hooks/useProducts'; // Use Hook
+import { useCartStore } from '@/app/store/cart.store';
+import { useAuthStore } from '@/app/store/auth.store';
+import { toast } from 'react-hot-toast';
+import { PATHS } from '@/app/routes/paths';
 
 const CATEGORIES = [
     "Cactus & Succulents",
@@ -51,6 +55,18 @@ export default function Category() {
     const vendorId = searchParams.get('vendor'); // Get vendor ID from URL
 
     const { data: products = [], isLoading: loading } = useProducts(); // Use React Query Hook
+    const { addItem } = useCartStore();
+    const { user } = useAuthStore();
+
+    const handleAddToCart = (e, product) => {
+        e.stopPropagation();
+        if (!user) {
+            navigate(PATHS.LOGIN);
+            return;
+        }
+        addItem({ ...product, quantity: 1 }, user?.id || user?._id);
+        toast.success('Added to cart!');
+    };
 
     // const [viewMode, setViewMode] = useState('grid');
     const [viewMode, setViewMode] = useState('grid');
@@ -478,7 +494,10 @@ export default function Category() {
                                                             </div>
 
                                                             <div className="flex gap-3 mt-2">
-                                                                <button disabled={!product.inStock} className="px-6 py-2 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                                                                <button
+                                                                    disabled={!product.inStock}
+                                                                    onClick={(e) => handleAddToCart(e, product)}
+                                                                    className="px-6 py-2 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                                                                     Add to Cart
                                                                 </button>
                                                                 <button className="px-4 py-2 border border-border text-text text-sm font-semibold rounded-lg hover:border-primary hover:text-primary transition-colors">

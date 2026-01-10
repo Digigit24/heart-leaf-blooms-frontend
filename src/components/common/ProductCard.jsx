@@ -1,29 +1,45 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ShoppingBag, Search } from 'lucide-react';
 import { useCartStore } from '@/app/store/cart.store';
 import { useAuthStore } from '@/app/store/auth.store';
+import { toast } from 'react-hot-toast';
+import { PATHS } from '@/app/routes/paths';
 
 export default function ProductCard({ product }) {
+  const navigate = useNavigate();
   const { addItem } = useCartStore();
   const { user } = useAuthStore();
   const { inStock = true } = product; // Default to true if undefined
 
   const handleAddToCart = (e) => {
     e.preventDefault();
+    e.stopPropagation(); // Prevent card click
     if (inStock) {
+      if (!user) {
+        navigate(PATHS.LOGIN);
+        return;
+      }
       addItem({ ...product, quantity: 1 }, user?.id || user?._id);
+      toast.success('Added to cart!');
     }
   };
 
+  const handleCardClick = () => {
+    navigate(`/products/${product.id}`);
+  };
+
   return (
-    <Link
-      to={`/products/${product.id}`}
-      className={`group relative block bg-transparent transition-all duration-300 ${!inStock ? 'opacity-75 grayscale-[0.5]' : ''} overflow-hidden`}
+    <div
+      onClick={handleCardClick}
+      className={`group relative block bg-transparent transition-all duration-300 ${!inStock ? 'opacity-75 grayscale-[0.5]' : ''} overflow-hidden cursor-pointer`}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === 'Enter') handleCardClick(); }}
     >
       {/* Steel Shine Effect */}
-      <div className="absolute inset-0 z-10 -translate-x-full group-hover:animate-[shine_0.75s_ease-in-out_one] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 z-10 -translate-x-full group-hover:animate-[shine_0.75s_ease-in-out_one] bg-linear-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
       {/* Image Container */}
-      <div className="relative aspect-[4/5] overflow-hidden rounded-[20px] bg-[#F3F4F1]">
+      <div className="relative aspect-4/5 overflow-hidden rounded-[20px] bg-[#F3F4F1]">
         {product.image ? (
           <img
             src={product.image}
@@ -55,12 +71,16 @@ export default function ProductCard({ product }) {
           <button
             onClick={handleAddToCart}
             disabled={!inStock}
-            className="flex-1 h-9 bg-primary/90 backdrop-blur-md text-white rounded-full flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider hover:bg-primary/95 shadow-lg disabled:cursor-not-allowed disabled:bg-stone-400"
+            className="flex-1 h-9 bg-primary/90 backdrop-blur-md text-white rounded-full flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider hover:bg-primary/95 shadow-lg disabled:cursor-not-allowed disabled:bg-stone-400 cursor-pointer"
           >
             <ShoppingBag size={14} />
             {inStock ? 'Add to Cart' : 'Sold Out'}
           </button>
-          <button className="h-9 w-9 bg-white text-text rounded-full flex items-center justify-center hover:bg-stone-100 shadow-lg" title="Quick View">
+          <button
+            className="h-9 w-9 bg-white text-text rounded-full flex items-center justify-center hover:bg-stone-100 shadow-lg cursor-pointer"
+            title="Quick View"
+            onClick={(e) => { e.stopPropagation(); /* Add Quick View Logic later */ }}
+          >
             <Search size={14} />
           </button>
         </div>
@@ -84,6 +104,6 @@ export default function ProductCard({ product }) {
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }

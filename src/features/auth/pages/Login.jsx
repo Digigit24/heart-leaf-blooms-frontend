@@ -8,7 +8,7 @@ import { Eye, EyeOff, Loader2 } from 'lucide-react';
 export default function Login() {
   const navigate = useNavigate();
   const { login } = useAuthStore();
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [formData, setFormData] = useState({ user_email: '', user_password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -22,8 +22,16 @@ export default function Login() {
       const response = await authApi.loginUser(formData);
       console.log('Login Response:', response.data);
 
-      const user = response.data.user || response.data; // Adjust based on actual backend response
+      const data = response.data;
+      const user = data.user || data;
+      const token = data.token;
+
       if (!user) throw new Error("No user data returned");
+
+      if (token) {
+        localStorage.setItem('token', token);
+        document.cookie = `token=${token}; path=/; max-age=604800; secure; samesite=strict`; // 7 days
+      }
 
       login(user); // Update Store
       const userId = user._id || user.id;
@@ -62,8 +70,8 @@ export default function Login() {
               required
               className="w-full h-12 px-4 rounded-xl border border-gray-200 focus:border-[#0F3D2E] focus:ring-1 focus:ring-[#0F3D2E] outline-none transition-all bg-surface-2/50"
               placeholder="you@example.com"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              value={formData.user_email}
+              onChange={(e) => setFormData({ ...formData, user_email: e.target.value })}
             />
           </div>
 
@@ -75,8 +83,8 @@ export default function Login() {
                 required
                 className="w-full h-12 px-4 rounded-xl border border-gray-200 focus:border-[#0F3D2E] focus:ring-1 focus:ring-[#0F3D2E] outline-none transition-all bg-surface-2/50 pr-12"
                 placeholder="••••••••"
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                value={formData.user_password}
+                onChange={(e) => setFormData({ ...formData, user_password: e.target.value })}
               />
               <button
                 type="button"

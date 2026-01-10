@@ -39,6 +39,9 @@ export default function Header() {
   ];
 
   const handleLogout = () => {
+    localStorage.removeItem('userId');
+    localStorage.removeItem('token');
+    document.cookie = "token=; path=/; max-age=0";
     logout();
     navigate(PATHS.HOME);
   };
@@ -139,7 +142,7 @@ export default function Header() {
               >
                 <ShoppingBag className="w-5 h-5 stroke-[1.5px] group-hover:stroke-2" />
                 {cartItems.length > 0 && (
-                  <span className="absolute top-1 right-1 inline-flex items-center justify-center w-4 h-4 text-[9px] font-bold text-white bg-accent rounded-full ring-2 ring-bg animate-in zoom-in spin-in-6">
+                  <span className="absolute top-0 right-0 inline-flex items-center justify-center text-[10px] font-bold text-red-600 animate-in zoom-in">
                     {cartItems.length}
                   </span>
                 )}
@@ -159,7 +162,7 @@ export default function Header() {
                     </span>
                   </button>
 
-                  <div className="absolute right-0 mt-2 w-56 bg-surface rounded-2xl shadow-xl border border-border/50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right p-2 z-[60]">
+                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-border/50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right p-2 z-[60]">
                     <div className="px-3 py-2 border-b border-border/50 mb-1">
                       <p className="text-xs text-muted">Signed in as</p>
                       <p className="font-medium text-primary truncate">{user?.name}</p>
@@ -256,7 +259,7 @@ export default function Header() {
             </div>
           </div>
         </div>
-      </header >
+      </header>
     </>
   );
 }

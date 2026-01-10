@@ -11,6 +11,8 @@ import { useAuthStore } from '@/app/store/auth.store';
 import { authApi } from '@/features/auth/api/auth.api';
 import CartSidebar from '@/components/layout/CartSidebar';
 import WishlistSidebar from '@/components/layout/WishlistSidebar';
+import ScrollToTop from '@/components/common/ScrollToTop';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
     const [isLoading, setIsLoading] = useState(true);
@@ -33,6 +35,8 @@ function App() {
                 } catch (error) {
                     console.error("Failed to restore session:", error);
                     localStorage.removeItem('userId'); // Clear invalid session
+                    localStorage.removeItem('token');
+                    document.cookie = "token=; path=/; max-age=0";
                 }
             }
             // Minimum loading time for aesthetic purposes, but ensure auth check is done
@@ -53,6 +57,7 @@ function App() {
         <Router>
             <ThemeProvider>
                 <QueryProvider>
+                    <ScrollToTop />
                     <div className="flex flex-col min-h-screen bg-bg text-text font-body">
                         <Header />
                         <main className="grow">
@@ -61,6 +66,7 @@ function App() {
                         <Footer />
                         <CartSidebar />
                         <WishlistSidebar />
+                        <Toaster position="bottom-center" />
                     </div>
                 </QueryProvider>
             </ThemeProvider>
