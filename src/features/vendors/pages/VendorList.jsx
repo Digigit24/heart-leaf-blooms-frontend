@@ -1,88 +1,15 @@
+
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, MapPin, ArrowRight, ShieldCheck, X, Leaf, Sprout } from 'lucide-react';
+import { Search, MapPin, ArrowRight, ShieldCheck, X, Leaf, Sprout, Crown } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
-// Mock Data for Vendors
-const VENDORS = [
-  {
-    id: 1,
-    name: "Green Haven Nursery",
-    description: "Specializing in rare tropicals and statement indoor trees. We source ethically and grow with love.",
-    rating: 4.9,
-    reviews: 128,
-    location: "Portland, OR",
-    image: "https://images.unsplash.com/photo-1470058869958-2a77ade41c02?q=80&w=2070&auto=format&fit=crop",
-    logo: "https://ui-avatars.com/api/?name=Green+Haven&background=0D9488&color=fff&size=128",
-    specialty: "Tropicals",
-    verified: true
-  },
-  {
-    id: 2,
-    name: "Succulent Studio",
-    description: "Your go-to source for drought-tolerant beauties. Cacti, succulents, and desert landscaping experts.",
-    rating: 4.8,
-    reviews: 94,
-    location: "Phoenix, AZ",
-    image: "https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?q=80&w=2449&auto=format&fit=crop",
-    logo: "https://ui-avatars.com/api/?name=Succulent+Studio&background=D97706&color=fff&size=128",
-    specialty: "Cacti",
-    verified: true
-  },
-  {
-    id: 3,
-    name: "Urban Jungle Collective",
-    description: "Modern plants for modern homes. We focus on apartment-friendly varieties that thrive in low light.",
-    rating: 4.7,
-    reviews: 215,
-    location: "Brooklyn, NY",
-    image: "https://images.unsplash.com/photo-1463936575215-fc6dd63f044d?q=80&w=2070&auto=format&fit=crop",
-    logo: "https://ui-avatars.com/api/?name=Urban+Jungle&background=059669&color=fff&size=128",
-    specialty: "Indoor",
-    verified: true
-  },
-  {
-    id: 4,
-    name: "Blooms & Petals",
-    description: "Seasonal floral arrangements and flowering potted plants to brighten up your space.",
-    rating: 4.9,
-    reviews: 310,
-    location: "San Diego, CA",
-    image: "https://images.unsplash.com/photo-1563245372-f21724e3a899?q=80&w=2070&auto=format&fit=crop",
-    logo: "https://ui-avatars.com/api/?name=Blooms+Petals&background=DB2777&color=fff&size=128",
-    specialty: "Flowers",
-    verified: true
-  },
-  {
-    id: 5,
-    name: "The Potted Leaf",
-    description: "Hand-painted pots and carefully propagated cuttings. Unique gifts for plant lovers.",
-    rating: 4.6,
-    reviews: 76,
-    location: "Austin, TX",
-    image: "https://images.unsplash.com/photo-1485959800798-e0e4756270fe?q=80&w=2071&auto=format&fit=crop",
-    logo: "https://ui-avatars.com/api/?name=Potted+Leaf&background=7C3AED&color=fff&size=128",
-    specialty: "Planters",
-    verified: false
-  },
-  {
-    id: 6,
-    name: "Fern & Moss",
-    description: "Experts in humidity-loving plants. Terrariums, ferns, and moss walls for your home.",
-    rating: 5.0,
-    reviews: 42,
-    location: "Seattle, WA",
-    image: "https://images.unsplash.com/photo-1518531933037-91b2f5d2294c?q=80&w=1648&auto=format&fit=crop",
-    logo: "https://ui-avatars.com/api/?name=Fern+Moss&background=65A30D&color=fff&size=128",
-    specialty: "Ferns",
-    verified: true
-  }
-];
+import { useVendors } from '@/features/vendors/hooks/useVendors';
 
 export default function VendorList() {
   const [searchTerm, setSearchTerm] = useState('');
+  const { data: vendors = [], isLoading: loading } = useVendors();
 
-  const filteredVendors = VENDORS.filter(vendor =>
+  const filteredVendors = vendors.filter(vendor =>
     vendor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     vendor.specialty.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -168,30 +95,39 @@ export default function VendorList() {
                 className="group relative flex flex-col bg-white rounded-3xl overflow-hidden shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-gray-100 hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-500"
               >
                 {/* --- Cover Image Area (50%) --- */}
-                <div className="h-64 relative bg-gray-100 overflow-hidden">
+                <div className="h-64 relative bg-gray-100 overflow-hidden capitalize">
                   <motion.img
                     layoutId={`image-${vendor.id}`}
                     src={vendor.image}
                     alt={vendor.name}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col justify-end p-6">
 
-                  {/* Specialty Badge */}
-                  <div className="absolute top-4 right-4 z-10">
-                    {vendor.verified && (
-                      <div className="bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-[#0F3D2E] shadow-sm flex items-center gap-1">
-                        <ShieldCheck className="w-3 h-3 text-[#4FAF2E]" /> Verified
-                      </div>
-                    )}
-                  </div>
+                    {/* Badges */}
+                    <div className="absolute top-4 left-4 z-10">
+                      {vendor.featured && (
+                        <div className="bg-amber-400/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-amber-900 shadow-sm flex items-center gap-1">
+                          <Crown className="w-3 h-3 fill-current" /> Featured
+                        </div>
+                      )}
+                    </div>
 
-                  {/* SVG Curve - Smooth Transition */}
-                  <div className="absolute -bottom-px left-0 w-full overflow-hidden leading-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" className="block w-full h-[40px] fill-white">
-                      <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" className="hidden"></path>
-                      <path d="M0,0 L0,120 L1200,120 L1200,0 L700,0 Q600,80 500,0 Z" />
-                    </svg>
+                    <div className="absolute top-4 right-4 z-10">
+                      {vendor.verified && (
+                        <div className="bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-[#0F3D2E] shadow-sm flex items-center gap-1">
+                          <ShieldCheck className="w-3 h-3 text-[#4FAF2E]" /> Verified
+                        </div>
+                      )}
+                    </div>
+
+                    {/* SVG Curve - Smooth Transition */}
+                    <div className="absolute -bottom-px left-0 w-full overflow-hidden leading-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" className="block w-full h-[40px] fill-white">
+                        <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" className="hidden"></path>
+                        <path d="M0,0 L0,120 L1200,120 L1200,0 L700,0 Q600,80 500,0 Z" />
+                      </svg>
+                    </div>
                   </div>
                 </div>
 
@@ -210,7 +146,7 @@ export default function VendorList() {
 
                   {/* Info */}
                   <div className="mb-4">
-                    <h3 className="font-serif text-2xl text-[#0F3D2E] mb-1 group-hover:text-[#4FAF2E] transition-colors">
+                    <h3 className="font-serif text-2xl text-[#0F3D2E] mb-1 capitalize group-hover:text-[#4FAF2E] transition-colors">
                       {vendor.name}
                     </h3>
                     <p className="text-xs text-[#8BA190] font-bold uppercase tracking-widest mb-3">

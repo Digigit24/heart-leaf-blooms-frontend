@@ -2,5 +2,6 @@
 import client from '@/lib/http/client';
 
 export const catalogApi = {
-  // endpoints
+  getAllProducts: () => client.get('/product'),
+  getProductById: (id) => client.get(`/product/${id}`),
 };

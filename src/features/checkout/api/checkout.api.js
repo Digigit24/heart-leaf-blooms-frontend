@@ -2,5 +2,6 @@
 import client from '@/lib/http/client';
 
 export const checkoutApi = {
-  // endpoints
+  createOrder: (data) => client.post('/payment/create-order', data),
+  verifyPayment: (data) => client.post('/payment/verify', data),
 };

@@ -7,127 +7,53 @@ import {
   Sprout, Thermometer, ChevronLeft, ChevronRight, Share2, Box
 } from 'lucide-react';
 import { useCartStore } from '@/app/store/cart.store';
+import { useAuthStore } from '@/app/store/auth.store';
+import { useWishlistStore } from '@/app/store/wishlist.store';
 import ProductCard from '@/components/common/ProductCard';
+import { catalogApi } from '@/features/catalog/api/catalog.api';
+import LeafLoader from '@/components/ui/LeafLoader';
+import { PATHS } from '@/app/routes/paths';
+import { useProduct } from '@/features/catalog/hooks/useProduct';
 
-// --- Expanded Mock Database ---
-const PRODUCTS_DB = [
-  {
-    id: 1,
-    name: "Monstera Deliciosa",
-    scientificName: "Monstera deliciosa",
-    price: 1450.00,
-    originalPrice: 1850.00,
-    sku: "PLNT-MNST-001",
-    vendor: "Nature@Home",
-    rating: 4.9,
-    reviews: 124,
-    availability: "In Stock",
-    category: "Indoor Plants",
-    images: [
-      "/images/hero-1.png",
-      "/images/hero-2.png",
-      "/images/hero-3.png",
-      "/images/hero-1.png",
-    ],
-    description: "The Monstera Deliciosa, often called the Swiss Cheese Plant, is a favorite for a reason. Its large, glossy, fenestrated leaves make a bold statement in any room. Native to the tropical forests of southern Mexico, this easy-care beauty thrives in indirect light and brings a lush, jungle vibe to your interior.",
-    sizes: [
-      { id: 's', label: 'Small', detail: '10-15" (Tabletop)', priceMod: 0 },
-      { id: 'm', label: 'Medium', detail: '20-30" (Floor)', priceMod: 800 },
-      { id: 'l', label: 'Large', detail: '40"+ (Statement)', priceMod: 1500 }
-    ],
-    pots: [
-      { id: 'grower', label: 'Grower Pot', detail: 'Plastic Nursery Pot', color: '#5C6B63' },
-      { id: 'ceramic_w', label: 'Ceramic White', detail: 'Premium Glazed', color: '#FFFFFF' },
-      { id: 'terracotta', label: 'Terracotta', detail: 'Classic Clay', color: '#E2725B' },
-      { id: 'stone', label: 'Stone Grey', detail: 'Modern Matte', color: '#9CA3AF' }
-    ],
-    care: [
-      { icon: Sun, label: "Light", value: "Bright Indirect" },
-      { icon: Droplets, label: "Water", value: "Every 1-2 Weeks" },
-      { icon: Thermometer, label: "Temp", value: "18°C - 30°C" },
-      { icon: Sprout, label: "Growth", value: "Fast Growing" },
-    ]
-  },
-  {
-    id: 99,
-    name: "Artisan Clay Pot",
-    scientificName: "Terracotta Series",
-    price: 850.00,
-    originalPrice: 1200.00,
-    sku: "ACC-CLAY-001",
-    vendor: "Earth & Fire",
-    rating: 4.8,
-    reviews: 45,
-    availability: "In Stock",
-    category: "Flower Pots",
-    images: [
-      "/images/hero-3.png", // Using existing placeholders
-      "/images/hero-1.png"
-    ],
-    description: "Handcrafted by local artisans, this premium clay pot features excellent breathability for plant roots. The porous material allows air and moisture to penetrate the sides of the pot, preventing soil disease and root rot. A timeless classic for any botanist.",
-    // Pots/Sizes irrelevant for a Pot itself usually, but we keep structure empty or generic if needed.
-    sizes: [
-      { id: 's', label: 'Small', detail: '6 inch', priceMod: 0 },
-      { id: 'm', label: 'Medium', detail: '10 inch', priceMod: 400 },
-      { id: 'l', label: 'Large', detail: '14 inch', priceMod: 900 }
-    ],
-    // Pots/Colors for the Pot itself
-    pots: [
-      { id: 'terracotta', label: 'Terracotta', detail: 'Classic Clay', color: '#E2725B' },
-      { id: 'white_stone', label: 'White Stone', detail: 'Matte Finish', color: '#F3F4F6' },
-      { id: 'charcoal', label: 'Charcoal', detail: 'Deep Grey', color: '#374151' }
-    ],
-    care: [
-      { icon: Box, label: "Material", value: "Natural Clay" },
-      { icon: ShieldCheck, label: "Durability", value: "High Fired" },
-      { icon: Droplets, label: "Drainage", value: "Single Hole" },
-      { icon: Sun, label: "Usage", value: "Indoor/Outdoor" },
-    ]
-  }
-];
-
-// Helper to get product (fallback to Monstera)
-const getProduct = (id) => PRODUCTS_DB.find(p => p.id === parseInt(id)) || PRODUCTS_DB[0];
-
-import { ShieldCheck } from 'lucide-react'; // Added generic icon for pot traits
-
+// Mock Related Products (could be fetched later)
 const RELATED_PRODUCTS = [
   { id: 2, name: 'Fiddle Leaf Fig', price: 2999.00, originalPrice: 3500, rating: 4, reviews: 85, image: '/images/hero-3.png', tag: 'Popular', category: 'Large Plants', brand: 'Green Life', color: 'dark_green', inStock: true },
   { id: 3, name: 'Rubber Plant', price: 899.00, rating: 5, reviews: 150, image: '/images/hero-2.png', category: 'Indoor Plants', brand: 'Nature@Home', color: 'dark_green', inStock: true },
   { id: 4, name: 'Golden Pothos', price: 499.00, rating: 5, reviews: 200, image: '/images/hero-1.png', category: 'Hanging Plants', brand: 'Plant Co', color: 'lime', inStock: true },
-  { id: 99, name: 'Artisan Clay Pot', price: 850.00, rating: 5, reviews: 45, image: '/images/hero-3.png', category: 'Flower Pots', brand: 'Earth & Fire', color: 'terracotta', inStock: true }, // Added link to pot
+  { id: 99, name: 'Artisan Clay Pot', price: 850.00, rating: 5, reviews: 45, image: '/images/hero-3.png', category: 'Flower Pots', brand: 'Earth & Fire', color: 'terracotta', inStock: true },
 ];
 
 export default function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addItem } = useCartStore();
+  const { user } = useAuthStore();
+  const { addToWishlist, isInWishlist } = useWishlistStore();
 
-  const [product, setProduct] = useState(getProduct(id));
+  const isWishlisted = isInWishlist(id);
+
+  // Use cached hook
+  // It handles initialData from list if available, preventing loading spinner if data exists
+  const { data: product, isLoading: loading, error, isError } = useProduct(id);
 
   // State
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('care guide');
+  const [activeSize, setActiveSize] = useState(null);
+  const [activePot, setActivePot] = useState(null);
 
-  // Initialize selectors only if available
-  const [activeSize, setActiveSize] = useState(product.sizes?.[0] || null);
-  const [activePot, setActivePot] = useState(product.pots?.[0] || null);
-
-  // Update product when ID changes
+  // Set default variants when product loads
   useEffect(() => {
-    const newProduct = getProduct(id);
-    setProduct(newProduct);
-    setActiveSize(newProduct.sizes?.[0] || null);
-    setActivePot(newProduct.pots?.[0] || null);
-    setSelectedImageIndex(0);
-    setQuantity(1);
-    window.scrollTo(0, 0);
-  }, [id]);
+    if (product) {
+      if (product.sizes?.length > 0 && !activeSize) setActiveSize(product.sizes[0]);
+      if (product.pots?.length > 0 && !activePot) setActivePot(product.pots[0]);
+    }
+  }, [product]);
 
   // Derived State
-  const basePrice = product.price;
+  const basePrice = product ? product.price : 0;
   const sizeMod = activeSize ? activeSize.priceMod : 0;
   const potMod = (activePot && activePot.id !== 'grower') ? 350 : 0;
   const currentPrice = basePrice + sizeMod + potMod;
@@ -135,23 +61,31 @@ export default function ProductDetails() {
   // Auto-Carousel Logic
   useEffect(() => {
     let interval;
-    if (!isPaused && product.images.length > 1) {
+    if (!isPaused && product && product.images.length > 1) {
       interval = setInterval(() => {
         setSelectedImageIndex(prev => (prev + 1) % product.images.length);
       }, 3000);
     }
     return () => clearInterval(interval);
-  }, [isPaused, product.images.length]);
+  }, [isPaused, product]);
+
+  if (loading) return <LeafLoader />;
+  if (error) return <div className="text-center py-20 text-red-500">{error}</div>;
+  if (!product) return null;
 
   const handleAddToCart = () => {
+    if (!user) {
+      navigate(PATHS.LOGIN);
+      return;
+    }
     addItem({
       id: product.id,
       name: product.name,
       price: currentPrice,
-      image: product.images[0],
+      image: product.image, // Use the primary string image
       quantity: quantity,
       variant: activeSize && activePot ? `${activeSize.label} - ${activePot.label}` : activeSize ? activeSize.label : 'Standard',
-    });
+    }, user?.id || user?._id);
   };
 
   const tabContent = {
@@ -256,7 +190,9 @@ export default function ProductDetails() {
                 <AnimatePresence mode="wait">
                   <motion.img
                     key={selectedImageIndex}
-                    src={product.images[selectedImageIndex]}
+                    src={product.images[selectedImageIndex]?.large_url || product.images[selectedImageIndex]}
+                    srcSet={product.images[selectedImageIndex]?.large_url ? `${product.images[selectedImageIndex].small_url} 500w, ${product.images[selectedImageIndex].medium_url} 800w, ${product.images[selectedImageIndex].large_url} 1200w` : undefined}
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     alt={product.name}
                     initial={{ opacity: 0.85, scale: 1.05 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -319,7 +255,11 @@ export default function ProductDetails() {
                       : 'border-transparent opacity-60 hover:opacity-100 hover:scale-105'
                       }`}
                   >
-                    <img src={img} alt="" className="w-full h-full object-cover" />
+                    <img
+                      src={img.small_url || img}
+                      alt=""
+                      className="w-full h-full object-cover"
+                    />
                   </button>
                 ))}
               </div>
@@ -511,8 +451,17 @@ export default function ProductDetails() {
                 <span>₹{(currentPrice * quantity).toFixed(0)}</span>
               </button>
 
-              <button className="h-14 w-14 rounded-full bg-white border border-border/40 text-primary/80 flex items-center justify-center hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-all group cursor-pointer active:scale-95 shadow-sm">
-                <Heart size={20} className="group-hover:fill-current transition-colors" />
+              <button
+                onClick={() => {
+                  if (!user) {
+                    navigate(PATHS.LOGIN);
+                    return;
+                  }
+                  addToWishlist(product, user.id || user._id);
+                }}
+                className={`h-14 w-14 rounded-full border border-border/40 flex items-center justify-center transition-all group cursor-pointer active:scale-95 shadow-sm ${isWishlisted ? 'bg-red-50 text-red-500 border-red-200' : 'bg-white text-primary/80 hover:bg-red-50 hover:text-red-500 hover:border-red-200'}`}
+              >
+                <Heart size={20} className={`transition-colors ${isWishlisted ? 'fill-current' : 'group-hover:fill-current'}`} />
               </button>
             </div>
           </div>

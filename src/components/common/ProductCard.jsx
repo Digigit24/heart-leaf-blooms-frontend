@@ -1,15 +1,17 @@
 import { Link } from 'react-router-dom';
 import { ShoppingBag, Search } from 'lucide-react';
 import { useCartStore } from '@/app/store/cart.store';
+import { useAuthStore } from '@/app/store/auth.store';
 
 export default function ProductCard({ product }) {
   const { addItem } = useCartStore();
+  const { user } = useAuthStore();
   const { inStock = true } = product; // Default to true if undefined
 
   const handleAddToCart = (e) => {
     e.preventDefault();
     if (inStock) {
-      addItem({ ...product, quantity: 1 });
+      addItem({ ...product, quantity: 1 }, user?.id || user?._id);
     }
   };
 

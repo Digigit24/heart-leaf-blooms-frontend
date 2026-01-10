@@ -1,9 +1,16 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Filter, ChevronDown, Grid, List, Check, ArrowUpDown, Search, X } from 'lucide-react';
 import ProductCard from '@/components/common/ProductCard';
+import LeafLoader from '@/components/ui/LeafLoader';
 
 // --- Mock Data ---
+
+
+
+
+import { useProducts } from '@/features/catalog/hooks/useProducts'; // Use Hook
 
 const CATEGORIES = [
     "Cactus & Succulents",
@@ -38,32 +45,21 @@ const FILTERS = {
     ]
 };
 
-const PRODUCTS = [
-    { id: 1, name: 'Monstera Deliciosa', price: 1499.00, rating: 5, reviews: 128, image: '/images/hero-1.png', tag: 'Best Seller', category: 'Indoor Plants', brand: 'Plant Co', color: 'green', inStock: true },
-    { id: 2, name: 'Fiddle Leaf Fig', price: 2999.00, rating: 4, reviews: 85, image: '/images/hero-3.png', tag: 'Popular', category: 'Large Plants', brand: 'Green Life', color: 'dark_green', inStock: true },
-    { id: 3, name: 'Rubber Plant', price: 899.00, rating: 5, reviews: 150, image: '/images/hero-2.png', category: 'Indoor Plants', brand: 'Nature@Home', color: 'dark_green', inStock: true },
-    { id: 4, name: 'Golden Pothos', price: 499.00, rating: 5, reviews: 200, image: '/images/hero-1.png', category: 'Hanging Plants', brand: 'Plant Co', color: 'lime', inStock: true },
-    { id: 5, name: 'Bird of Paradise', price: 3499.00, rating: 4, reviews: 64, image: '/images/hero-3.png', tag: 'New', category: 'Large Plants', brand: 'Green Life', color: 'green', inStock: false },
-    { id: 6, name: 'Calathea Orbifolia', price: 1299.00, rating: 4, reviews: 32, image: '/images/hero-2.png', category: 'Indoor Plants', brand: 'Nature@Home', color: 'variegated', inStock: true },
-    { id: 7, name: 'String of Pearls', price: 699.00, rating: 5, reviews: 45, image: '/images/hero-1.png', category: 'Hanging Plants', brand: 'Plant Co', color: 'green', inStock: true },
-    { id: 8, name: 'Hoya Kerrii', price: 399.00, rating: 4, reviews: 20, image: '/images/hero-2.png', category: 'Cactus & Succulents', brand: 'Nature@Home', color: 'green', inStock: true },
-    { id: 9, name: 'Peace Lily', price: 799.00, rating: 5, reviews: 210, image: '/images/hero-2.png', category: 'Flowering Plants', brand: 'Plant Co', color: 'green', inStock: true },
-    { id: 10, name: 'Pothos Marble', price: 549.00, rating: 5, reviews: 312, image: '/images/hero-1.png', category: 'Hanging Plants', brand: 'Green Life', color: 'variegated', inStock: true },
-    { id: 11, name: 'Snake Plant', price: 999.00, rating: 4, reviews: 96, image: '/images/hero-2.png', category: 'Cactus & Succulents', brand: 'Plant Co', color: 'variegated', inStock: true },
-    { id: 12, name: 'ZZ Plant', price: 1199.00, rating: 5, reviews: 180, image: '/images/hero-1.png', tag: 'Sale', category: 'Indoor Plants', brand: 'Nature@Home', color: 'dark_green', inStock: false },
-    { id: 13, name: 'Modern Clay Pot', price: 450.00, rating: 4, reviews: 22, image: '/images/hero-3.png', category: 'Flower Pots', brand: 'Nature@Home', color: 'terracotta', inStock: true },
-    { id: 14, name: 'Ceramic Planter', price: 1250.00, rating: 5, reviews: 40, image: '/images/hero-1.png', tag: 'New', category: 'Flower Pots', brand: 'Green Life', color: 'white', inStock: true },
-    { id: 99, name: 'Artisan Clay Pot', price: 850.00, rating: 5, reviews: 45, image: '/images/hero-3.png', category: 'Flower Pots', brand: 'Earth & Fire', color: 'terracotta', inStock: true },
-];
-
 export default function Category() {
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const vendorId = searchParams.get('vendor'); // Get vendor ID from URL
+
+    const { data: products = [], isLoading: loading } = useProducts(); // Use React Query Hook
+
+    // const [viewMode, setViewMode] = useState('grid');
     const [viewMode, setViewMode] = useState('grid');
     const [selectedFilters, setSelectedFilters] = useState({
         availability: [],
         price: [],
         brands: [],
         colors: [],
-        category: [] // Added category filter
+        category: []
     });
     const [sortBy, setSortBy] = useState('featured');
     const [isSortOpen, setIsSortOpen] = useState(false);
@@ -72,34 +68,31 @@ export default function Category() {
     const [showMobileFilters, setShowMobileFilters] = useState(false);
     const itemsPerPage = 12;
 
-    const toggleFilter = (type, id) => {
+    // --- Handlers ---
+    const toggleFilter = (type, value) => {
         setSelectedFilters(prev => {
             const current = prev[type];
-            // If clicking a category, we might want single selection behavior or multi. Let's do multi for consistency, or single for strict categorization.
-            // But usually Sidebar categories act as a filter.
-            const updated = current.includes(id)
-                ? current.filter(item => item !== id)
-                : [...current, id];
-
-            // Reset page when filtering
-            setCurrentPage(1);
+            const updated = current.includes(value)
+                ? current.filter(item => item !== value)
+                : [...current, value];
             return { ...prev, [type]: updated };
         });
+        setCurrentPage(1);
     };
 
-    const handleCategoryClick = (cat) => {
-        // Helper to set category from sidebar
-        setSelectedFilters(prev => {
-            const isSelected = prev.category.includes(cat);
-            const newCategory = isSelected ? [] : [cat]; // Single select behavior for sidebar categories
-            setCurrentPage(1); // Reset page on category change
-            return { ...prev, category: newCategory };
-        });
+    const handleCategoryClick = (category) => {
+        toggleFilter('category', category);
     };
 
-    // --- Filter Logic ---
     const filteredProducts = useMemo(() => {
-        return PRODUCTS.filter(product => {
+        return products.filter(product => {
+            // Vendor Filter (from URL)
+            // If URL has vendor, ONLY show products from that vendor.
+            if (vendorId) {
+                if (!product.vendorId) return false; // Hide products without vendor ID if filter is active
+                if (String(product.vendorId) !== String(vendorId)) return false;
+            }
+
             // Search
             if (searchQuery) {
                 const query = searchQuery.toLowerCase();
@@ -112,12 +105,8 @@ export default function Category() {
             if (selectedFilters.availability.length > 0) {
                 const wantsInStock = selectedFilters.availability.includes('in_stock');
                 const wantsOutStock = selectedFilters.availability.includes('out_stock');
-
                 if (wantsInStock && !wantsOutStock && !product.inStock) return false;
                 if (wantsOutStock && !wantsInStock && product.inStock) return false;
-                // If both or neither are selected, this filter doesn't restrict.
-                // If only in_stock is selected, and product is out of stock, filter out.
-                // If only out_stock is selected, and product is in stock, filter out.
             }
 
             // Brands
@@ -131,17 +120,23 @@ export default function Category() {
             }
 
             // Categories (Sidebar)
-            if (selectedFilters.category.length > 0 && !selectedFilters.category.includes(product.category)) {
-                return false;
+            if (selectedFilters.category.length > 0) {
+                // Exact match or substring match to be safe
+                const productCat = product.category.toLowerCase();
+                const hasMatch = selectedFilters.category.some(cat =>
+                    productCat === cat.toLowerCase() || productCat.includes(cat.toLowerCase())
+                );
+                if (!hasMatch) return false;
             }
 
             // Price
             if (selectedFilters.price.length > 0) {
                 const priceMatches = selectedFilters.price.some(range => {
-                    if (range === 'under_500') return product.price < 500;
-                    if (range === '500_1000') return product.price >= 500 && product.price <= 1000;
-                    if (range === '1000_2000') return product.price > 1000 && product.price <= 2000;
-                    if (range === 'over_2000') return product.price > 2000;
+                    const price = product.price;
+                    if (range === 'under_500') return price < 500;
+                    if (range === '500_1000') return price >= 500 && price <= 1000;
+                    if (range === '1000_2000') return price > 1000 && price <= 2000;
+                    if (range === 'over_2000') return price > 2000;
                     return false;
                 });
                 if (!priceMatches) return false;
@@ -149,7 +144,7 @@ export default function Category() {
 
             return true;
         });
-    }, [selectedFilters]);
+    }, [selectedFilters, products, vendorId, searchQuery]);
 
     // --- Sort Logic ---
     const sortedProducts = useMemo(() => {
@@ -176,6 +171,9 @@ export default function Category() {
     return (
         <div className="min-h-screen bg-bg">
             <div className="container mx-auto px-4 py-8 md:py-12">
+
+                {/* Debug Info - Remove before production */}
+
 
                 {/* Mobile Filter Toggle */}
                 <div className="md:hidden mb-6">
@@ -252,8 +250,8 @@ export default function Category() {
                                                 <div className="space-y-3">
                                                     {options.map((opt) => (
                                                         <label key={opt.id} className="flex items-center gap-3 cursor-pointer group select-none">
-                                                            <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${selectedFilters[key].includes(opt.id) ? 'bg-primary border-primary' : 'border-muted/40 group-hover:border-primary bg-white'}`}>
-                                                                {selectedFilters[key].includes(opt.id) && <Check size={14} color="white" strokeWidth={3} />}
+                                                            <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${selectedFilters[key].includes(opt.id) ? 'bg-white border-primary' : 'border-muted/40 group-hover:border-primary bg-white'}`}>
+                                                                {selectedFilters[key].includes(opt.id) && <Check size={14} className="text-primary" strokeWidth={3} />}
                                                             </div>
                                                             <input
                                                                 type="checkbox"
@@ -327,8 +325,8 @@ export default function Category() {
                                         <div className="space-y-3">
                                             {options.map((opt) => (
                                                 <label key={opt.id} className="flex items-center gap-3 cursor-pointer group select-none">
-                                                    <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${selectedFilters[key].includes(opt.id) ? 'bg-primary border-primary' : 'border-muted/40 group-hover:border-primary bg-white'}`}>
-                                                        {selectedFilters[key].includes(opt.id) && <Check size={14} color="white" strokeWidth={3} />}
+                                                    <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${selectedFilters[key].includes(opt.id) ? 'bg-white border-primary' : 'border-muted/40 group-hover:border-primary bg-white'}`}>
+                                                        {selectedFilters[key].includes(opt.id) && <Check size={14} className="text-primary" strokeWidth={3} />}
                                                     </div>
                                                     <input
                                                         type="checkbox"
@@ -439,7 +437,9 @@ export default function Category() {
 
                         {/* Product Grid */}
                         <div className="min-h-[400px]">
-                            {paginatedProducts.length > 0 ? (
+                            {loading ? (
+                                <LeafLoader />
+                            ) : paginatedProducts.length > 0 ? (
                                 <div className={`grid gap-6 ${viewMode === 'grid'
                                     ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
                                     : 'grid-cols-1'
@@ -500,7 +500,10 @@ export default function Category() {
                                     <h3 className="text-xl font-bold text-primary mb-2">No products found</h3>
                                     <p className="text-muted max-w-sm mx-auto mb-6">Try adjusting your filters or search criteria to find what you're looking for.</p>
                                     <button
-                                        onClick={() => setSelectedFilters({ availability: [], price: [], brands: [], colors: [], category: [] })}
+                                        onClick={() => {
+                                            setSelectedFilters({ availability: [], price: [], brands: [], colors: [], category: [] });
+                                            navigate('/products'); // Reset URL params (remove vendor)
+                                        }}
                                         className="px-6 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors"
                                     >
                                         Clear All Filters

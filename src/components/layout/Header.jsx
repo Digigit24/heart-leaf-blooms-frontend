@@ -3,6 +3,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Search, ShoppingBag, User, Menu, X, LogOut, Heart, Phone, Truck } from 'lucide-react';
 import { useAuthStore } from '@/app/store/auth.store';
 import { useCartStore } from '@/app/store/cart.store';
+import { useWishlistStore } from '@/app/store/wishlist.store'; // Add import
+import { useUIStore } from '@/app/store/ui.store'; // Add import
 import { PATHS } from '@/app/routes/paths';
 import { cn } from '@/utils/cn';
 
@@ -14,6 +16,8 @@ export default function Header() {
 
   const { isAuthenticated, user, logout } = useAuthStore();
   const cartItems = useCartStore((state) => state.items);
+  const wishlistItems = useWishlistStore((state) => state.items); // Get wishlist count
+  const { toggleCart, toggleWishlist } = useUIStore(); // Get toggles
 
   useEffect(() => {
     const handleScroll = () => {
@@ -117,12 +121,20 @@ export default function Header() {
                 <Search className="w-5 h-5 stroke-[1.5px] group-hover:stroke-2" />
               </button>
 
-              <button className="p-2 sm:p-2.5 text-text/80 hover:text-primary hover:bg-primary/5 rounded-full transition-all duration-300 group hidden sm:block">
+              <button
+                onClick={toggleWishlist}
+                className="p-2 sm:p-2.5 text-text/80 hover:text-primary hover:bg-primary/5 rounded-full transition-all duration-300 group hidden sm:block relative"
+              >
                 <Heart className="w-5 h-5 stroke-[1.5px] group-hover:stroke-2" />
+                {wishlistItems.length > 0 && (
+                  <span className="absolute top-1 right-1 inline-flex items-center justify-center w-4 h-4 text-[9px] font-bold text-white bg-red-400 rounded-full ring-2 ring-bg animate-in zoom-in spin-in-6">
+                    {wishlistItems.length}
+                  </span>
+                )}
               </button>
 
-              <Link
-                to={PATHS.CART}
+              <button
+                onClick={toggleCart}
                 className="p-2 sm:p-2.5 text-text/80 hover:text-primary hover:bg-primary/5 rounded-full transition-all duration-300 group relative"
               >
                 <ShoppingBag className="w-5 h-5 stroke-[1.5px] group-hover:stroke-2" />
@@ -131,7 +143,7 @@ export default function Header() {
                     {cartItems.length}
                   </span>
                 )}
-              </Link>
+              </button>
 
               <div className="w-[1px] h-6 bg-border mx-1 hidden sm:block"></div>
 
