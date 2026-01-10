@@ -12,6 +12,7 @@ import Orders from '@/features/orders/pages/Orders';
 import OrderDetails from '@/features/orders/pages/OrderDetails';
 import VendorDashboard from '@/features/vendorPanel/pages/Dashboard';
 import AdminDashboard from '@/features/admin/pages/AdminDashboard';
+import VendorList from '@/features/vendors/pages/VendorList';
 import ProductDetails from '@/features/catalog/pages/ProductDetails';
 import Category from '@/features/catalog/pages/Category';
 import About from '@/features/info/pages/About';
@@ -21,6 +22,7 @@ const AppRoutes = () => {
         <Routes>
             <Route path={PATHS.HOME} element={<Home />} />
             <Route path={PATHS.ABOUT} element={<About />} />
+            <Route path={PATHS.VENDORS} element={<VendorList />} />
             <Route path={PATHS.PRODUCTS} element={<Category />} />
             <Route path={PATHS.LOGIN} element={<Login />} />
             <Route path={PATHS.REGISTER} element={<Register />} />

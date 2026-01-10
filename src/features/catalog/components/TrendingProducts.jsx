@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import ProductCard from '@/components/common/ProductCard';
 import { cn } from '@/utils/cn';
 
@@ -101,9 +102,9 @@ export default function TrendingProducts() {
                 </motion.div>
 
                 <div className="mt-16 text-center">
-                    <button className="inline-flex items-center justify-center h-12 px-8 text-sm font-bold text-[#0F3D2E] uppercase tracking-widest border border-[#0F3D2E]/20 rounded-full hover:bg-[#0F3D2E] hover:text-white transition-all duration-300">
+                    <Link to="/products" className="inline-flex items-center justify-center h-12 px-8 text-sm font-bold text-[#0F3D2E] uppercase tracking-widest border border-[#0F3D2E]/20 rounded-full hover:bg-[#0F3D2E] hover:text-white transition-all duration-300">
                         View All Products
-                    </button>
+                    </Link>
                 </div>
 
             </div>

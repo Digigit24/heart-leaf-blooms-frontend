@@ -50,8 +50,8 @@ export default function Hero() {
     const getTextAnimation = (index) => {
         if (index === 0) {
             return {
-                initial: { x: -800, rotate: -270, opacity: 0 },
-                animate: { x: 0, rotate: 0, opacity: 1 },
+                initial: { x: -800, opacity: 0 },
+                animate: { x: 0, opacity: 1 },
                 exit: { opacity: 0 },
                 transition: { duration: 1.5, ease: [0.16, 1, 0.3, 1] }
             };
