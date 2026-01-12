@@ -69,66 +69,120 @@ export default function ManageProducts() {
         </div>
       </div>
 
-      {/* Products Table */}
-      <div className="bg-white rounded-xl shadow-sm border border-border/50 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left bg-white">
-            <thead className="bg-surface-2 text-text/60 text-xs uppercase tracking-wider font-semibold border-b border-border">
-              <tr>
-                <th className="p-4 pl-6">Product</th>
-                <th className="p-4">Category</th>
-                <th className="p-4">Price</th>
-                <th className="p-4">Stock</th>
-                <th className="p-4 text-right pr-6">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border/40">
-              {isLoading ? (
+      {/* Products List - Responsive Views */}
+      <div className="space-y-4">
+
+        {/* Mobile View: Compact Cards */}
+        <div className="grid grid-cols-1 gap-3 md:hidden">
+          {isLoading ? (
+            <div className="p-8 text-center text-text/60">Loading products...</div>
+          ) : filteredProducts.length === 0 ? (
+            <div className="p-8 text-center text-text/60">No products found.</div>
+          ) : (
+            filteredProducts.map((product) => (
+              <div key={product.id} className="bg-white p-3 rounded-xl shadow-sm border border-border/50 flex gap-3">
+                {/* Product Image */}
+                <div className="w-20 h-20 rounded-lg bg-bg shrink-0 overflow-hidden border border-border/50">
+                  {product.product_images?.[0] ? (
+                    <img src={product.product_images[0]} alt="" className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-text/20">
+                      <ImageIcon size={20} />
+                    </div>
+                  )}
+                </div>
+
+                {/* Product Details */}
+                <div className="flex-1 min-w-0 flex flex-col justify-between">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className="font-semibold text-text text-sm line-clamp-1">{product.product_title}</h3>
+                      <p className="text-xs text-text/50 capitalize">{product.category_id || 'Uncategorized'}</p>
+                    </div>
+                    <span className="font-bold text-primary text-sm">₹{product.product_price}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between mt-2">
+                    <span className="inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold bg-green-100 text-green-700 border border-green-200">
+                      In Stock
+                    </span>
+
+                    <div className="flex items-center gap-1">
+                      <button className="p-1.5 text-text/50 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors">
+                        <Edit size={14} />
+                      </button>
+                      <button className="p-1.5 text-text/50 hover:text-danger hover:bg-danger/5 rounded-lg transition-colors">
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Desktop View: Table */}
+        <div className="hidden md:block bg-white rounded-xl shadow-sm border border-border/50 overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left bg-white">
+              <thead className="bg-surface-2 text-text/60 text-xs uppercase tracking-wider font-semibold border-b border-border">
                 <tr>
-                  <td colSpan="5" className="p-8 text-center text-text/60">Loading products...</td>
+                  <th className="p-4 pl-6">Product</th>
+                  <th className="p-4">Category</th>
+                  <th className="p-4">Price</th>
+                  <th className="p-4">Stock</th>
+                  <th className="p-4 text-right pr-6">Actions</th>
                 </tr>
-              ) : filteredProducts.length === 0 ? (
-                <tr>
-                  <td colSpan="5" className="p-8 text-center text-text/60">No products found.</td>
-                </tr>
-              ) : (
-                filteredProducts.map((product) => (
-                  <tr key={product.id} className="hover:bg-bg/50 transition-colors">
-                    <td className="p-4 pl-6">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-lg bg-bg flex items-center justify-center overflow-hidden border border-border/50 shrink-0">
-                          {product.product_images?.[0] ? (
-                            <img src={product.product_images[0]} alt="" className="w-full h-full object-cover" />
-                          ) : (
-                            <ImageIcon size={20} className="text-text/20" />
-                          )}
-                        </div>
-                        <div>
-                          <p className="font-medium text-text line-clamp-1">{product.product_title}</p>
-                          <p className="text-xs text-text/50">{product.product_name}</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="p-4 text-sm text-text/70">{product.category_id || 'Uncategorized'}</td>
-                    <td className="p-4 font-medium text-primary">₹{product.product_price}</td>
-                    <td className="p-4 text-sm">
-                      <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">In Stock</span>
-                    </td>
-                    <td className="p-4 text-right pr-6">
-                      <div className="flex items-center justify-end gap-2">
-                        <button className="p-2 text-text/50 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors">
-                          <Edit size={16} />
-                        </button>
-                        <button className="p-2 text-text/50 hover:text-danger hover:bg-danger/5 rounded-lg transition-colors">
-                          <Trash2 size={16} />
-                        </button>
-                      </div>
-                    </td>
+              </thead>
+              <tbody className="divide-y divide-border/40">
+                {isLoading ? (
+                  <tr>
+                    <td colSpan="5" className="p-8 text-center text-text/60">Loading products...</td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : filteredProducts.length === 0 ? (
+                  <tr>
+                    <td colSpan="5" className="p-8 text-center text-text/60">No products found.</td>
+                  </tr>
+                ) : (
+                  filteredProducts.map((product) => (
+                    <tr key={product.id} className="hover:bg-bg/50 transition-colors">
+                      <td className="p-4 pl-6">
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 rounded-lg bg-bg flex items-center justify-center overflow-hidden border border-border/50 shrink-0">
+                            {product.product_images?.[0] ? (
+                              <img src={product.product_images[0]} alt="" className="w-full h-full object-cover" />
+                            ) : (
+                              <ImageIcon size={20} className="text-text/20" />
+                            )}
+                          </div>
+                          <div>
+                            <p className="font-medium text-text line-clamp-1">{product.product_title}</p>
+                            <p className="text-xs text-text/50">{product.product_name}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="p-4 text-sm text-text/70">{product.category_id || 'Uncategorized'}</td>
+                      <td className="p-4 font-medium text-primary">₹{product.product_price}</td>
+                      <td className="p-4 text-sm">
+                        <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">In Stock</span>
+                      </td>
+                      <td className="p-4 text-right pr-6">
+                        <div className="flex items-center justify-end gap-2">
+                          <button className="p-2 text-text/50 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors">
+                            <Edit size={16} />
+                          </button>
+                          <button className="p-2 text-text/50 hover:text-danger hover:bg-danger/5 rounded-lg transition-colors">
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
