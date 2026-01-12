@@ -30,13 +30,13 @@ export default function TrendingProducts() {
                         <h2 className="font-serif text-3xl md:text-5xl font-bold text-primary">Trending Products</h2>
                     </div>
 
-                    <div className="flex flex-wrap justify-center gap-2 p-1.5 bg-surface-2/50 backdrop-blur-sm rounded-full border border-border/50">
+                    <div className="flex flex-wrap justify-center gap-2 p-1.5 bg-surface-2/50 backdrop-blur-sm rounded-2xl sm:rounded-full border border-border/50 w-full sm:w-auto">
                         {FILTERS.map((filter) => (
                             <button
                                 key={filter.id}
                                 onClick={() => setActiveFilter(filter.id)}
                                 className={cn(
-                                    "relative px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300",
+                                    "relative px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-sm font-medium transition-all duration-300 whitespace-nowrap shrink-0",
                                     activeFilter === filter.id
                                         ? "text-white"
                                         : "text-text/70 hover:text-primary"

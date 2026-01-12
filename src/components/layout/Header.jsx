@@ -39,9 +39,6 @@ export default function Header() {
   ];
 
   const handleLogout = () => {
-    localStorage.removeItem('userId');
-    localStorage.removeItem('token');
-    document.cookie = "token=; path=/; max-age=0";
     logout();
     navigate(PATHS.HOME);
   };

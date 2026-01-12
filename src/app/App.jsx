@@ -3,14 +3,10 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import AppRoutes from './routes';
 import QueryProvider from './providers/QueryProvider';
 import ThemeProvider from './providers/ThemeProvider';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 import LeafLoader from '@/components/ui/LeafLoader';
 import { useWishlistStore } from '@/app/store/wishlist.store';
 import { useAuthStore } from '@/app/store/auth.store';
 import { authApi } from '@/features/auth/api/auth.api';
-import CartSidebar from '@/components/layout/CartSidebar';
-import WishlistSidebar from '@/components/layout/WishlistSidebar';
 import ScrollToTop from '@/components/common/ScrollToTop';
 import { Toaster } from 'react-hot-toast';
 
@@ -58,14 +54,8 @@ function App() {
             <ThemeProvider>
                 <QueryProvider>
                     <ScrollToTop />
-                    <div className="flex flex-col min-h-screen bg-bg text-text font-body">
-                        <Header />
-                        <main className="grow">
-                            <AppRoutes />
-                        </main>
-                        <Footer />
-                        <CartSidebar />
-                        <WishlistSidebar />
+                    <div className="min-h-screen bg-bg text-text font-body">
+                        <AppRoutes />
                         <Toaster position="bottom-center" />
                     </div>
                 </QueryProvider>

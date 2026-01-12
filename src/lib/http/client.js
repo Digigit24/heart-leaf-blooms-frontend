@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const client = axios.create({
-  baseURL: 'https://heart-leaf-blooms-backend.onrender.com',
+  // Use /api proxy in development to solve CORS/Cookie issues, direct URL in production
+  baseURL: import.meta.env.DEV ? '/api' : 'https://heart-leaf-blooms-backend.onrender.com',
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
@@ -10,7 +11,27 @@ const client = axios.create({
 
 // Add logging interceptors
 client.interceptors.request.use(request => {
-  const token = localStorage.getItem('token');
+  // Check for tokens in priority order: Admin > Vendor > User
+  let token = localStorage.getItem('admin_token') ||
+    localStorage.getItem('vendor_token') ||
+    localStorage.getItem('token');
+
+  // Fallback: Check cookies in priority order if no localStorage token found
+  if (!token) {
+    const adminMatch = document.cookie.match(new RegExp('(^| )admin_token=([^;]+)'));
+    if (adminMatch) token = adminMatch[2];
+  }
+
+  if (!token) {
+    const vendorMatch = document.cookie.match(new RegExp('(^| )vendor_token=([^;]+)'));
+    if (vendorMatch) token = vendorMatch[2];
+  }
+
+  if (!token) {
+    const userMatch = document.cookie.match(new RegExp('(^| )token=([^;]+)'));
+    if (userMatch) token = userMatch[2];
+  }
+
   if (token) {
     request.headers.Authorization = `Bearer ${token}`;
   }

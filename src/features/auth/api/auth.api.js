@@ -11,4 +11,7 @@ export const authApi = {
   // Vendor Auth
   registerVendor: (data) => client.post('/vendor/register', data),
   loginVendor: (data) => client.post('/vendor/login', data),
+
+  // Admin Auth
+  loginAdmin: (data) => client.post('/admin/login', data),
 };

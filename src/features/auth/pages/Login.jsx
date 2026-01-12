@@ -113,7 +113,7 @@ export default function Login() {
         </div>
 
         <div className="mt-4 text-center text-xs text-muted/60">
-          <Link to={PATHS.VENDORS} className="hover:text-primary transition-colors">Viewing as Vendor?</Link>
+          <Link to={PATHS.VENDOR_LOGIN} className="hover:text-primary transition-colors">Viewing as Vendor?</Link>
         </div>
       </div>
     </div>
