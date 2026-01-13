@@ -1,21 +1,65 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import { authApi } from '@/features/auth/api/auth.api';
 
-export const useAuthStore = create((set) => ({
-    user: null,
-    isAuthenticated: false,
-    login: (user) => set({ user, isAuthenticated: true }),
-    logout: () => {
-        // Clear Local Storage
-        localStorage.removeItem('token');
-        localStorage.removeItem('admin_token');
-        localStorage.removeItem('vendor_token');
-        localStorage.removeItem('userId');
+export const useAuthStore = create(
+    persist(
+        (set, get) => ({
+            user: null,
+            isAuthenticated: false,
+            login: (user) => set({ user, isAuthenticated: true }),
+            logout: async () => {
+                const { user } = get();
 
-        // Clear Cookies
-        document.cookie = 'token=; path=/; max-age=0;';
-        document.cookie = 'vendor_token=; path=/; max-age=0;';
-        document.cookie = 'admin_token=; path=/; max-age=0;';
+                try {
+                    // Attempt to call server-side logout to clear HttpOnly cookies
+                    if (user?.role === 'admin') {
+                        await authApi.logoutAdmin();
+                    } else if (user?.role === 'vendor') {
+                        await authApi.logoutVendor();
+                    } else {
+                        // Default to user logout
+                        await authApi.logoutUser();
+                    }
+                } catch (error) {
+                    console.error("Logout API failed (offline?):", error);
+                    // Continue to clear client state anyway
+                }
 
-        set({ user: null, isAuthenticated: false });
-    },
-}));
+                // Clear Local Storage
+                ['token', 'admin_token', 'vendor_token', 'userId'].forEach(key => localStorage.removeItem(key));
+
+                // Aggressive Cookie Clearing Helper
+                const clearCookie = (name) => {
+                    const host = window.location.hostname;
+                    const domains = [host, `.${host}`];
+                    // If localhost, we often don't set domain, so we try without it too.
+
+                    const paths = ['/']; // Main path used in app
+
+                    paths.forEach(path => {
+                        // 1. Try clearing with exact attributes used in Login (Verified: path=/, secure, samesite=strict)
+                        document.cookie = `${name}=; path=${path}; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT; secure; samesite=strict`;
+
+                        // 2. Fallback: Try generic clearing (no secure/samesite constraints)
+                        document.cookie = `${name}=; path=${path}; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+
+                        // 3. Try with explicit domain
+                        domains.forEach(domain => {
+                            document.cookie = `${name}=; path=${path}; domain=${domain}; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT; secure; samesite=strict`;
+                            document.cookie = `${name}=; path=${path}; domain=${domain}; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+                        });
+                    });
+                };
+
+                ['token', 'admin_token', 'vendor_token'].forEach(clearCookie);
+
+                set({ user: null, isAuthenticated: false });
+            },
+        }),
+        {
+            name: 'auth-storage',
+            partialize: (state) => ({ user: state.user, isAuthenticated: state.isAuthenticated }),
+        }
+    )
+);

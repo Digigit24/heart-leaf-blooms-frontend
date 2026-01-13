@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useAuthStore } from '@/app/store/auth.store';
 
 const client = axios.create({
   // Use /api proxy in development to solve CORS/Cookie issues, direct URL in production
@@ -39,11 +40,19 @@ client.interceptors.request.use(request => {
   return request;
 });
 
+
+
 client.interceptors.response.use(response => {
   console.log('Response:', response.status, response.config.url);
   return response;
 }, error => {
   console.error('API Error:', error.response?.status, error.message);
+
+  if (error.response?.status === 401) {
+    // Automatically logout if unauthorized
+    useAuthStore.getState().logout();
+  }
+
   return Promise.reject(error);
 });
 

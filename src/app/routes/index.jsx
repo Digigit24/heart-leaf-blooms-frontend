@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import { PATHS } from './paths';
+import { ProtectedRoute, PublicRoute } from './routeGuards';
 
 // Pages
 import Home from '@/features/catalog/pages/Home';
@@ -28,31 +29,45 @@ import ManageOrders from '@/features/admin/pages/ManageOrders';
 const AppRoutes = () => {
     return (
         <Routes>
-            {/* Public / Shopper Routes */}
+            {/* Public Layout & Routes */}
             <Route element={<MainLayout />}>
                 <Route path={PATHS.HOME} element={<Home />} />
                 <Route path={PATHS.ABOUT} element={<About />} />
                 <Route path={PATHS.VENDORS} element={<VendorList />} />
                 <Route path={PATHS.PRODUCTS} element={<Category />} />
-                <Route path={PATHS.LOGIN} element={<Login />} />
-                <Route path={PATHS.VENDOR_LOGIN} element={<VendorLogin />} />
-                <Route path={PATHS.ADMIN_LOGIN} element={<AdminLogin />} />
-                <Route path={PATHS.REGISTER} element={<Register />} />
-                <Route path={PATHS.FORGOT_PASSWORD} element={<ForgotPassword />} />
                 <Route path="/products/:id" element={<ProductDetails />} />
                 <Route path={PATHS.CART} element={<Cart />} />
-                <Route path={PATHS.CHECKOUT} element={<Checkout />} />
-                <Route path={PATHS.ORDERS} element={<Orders />} />
-                <Route path="/orders/:id" element={<OrderDetails />} />
-                <Route path={PATHS.VENDOR_DASHBOARD} element={<VendorDashboard />} />
+
+                {/* Auth Routes (Public Only) */}
+                <Route element={<PublicRoute />}>
+                    <Route path={PATHS.LOGIN} element={<Login />} />
+                    <Route path={PATHS.VENDOR_LOGIN} element={<VendorLogin />} />
+                    <Route path={PATHS.ADMIN_LOGIN} element={<AdminLogin />} />
+                    <Route path={PATHS.REGISTER} element={<Register />} />
+                    <Route path={PATHS.FORGOT_PASSWORD} element={<ForgotPassword />} />
+                </Route>
+
+                {/* User Protected Routes */}
+                <Route element={<ProtectedRoute />}>
+                    <Route path={PATHS.CHECKOUT} element={<Checkout />} />
+                    <Route path={PATHS.ORDERS} element={<Orders />} />
+                    <Route path="/orders/:id" element={<OrderDetails />} />
+                </Route>
+
+                {/* Vendor Protected Routes */}
+                <Route element={<ProtectedRoute allowedRoles={['vendor']} />}>
+                    <Route path={PATHS.VENDOR_DASHBOARD} element={<VendorDashboard />} />
+                </Route>
             </Route>
 
-            {/* Admin Routes */}
-            <Route element={<AdminLayout />}>
-                <Route path={PATHS.ADMIN_DASHBOARD} element={<AdminDashboard />} />
-                <Route path={PATHS.ADMIN_PRODUCTS} element={<ManageProducts />} />
-                <Route path={PATHS.ADMIN_VENDORS} element={<ManageVendors />} />
-                <Route path={PATHS.ADMIN_ORDERS} element={<ManageOrders />} />
+            {/* Admin Routes (Admin Only) */}
+            <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+                <Route element={<AdminLayout />}>
+                    <Route path={PATHS.ADMIN_DASHBOARD} element={<AdminDashboard />} />
+                    <Route path={PATHS.ADMIN_PRODUCTS} element={<ManageProducts />} />
+                    <Route path={PATHS.ADMIN_VENDORS} element={<ManageVendors />} />
+                    <Route path={PATHS.ADMIN_ORDERS} element={<ManageOrders />} />
+                </Route>
             </Route>
         </Routes>
     );

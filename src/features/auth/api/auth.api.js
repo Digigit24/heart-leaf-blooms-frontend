@@ -14,4 +14,11 @@ export const authApi = {
 
   // Admin Auth
   loginAdmin: (data) => client.post('/admin/login', data),
+  logoutAdmin: () => client.post('/admin/logout'),
+
+  // Vendor Auth (Add logout if needed similar to admin/user)
+  logoutVendor: () => client.post('/vendor/logout'),
+
+  // User Auth (Add logout)
+  logoutUser: () => client.post('/user/logout'),
 };

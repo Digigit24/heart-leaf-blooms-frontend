@@ -65,16 +65,17 @@ export default function ManageOrders() {
                                     <td colSpan="6" className="p-8 text-center text-text/60">No orders found.</td>
                                 </tr>
                             ) : (
-                                filteredOrders.map((order) => (
-                                    <tr key={order.id} className="hover:bg-bg/50 transition-colors">
+                                filteredOrders.map((order,key) => (
+                                    <tr key={key} className="hover:bg-bg/50 transition-colors">
                                         <td className="p-4 pl-6 font-mono text-xs text-text/70">
-                                            {order.id.substring(0, 8)}...
+                                            {order?.id?.substring(0, 8)}...
                                         </td>
                                         <td className="p-4 text-sm font-medium">
-                                            Customer {order.user_id.substring(0, 4)}
+                                            Customer {order?.user_id?.substring(0, 4)}
+                                            
                                         </td>
                                         <td className="p-4 font-medium text-primary">
-                                            ₹{order.total_amount || 0}
+                                            ₹{order.total_amount || order.sub_total_amount || 0}
                                         </td>
                                         <td className="p-4">
                                             <StatusBadge status={order.order_status || 'pending'} />
