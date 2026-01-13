@@ -7,6 +7,7 @@ import { useWishlistStore } from '@/app/store/wishlist.store'; // Add import
 import { useUIStore } from '@/app/store/ui.store'; // Add import
 import { PATHS } from '@/app/routes/paths';
 import { cn } from '@/utils/cn';
+import { useConfig } from '@/context/ConfigContext'; // Add import
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -18,6 +19,7 @@ export default function Header() {
   const cartItems = useCartStore((state) => state.items);
   const wishlistItems = useWishlistStore((state) => state.items); // Get wishlist count
   const { toggleCart, toggleWishlist } = useUIStore(); // Get toggles
+  const { isMultivendor } = useConfig();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,7 +36,7 @@ export default function Header() {
   const navLinks = [
     { name: 'Home', path: PATHS.HOME },
     { name: 'Shop', path: PATHS.PRODUCTS },
-    { name: 'Vendors', path: PATHS.VENDORS },
+    ...(isMultivendor ? [{ name: 'Vendors', path: PATHS.VENDORS }] : []),
     { name: 'About', path: PATHS.ABOUT },
   ];
 
@@ -167,9 +169,11 @@ export default function Header() {
                     <Link to={PATHS.ORDERS} className="block px-3 py-2 text-sm text-text/80 hover:text-primary hover:bg-surface-2 rounded-lg transition-colors">
                       My Orders
                     </Link>
-                    <Link to={PATHS.VENDOR_DASHBOARD} className="block px-3 py-2 text-sm text-text/80 hover:text-primary hover:bg-surface-2 rounded-lg transition-colors">
-                      Vendor Dashboard
-                    </Link>
+                    {isMultivendor && (
+                      <Link to={PATHS.VENDOR_DASHBOARD} className="block px-3 py-2 text-sm text-text/80 hover:text-primary hover:bg-surface-2 rounded-lg transition-colors">
+                        Vendor Dashboard
+                      </Link>
+                    )}
                     <div className="h-[1px] bg-border/50 my-1"></div>
                     <button
                       onClick={handleLogout}

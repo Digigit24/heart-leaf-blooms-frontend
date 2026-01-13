@@ -26,14 +26,17 @@ import ManageProducts from '@/features/admin/pages/ManageProducts';
 import ManageVendors from '@/features/admin/pages/ManageVendors';
 import ManageOrders from '@/features/admin/pages/ManageOrders';
 
+import { useConfig } from '@/context/ConfigContext';
+
 const AppRoutes = () => {
+    const { isMultivendor } = useConfig();
     return (
         <Routes>
             {/* Public Layout & Routes */}
             <Route element={<MainLayout />}>
                 <Route path={PATHS.HOME} element={<Home />} />
                 <Route path={PATHS.ABOUT} element={<About />} />
-                <Route path={PATHS.VENDORS} element={<VendorList />} />
+                {isMultivendor && <Route path={PATHS.VENDORS} element={<VendorList />} />}
                 <Route path={PATHS.PRODUCTS} element={<Category />} />
                 <Route path="/products/:id" element={<ProductDetails />} />
                 <Route path={PATHS.CART} element={<Cart />} />
@@ -41,7 +44,7 @@ const AppRoutes = () => {
                 {/* Auth Routes (Public Only) */}
                 <Route element={<PublicRoute />}>
                     <Route path={PATHS.LOGIN} element={<Login />} />
-                    <Route path={PATHS.VENDOR_LOGIN} element={<VendorLogin />} />
+                    {isMultivendor && <Route path={PATHS.VENDOR_LOGIN} element={<VendorLogin />} />}
                     <Route path={PATHS.ADMIN_LOGIN} element={<AdminLogin />} />
                     <Route path={PATHS.REGISTER} element={<Register />} />
                     <Route path={PATHS.FORGOT_PASSWORD} element={<ForgotPassword />} />
@@ -55,9 +58,11 @@ const AppRoutes = () => {
                 </Route>
 
                 {/* Vendor Protected Routes */}
-                <Route element={<ProtectedRoute allowedRoles={['vendor']} />}>
-                    <Route path={PATHS.VENDOR_DASHBOARD} element={<VendorDashboard />} />
-                </Route>
+                {isMultivendor && (
+                    <Route element={<ProtectedRoute allowedRoles={['vendor']} />}>
+                        <Route path={PATHS.VENDOR_DASHBOARD} element={<VendorDashboard />} />
+                    </Route>
+                )}
             </Route>
 
             {/* Admin Routes (Admin Only) */}
@@ -65,7 +70,7 @@ const AppRoutes = () => {
                 <Route element={<AdminLayout />}>
                     <Route path={PATHS.ADMIN_DASHBOARD} element={<AdminDashboard />} />
                     <Route path={PATHS.ADMIN_PRODUCTS} element={<ManageProducts />} />
-                    <Route path={PATHS.ADMIN_VENDORS} element={<ManageVendors />} />
+                    {isMultivendor && <Route path={PATHS.ADMIN_VENDORS} element={<ManageVendors />} />}
                     <Route path={PATHS.ADMIN_ORDERS} element={<ManageOrders />} />
                 </Route>
             </Route>

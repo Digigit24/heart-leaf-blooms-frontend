@@ -3,6 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import AppRoutes from './routes';
 import QueryProvider from './providers/QueryProvider';
 import ThemeProvider from './providers/ThemeProvider';
+import { ConfigProvider } from '@/context/ConfigContext';
 import LeafLoader from '@/components/ui/LeafLoader';
 import { useWishlistStore } from '@/app/store/wishlist.store';
 import { useAuthStore } from '@/app/store/auth.store';
@@ -51,15 +52,17 @@ function App() {
     }
     return (
         <Router>
-            <ThemeProvider>
-                <QueryProvider>
-                    <ScrollToTop />
-                    <div className="min-h-screen bg-bg text-text font-body">
-                        <AppRoutes />
-                        <Toaster position="bottom-center" />
-                    </div>
-                </QueryProvider>
-            </ThemeProvider>
+            <ConfigProvider>
+                <ThemeProvider>
+                    <QueryProvider>
+                        <ScrollToTop />
+                        <div className="min-h-screen bg-bg text-text font-body">
+                            <AppRoutes />
+                            <Toaster position="bottom-center" />
+                        </div>
+                    </QueryProvider>
+                </ThemeProvider>
+            </ConfigProvider>
         </Router>
     );
 }

@@ -16,10 +16,17 @@ const SECONDARY_ITEMS = [
     { label: 'Help Center', href: '/admin/help', icon: HelpCircle }, // Placeholder route
 ];
 
+import { useConfig } from '@/context/ConfigContext';
+
 export default function AdminSidebar({ isOpen, onClose }) {
     const location = useLocation();
     const navigate = useNavigate();
     const { logout } = useAuthStore();
+    const { isMultivendor } = useConfig();
+
+    const filteredNavItems = NAV_ITEMS.filter(item =>
+        isMultivendor ? true : item.label !== 'Vendors'
+    );
 
     const handleLogout = () => {
         logout();
@@ -68,7 +75,7 @@ export default function AdminSidebar({ isOpen, onClose }) {
                         <div>
                             <h3 className="px-3 text-xs font-semibold text-[#5C6B63] uppercase tracking-wider mb-2">Main Menu</h3>
                             <div className="space-y-1">
-                                {NAV_ITEMS.map((item) => {
+                                {filteredNavItems.map((item) => {
                                     const Icon = item.icon;
                                     const isActive = location.pathname === item.href;
 

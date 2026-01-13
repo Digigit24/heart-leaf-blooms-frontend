@@ -4,9 +4,11 @@ import { useAuthStore } from '@/app/store/auth.store';
 import { authApi } from '@/features/auth/api/auth.api';
 import { PATHS } from '@/app/routes/paths';
 import { Eye, EyeOff, Loader2, ArrowRight, Sparkles } from 'lucide-react';
+import { useConfig } from '@/context/ConfigContext';
 
 export default function Login() {
   const navigate = useNavigate();
+  const { isMultivendor } = useConfig();
   const { login } = useAuthStore();
   const [formData, setFormData] = useState({ user_email: '', user_password: '' });
   const [showPassword, setShowPassword] = useState(false);
@@ -217,15 +219,17 @@ export default function Login() {
             </p>
           </div>
 
-          <div className="mt-8 text-center">
-            <Link
-              to={PATHS.VENDOR_LOGIN}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gray-200 text-xs font-bold text-[#5C6B63] hover:border-[#0F3D2E] hover:text-[#0F3D2E] bg-white transition-all uppercase tracking-wider"
-            >
-              <Sparkles size={14} />
-              Vendor Access
-            </Link>
-          </div>
+          {isMultivendor && (
+            <div className="mt-8 text-center">
+              <Link
+                to={PATHS.VENDOR_LOGIN}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gray-200 text-xs font-bold text-[#5C6B63] hover:border-[#0F3D2E] hover:text-[#0F3D2E] bg-white transition-all uppercase tracking-wider"
+              >
+                <Sparkles size={14} />
+                Vendor Access
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </div>
