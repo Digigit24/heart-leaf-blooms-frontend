@@ -3,7 +3,7 @@ import { Facebook, Twitter, Instagram, Mail, ArrowRight } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="bg-[#F5F3EF] pt-24 pb-12 border-t border-[#E6E4DF]">
+    <footer className="bg-[#F5F3EF] pt-24 pb-12">
       <div className="max-w-container mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Top Section: Newsletter & Brand */}
@@ -23,7 +23,7 @@ export default function Footer() {
           {/* Newsletter - Minimal */}
           <div className="w-full max-w-sm">
             <h4 className="font-serif text-lg font-medium text-[#0F3D2E] mb-2">Join our newsletter</h4>
-            <div className="flex border-b border-[#0F3D2E] pb-2">
+            <div className="flex bg-white/50 rounded-full px-4 py-2 mt-2">
               <input
                 type="email"
                 placeholder="Your email address"
@@ -85,7 +85,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Section */}
-        <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-[#0F3D2E]/10">
+        <div className="flex flex-col md:flex-row justify-between items-center pt-8 mt-12">
           <p className="text-[#0F3D2E]/50 text-xs">
             © {new Date().getFullYear()} Heart Leaf Blooms. All rights reserved.
           </p>

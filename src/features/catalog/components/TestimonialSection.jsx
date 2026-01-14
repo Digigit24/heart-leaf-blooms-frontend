@@ -43,6 +43,14 @@ const testimonials = [
         image: '/images/avatar-2.png',
         content: "Finally, a website that delivers what they show. The pot quality is premium, unlike the cheap plastic ones you usually get. Looks very elegant in my living room corner.",
         rating: 5,
+    },
+    {
+        id: 6,
+        name: 'Rohan Malhotra',
+        role: 'Chef, Goa',
+        image: '/images/avatar-3.png',
+        content: "I ordered a set of herbs for my kitchen garden. The basil and rosemary were incredibly fragrant right out of the box. Highly recommended for culinary enthusiasts!",
+        rating: 5,
     }
 ];
 
@@ -54,18 +62,20 @@ export default function TestimonialSection() {
         offset: ["start end", "end start"]
     });
 
-    const y1 = useTransform(scrollYProgress, [0, 1], [0, -50]);
-    const y2 = useTransform(scrollYProgress, [0, 1], [0, 50]);
+    const y1 = useTransform(scrollYProgress, [0, 1], [0, -100]); // Increased movement
+    const y2 = useTransform(scrollYProgress, [0, 1], [0, 100]); // Increased movement
+    const opacityArtifacts = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 0.15, 0.15, 0]);
+
 
     return (
         <section ref={containerRef} className="py-24 md:py-32 bg-[#FDFCF8] relative overflow-hidden isolate">
 
-            {/* 🌿 Decorative Background Artifacts (Hibiscus & Jasmine) */}
+            {/* 🌿 Decorative Background Artifacts (Hibiscus & Jasmine) with Smooth Parallax */}
             <div className="absolute inset-0 pointer-events-none -z-10 overflow-hidden">
                 {/* Top Right Hibiscus */}
                 <motion.div
-                    style={{ y: y1 }}
-                    className="absolute -top-20 -right-20 w-[500px] h-[500px] opacity-[0.12] mix-blend-multiply"
+                    style={{ y: y1, opacity: opacityArtifacts }}
+                    className="absolute -top-10 -right-10 md:-top-20 md:-right-20 w-[300px] h-[300px] md:w-[500px] md:h-[500px] mix-blend-multiply will-change-transform"
                 >
                     <img
                         src="/images/water-hibiscus.png"
@@ -77,8 +87,8 @@ export default function TestimonialSection() {
 
                 {/* Top Left Jasmine */}
                 <motion.div
-                    style={{ y: y2 }}
-                    className="absolute -top-20 -left-20 w-[600px] h-[600px] opacity-[0.12] mix-blend-multiply"
+                    style={{ y: y2, opacity: opacityArtifacts }}
+                    className="absolute -top-10 -left-10 md:-top-20 md:-left-20 w-[350px] h-[350px] md:w-[600px] md:h-[600px] mix-blend-multiply will-change-transform"
                 >
                     <img
                         src="/images/water-jasmine.png"
@@ -92,26 +102,37 @@ export default function TestimonialSection() {
 
             <div className="max-w-container mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
 
-                {/* Header - Centered & Premium start */}
-                <div className="text-center max-w-3xl mx-auto mb-20 space-y-6">
+                {/* Header - Centered & Premium start - Add Entrance Animation */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    viewport={{ once: true }}
+                    className="text-center max-w-3xl mx-auto mb-12 md:mb-20 space-y-4 md:space-y-6"
+                >
                     <div className="flex items-center justify-center gap-4 opacity-80">
-                        <span className="h-[1px] w-12 bg-brand-dark/30"></span>
-                        <span className="text-brand-dark font-bold tracking-[0.2em] text-xs uppercase font-body">Community Love</span>
-                        <span className="h-[1px] w-12 bg-brand-dark/30"></span>
+                        {/* Lines removed for cleaner look */}
+                        <span className="text-brand-dark font-bold tracking-[0.2em] text-[10px] md:text-xs uppercase font-body">Community Love</span>
                     </div>
 
-                    <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-brand-dark leading-tight">
+                    <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-brand-dark leading-tight">
                         Stories from Indian <br />
                         <span className="italic font-serif text-brand">Homes & Gardens</span>
                     </h2>
-                    <p className="text-text-secondary text-lg font-light leading-relaxed font-body max-w-2xl mx-auto">
+                    <p className="text-text-secondary text-base sm:text-lg font-light leading-relaxed font-body max-w-2xl mx-auto">
                         Real experiences from plant parents across the country who have welcomed nature into their lives.
                     </p>
-                </div>
+                </motion.div>
                 {/* Header end */}
 
-                {/* Marquee Wrapper - Review Cards */}
-                <div className="relative w-full overflow-visible mask-linear-fade group/marquee py-4">
+                {/* Marquee Wrapper - Review Cards - entrance fade */}
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 1, delay: 0.2 }}
+                    viewport={{ once: true }}
+                    className="relative w-full overflow-visible mask-linear-fade group/marquee py-4"
+                >
                     <style>
                         {`
                         @keyframes marquee {
@@ -119,21 +140,22 @@ export default function TestimonialSection() {
                             100% { transform: translateX(-50%); }
                         }
                         .animate-marquee {
-                            animation: marquee 60s linear infinite;
+                            animation: marquee 80s linear infinite; /* Slower, smoother speed */
+                            will-change: transform;
                         }
                         .animate-marquee:hover {
                             animation-play-state: paused;
                         }
                         `}
                     </style>
-                    <div className="flex gap-8 w-max animate-marquee pl-4">
-                        {/* Duplicate for Loop */}
-                        {[...testimonials, ...testimonials].map((testimonial, index) => (
+                    <div className="flex gap-4 md:gap-8 w-max animate-marquee pl-4">
+                        {/* Duplicate for Loop - Tripled for smoother infinite loop on wide screens */}
+                        {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
                             <div
                                 key={`${testimonial.id}-${index}`}
-                                className="w-[400px] md:w-[500px] bg-white p-10 rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#E6E8E3] transition-all duration-300 hover:shadow-[0_20px_40px_rgb(86,186,57,0.08)] hover:-translate-y-1 group relative flex flex-col justify-between"
+                                className="w-[300px] sm:w-[400px] md:w-[500px] bg-white p-6 sm:p-10 rounded-[2rem] sm:rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#E6E8E3] transition-all duration-500 hover:shadow-[0_20px_40px_rgb(86,186,57,0.12)] hover:-translate-y-2 group relative flex flex-col justify-between"
                             >
-                                <Quote className="absolute top-8 right-8 w-10 h-10 text-brand-soft/50 fill-current" />
+                                <Quote className="absolute top-8 right-8 w-10 h-10 text-brand-soft/50 fill-current group-hover:text-brand-soft transition-colors duration-500" />
 
                                 <div className="space-y-6">
                                     {/* Rating */}
@@ -152,7 +174,7 @@ export default function TestimonialSection() {
                                 </div>
 
                                 {/* Author Info */}
-                                <div className="flex items-center gap-4 mt-8 pt-6 border-t border-dashed border-gray-100">
+                                <div className="flex items-center gap-4 mt-8 pt-6 border-t border-dashed border-gray-100 group-hover:border-brand/10 transition-colors duration-500">
                                     <div className="w-12 h-12 rounded-full overflow-hidden border border-gray-100 shadow-inner bg-gray-50">
                                         <img
                                             src={testimonial.image}
@@ -169,7 +191,7 @@ export default function TestimonialSection() {
                             </div>
                         ))}
                     </div>
-                </div>
+                </motion.div>
             </div>
         </section>
     );

@@ -9,6 +9,7 @@ import { useWishlistStore } from '@/app/store/wishlist.store';
 import { useAuthStore } from '@/app/store/auth.store';
 import { authApi } from '@/features/auth/api/auth.api';
 import ScrollToTop from '@/components/common/ScrollToTop';
+import SmoothScroll from '@/components/layout/SmoothScroll';
 import { Toaster } from 'react-hot-toast';
 
 function App() {
@@ -56,10 +57,12 @@ function App() {
                 <ThemeProvider>
                     <QueryProvider>
                         <ScrollToTop />
-                        <div className="min-h-screen bg-bg text-text font-body">
-                            <AppRoutes />
-                            <Toaster position="bottom-center" />
-                        </div>
+                        <SmoothScroll>
+                            <div className="min-h-screen bg-bg text-text font-body">
+                                <AppRoutes />
+                                <Toaster position="bottom-center" />
+                            </div>
+                        </SmoothScroll>
                     </QueryProvider>
                 </ThemeProvider>
             </ConfigProvider>
