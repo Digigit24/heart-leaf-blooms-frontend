@@ -25,6 +25,7 @@ export const mapProduct = (p) => {
         brand: p.vendor?.shopName || 'Heart Leaf',
         color: 'green',
         inStock: p.is_available !== false,
+        isFeatured: p.isFeatured || p.is_featured || false,
         availability: (p.is_available !== false) ? 'In Stock' : 'Out of Stock',
         vendorId: p.vendor_id || p.vendor?.id,
         description: p.product_description,

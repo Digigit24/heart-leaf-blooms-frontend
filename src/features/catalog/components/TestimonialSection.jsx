@@ -1,66 +1,117 @@
 import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Star, Quote } from 'lucide-react';
 
+// Refined, Authentic Indian Reviews
 const testimonials = [
     {
         id: 1,
-        name: 'Sarah Mitchell',
-        role: 'Interior Designer',
+        name: 'Priya Sharma',
+        role: 'Home Maker, Mumbai',
         image: '/images/avatar-1.png',
-        content: "Heart Leaf Blooms has completely transformed my design projects. The quality of their plants is unmatched, and they arrive in perfect condition every single time. It's my go-to for all things green.",
+        content: "Honestly, I was a bit worried about ordering plants online because of the heat in Mumbai, but the packaging was just too good! My Peace Lily arrived fresh and valid. It’s been 2 months now and it's flowering beautifully.",
         rating: 5,
     },
     {
         id: 2,
-        name: 'James Carter',
-        role: 'Plant Enthusiast',
+        name: 'Rahul Verma',
+        role: 'Software Engineer, Bangalore',
         image: '/images/avatar-2.png',
-        content: "I was skeptical about ordering plants online, but the packaging was incredible. My Fiddle Leaf Fig is thriving! The care guides included were a thoughtful touch that really helped.",
+        content: "The quality is unmatched. I’ve bought from local nurseries in Indiranagar before, but Heart Leaf Blooms has much healthier soil mixes. Their care guide for the Snake Plant was actually helpful for a beginner like me.",
         rating: 5,
     },
     {
         id: 3,
-        name: 'Emily Chen',
-        role: 'Urban Gardener',
+        name: 'Ananya Gupta',
+        role: 'Interior Designer, Delhi',
         image: '/images/avatar-3.png',
-        content: "The selection of exotic plants is amazing. I found rare species here that I couldn't find anywhere else. Customer service is top-notch and super responsive. Highly recommend!",
+        content: "Used their Areca Palms for a client's balcony makeover in Vasant Kunj. The consistent height and lush volume of every single plant was impressive. My client is very happy, and so am I!",
         rating: 5,
     },
     {
         id: 4,
-        name: 'Michael Ross',
-        role: 'Home Stylist',
+        name: 'Dr. Arjun Mehta',
+        role: 'Ayurveda Practitioner, Pune',
         image: '/images/avatar-1.png',
-        content: "Absolute perfection. The plants are lush, healthy, and larger than I expected. The shipping was fast, and the sustainable packaging is a huge plus for me.",
+        content: "I needed specific medicinal herbs for my home garden. Their Tulsi and Aloe Vera plants are organic and very potent. You can feel the purity. Fast delivery to Pune as well.",
         rating: 5,
     },
     {
         id: 5,
-        name: 'Linda Wei',
-        role: 'Botanist',
+        name: 'Sneha Reddy',
+        role: 'Architect, Hyderabad',
         image: '/images/avatar-2.png',
-        content: "I'm impressed by the root health of these plants. It's rare to see such vigorous growth from nursery stock. Truly professional quality.",
+        content: "Finally, a website that delivers what they show. The pot quality is premium, unlike the cheap plastic ones you usually get. Looks very elegant in my living room corner.",
         rating: 5,
     }
 ];
 
 export default function TestimonialSection() {
+    // Parallax Effect Hooks
+    const containerRef = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start end", "end start"]
+    });
+
+    const y1 = useTransform(scrollYProgress, [0, 1], [0, -50]);
+    const y2 = useTransform(scrollYProgress, [0, 1], [0, 50]);
+
     return (
-        <section className="py-24 bg-surface-2 relative overflow-hidden">
-            {/* Decorative Background Elements */}
-            <div className="absolute top-0 left-0 w-64 h-64 bg-primary/5 rounded-br-full blur-3xl opacity-50" />
-            <div className="absolute bottom-0 right-0 w-64 h-64 bg-accent/5 rounded-tl-full blur-3xl opacity-50" />
+        <section ref={containerRef} className="py-24 md:py-32 bg-[#FDFCF8] relative overflow-hidden isolate">
 
-            <div className="max-w-container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div className="text-center max-w-2xl mx-auto mb-16">
-                    <span className="text-accent text-sm font-bold tracking-widest uppercase block mb-3">Community Love</span>
-                    <h2 className="font-serif text-3xl md:text-5xl font-bold text-primary mb-6">What Our Customers Say</h2>
-                    <p className="text-muted text-lg font-light">Join thousands of happy plant parents who have found their perfect green companions with us.</p>
+            {/* 🌿 Decorative Background Artifacts (Hibiscus & Jasmine) */}
+            <div className="absolute inset-0 pointer-events-none -z-10 overflow-hidden">
+                {/* Top Right Hibiscus */}
+                <motion.div
+                    style={{ y: y1 }}
+                    className="absolute -top-20 -right-20 w-[500px] h-[500px] opacity-[0.12] mix-blend-multiply"
+                >
+                    <img
+                        src="/images/water-hibiscus.png"
+                        alt=""
+                        className="w-full h-full object-contain"
+                        style={{ transform: 'translateY(-18.5033px) scale(1.8) rotate(92deg)' }}
+                    />
+                </motion.div>
+
+                {/* Top Left Jasmine */}
+                <motion.div
+                    style={{ y: y2 }}
+                    className="absolute -top-20 -left-20 w-[600px] h-[600px] opacity-[0.12] mix-blend-multiply"
+                >
+                    <img
+                        src="/images/water-jasmine.png"
+                        alt=""
+                        className="w-full h-full object-contain"
+                        style={{ transform: 'translateY(18.5033px) scale(1.6) rotate(262deg)' }}
+                    />
+                </motion.div>
+            </div>
+
+
+            <div className="max-w-container mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
+
+                {/* Header - Centered & Premium start */}
+                <div className="text-center max-w-3xl mx-auto mb-20 space-y-6">
+                    <div className="flex items-center justify-center gap-4 opacity-80">
+                        <span className="h-[1px] w-12 bg-brand-dark/30"></span>
+                        <span className="text-brand-dark font-bold tracking-[0.2em] text-xs uppercase font-body">Community Love</span>
+                        <span className="h-[1px] w-12 bg-brand-dark/30"></span>
+                    </div>
+
+                    <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-brand-dark leading-tight">
+                        Stories from Indian <br />
+                        <span className="italic font-serif text-brand">Homes & Gardens</span>
+                    </h2>
+                    <p className="text-text-secondary text-lg font-light leading-relaxed font-body max-w-2xl mx-auto">
+                        Real experiences from plant parents across the country who have welcomed nature into their lives.
+                    </p>
                 </div>
+                {/* Header end */}
 
-                {/* Marquee Wrapper */}
-                <div className="relative w-full overflow-hidden mask-linear-fade group/marquee">
+                {/* Marquee Wrapper - Review Cards */}
+                <div className="relative w-full overflow-visible mask-linear-fade group/marquee py-4">
                     <style>
                         {`
                         @keyframes marquee {
@@ -68,52 +119,56 @@ export default function TestimonialSection() {
                             100% { transform: translateX(-50%); }
                         }
                         .animate-marquee {
-                            animation: marquee 40s linear infinite;
+                            animation: marquee 60s linear infinite;
                         }
                         .animate-marquee:hover {
                             animation-play-state: paused;
                         }
                         `}
                     </style>
-                    <div
-                        className="flex gap-8 w-max animate-marquee"
-                    >
-                        {/* Duplicate Key workaround for seamless loop - rendering list twice */}
+                    <div className="flex gap-8 w-max animate-marquee pl-4">
+                        {/* Duplicate for Loop */}
                         {[...testimonials, ...testimonials].map((testimonial, index) => (
                             <div
                                 key={`${testimonial.id}-${index}`}
-                                className="w-[350px] md:w-[400px] bg-surface p-8 rounded-2xl shadow-sm border border-transparent hover:border-primary/10 hover:shadow-xl transition-all duration-300 group shrink-0"
+                                className="w-[400px] md:w-[500px] bg-white p-10 rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#E6E8E3] transition-all duration-300 hover:shadow-[0_20px_40px_rgb(86,186,57,0.08)] hover:-translate-y-1 group relative flex flex-col justify-between"
                             >
-                                <div className="flex items-center gap-1 text-[#C6A15B] mb-6">
-                                    {[...Array(testimonial.rating)].map((_, i) => (
-                                        <Star key={i} className="w-4 h-4 fill-current" />
-                                    ))}
+                                <Quote className="absolute top-8 right-8 w-10 h-10 text-brand-soft/50 fill-current" />
+
+                                <div className="space-y-6">
+                                    {/* Rating */}
+                                    <div className="flex items-center gap-1">
+                                        {[...Array(testimonial.rating)].map((_, i) => (
+                                            <Star key={i} className="w-4 h-4 fill-accent-clay text-accent-clay" />
+                                        ))}
+                                    </div>
+
+                                    {/* Content - More "Review-like", less "Article-like" */}
+                                    <blockquote className="relative">
+                                        <p className="text-brand-dark text-[1.05rem] leading-[1.7] font-body font-normal opacity-90">
+                                            "{testimonial.content}"
+                                        </p>
+                                    </blockquote>
                                 </div>
 
-                                <div className="mb-6 relative">
-                                    <p className="text-text/80 leading-relaxed relative z-10 italic">"{testimonial.content}"</p>
-                                </div>
-
-                                <div className="flex items-center gap-4 pt-6 border-t border-border/50">
-                                    <div className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-offset-2 ring-primary/20 group-hover:ring-primary transition-all">
+                                {/* Author Info */}
+                                <div className="flex items-center gap-4 mt-8 pt-6 border-t border-dashed border-gray-100">
+                                    <div className="w-12 h-12 rounded-full overflow-hidden border border-gray-100 shadow-inner bg-gray-50">
                                         <img
                                             src={testimonial.image}
                                             alt={testimonial.name}
                                             className="w-full h-full object-cover"
+                                            onError={(e) => { e.target.src = '/images/placeholder-avatar.png'; }}
                                         />
                                     </div>
                                     <div>
-                                        <h4 className="font-heading font-bold text-primary">{testimonial.name}</h4>
-                                        <p className="text-xs text-muted font-medium uppercase tracking-wider">{testimonial.role}</p>
+                                        <h4 className="font-heading font-bold text-brand-dark text-lg leading-tight">{testimonial.name}</h4>
+                                        <p className="text-xs text-text-muted font-medium uppercase tracking-wider mt-0.5">{testimonial.role}</p>
                                     </div>
                                 </div>
                             </div>
                         ))}
                     </div>
-
-                    {/* Horizontal Fade Masks */}
-                    <div className="absolute inset-y-0 left-0 w-20 bg-linear-to-r from-surface-2 to-transparent z-10 pointer-events-none"></div>
-                    <div className="absolute inset-y-0 right-0 w-20 bg-linear-to-l from-surface-2 to-transparent z-10 pointer-events-none"></div>
                 </div>
             </div>
         </section>

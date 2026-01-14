@@ -1,49 +1,43 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Playfair+Display:wght@500;600&family=Poppins:wght@400;500&display=swap');
 
 :root {
     /* Typography */
-    --font-body: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    --font-heading: "Merriweather Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    --font-serif: "Playfair Display", serif;
+    --font-body: "Inter", sans-serif;
+    --font-heading: "Playfair Display", serif;
+    --font-subheading: "Poppins", sans-serif;
 
-    /* Base colors (calm + premium) */
-    --bg: #F7F4EE;
-    /* warm ivory */
+    /* Base colors */
+    --bg: #FAFBF9;
     --surface: #FFFFFF;
-    /* cards */
-    --surface-2: #F1EFE7;
-    /* subtle sections */
-    --text: #1D2421;
-    /* deep neutral */
-    --muted: #5C6B63;
-    /* calm gray-green */
+    --surface-2: #EFE9DD;
+
+    /* Text */
+    --text-primary: #1F2933;
+    --text-secondary: #4B5563;
+    --text-muted: #6B7280;
+    --text-disabled: #9CA3AF;
 
     /* Brand */
-    --primary: #0F3D2E;
-    /* deep botanical green */
-    --primary-2: #1C5B45;
-    /* hover/active */
-    --sage: #8FAF9B;
-    /* secondary UI */
-    --accent: #C6A15B;
-    /* champagne gold (sparingly) */
+    --brand-primary: #56BA39;
+    --brand-dark: #2F6E1E;
+    --brand-soft: #EAF6E6;
+    --brand-border: #CFE6C8;
 
-    /* Borders & shadows */
-    --border: rgba(15, 61, 46, 0.12);
-    --ring: rgba(198, 161, 91, 0.35);
+    /* Accent */
+    --accent-clay: #8B6F4E;
 
-    /* Status */
-    --success: #1F7A54;
-    --warning: #B9892F;
-    --danger: #B65B5B;
+    /* Borders */
+    --border-light: #E6E8E3;
+    --border-muted: #D8DDD2;
 
-    /* Radius */
-    --radius-sm: 10px;
-    --radius-md: 14px;
-    --radius-lg: 18px;
-
-    /* Layout */
-    --container: 1200px;
+    /* Legacy/Compat variables mapped to closest new equivalents */
+    --primary: var(--brand-primary);
+    --secondary: var(--brand-dark);
+    --text: var(--text-primary);
+    --muted: var(--text-muted);
+    --border: var(--border-light);
+    --ring: var(--brand-border);
 }
 
 /* Base */
@@ -55,7 +49,7 @@ body {
 body {
     font-family: var(--font-body);
     background: var(--bg);
-    color: var(--text);
+    color: var(--text-primary);
     text-rendering: optimizeLegibility;
 }
 
@@ -65,21 +59,11 @@ h2,
 h3,
 h4 {
     font-family: var(--font-heading);
-    letter-spacing: -0.01em;
+    color: var(--brand-dark);
+    letter-spacing: -0.02em;
 }
 
-/* Nice default selection (subtle premium touch) */
-::selection {
-    background: var(--ring);
-}
-
-/* Focus ring */
-:focus-visible {
-    outline: 2px solid var(--ring);
-    outline-offset: 2px;
-}
-
-/* Custom Scrollbar */
+/* Scrollbar */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -90,18 +74,16 @@ h4 {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(92, 107, 99, 0.3);
-    /* muted with opacity */
+    background: rgba(47, 110, 30, 0.3);
+    /* brand-dark with opacity */
     border-radius: 99px;
     border: 2px solid transparent;
-    /* creates padding around thumb */
     background-clip: content-box;
     transition: background 0.3s;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(92, 107, 99, 0.6);
-    /* muted darken */
+    background: rgba(47, 110, 30, 0.6);
     border: 2px solid transparent;
     background-clip: content-box;
 }
