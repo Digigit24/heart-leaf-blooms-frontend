@@ -19,4 +19,5 @@ export const PATHS = {
     ABOUT: '/about',
     VENDOR_LOGIN: '/vendor/login',
     ADMIN_LOGIN: '/admin/login',
+    OFFERS: '/offers',
 };

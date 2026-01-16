@@ -37,6 +37,7 @@ export default function Header() {
   const navLinks = [
     { name: 'Home', path: PATHS.HOME },
     { name: 'Shop', path: PATHS.PRODUCTS },
+    { name: 'Offers', path: PATHS.OFFERS },
     ...(isMultivendor ? [{ name: 'Vendors', path: PATHS.VENDORS }] : []),
     { name: 'About', path: PATHS.ABOUT },
   ];

@@ -19,6 +19,7 @@ import VendorList from '@/features/vendors/pages/VendorList';
 import ProductDetails from '@/features/catalog/pages/ProductDetails';
 import Category from '@/features/catalog/pages/Category';
 import About from '@/features/info/pages/About';
+import Offers from '@/features/catalog/pages/Offers';
 
 import MainLayout from '@/components/layout/MainLayout';
 import AdminLayout from '@/features/admin/components/AdminLayout';
@@ -36,6 +37,7 @@ const AppRoutes = () => {
             <Route element={<MainLayout />}>
                 <Route path={PATHS.HOME} element={<Home />} />
                 <Route path={PATHS.ABOUT} element={<About />} />
+                <Route path={PATHS.OFFERS} element={<Offers />} />
                 {isMultivendor && <Route path={PATHS.VENDORS} element={<VendorList />} />}
                 <Route path={PATHS.PRODUCTS} element={<Category />} />
                 <Route path="/products/:id" element={<ProductDetails />} />
