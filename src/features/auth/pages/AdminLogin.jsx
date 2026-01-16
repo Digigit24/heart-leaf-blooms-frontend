@@ -53,9 +53,9 @@ export default function AdminLogin() {
                     <img
                         src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=3270&auto=format&fit=crop"
                         alt="Admin Workspace"
-                        className="w-full h-full object-cover opacity-60 mix-blend-overlay"
+                        className="w-full h-full object-cover opacity-100"
                     />
-                    <div className="absolute inset-0 bg-linear-to-t from-[#0F3D2E] via-[#0F3D2E]/40 to-transparent" />
+                    <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
                 </div>
 
                 <div className="relative z-10 flex flex-col justify-between p-16 w-full">

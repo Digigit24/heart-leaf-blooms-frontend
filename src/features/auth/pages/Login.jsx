@@ -60,9 +60,9 @@ export default function Login() {
           <img
             src="https://images.unsplash.com/photo-1614531341773-3e9750e0ce64?q=80&w=3348&auto=format&fit=crop"
             alt="Botanical Background"
-            className="w-full h-full object-cover opacity-60 mix-blend-overlay"
+            className="w-full h-full object-cover opacity-100"
           />
-          <div className="absolute inset-0 bg-linear-to-t from-[#0F3D2E] via-[#0F3D2E]/40 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
         </div>
 
         <div className="relative z-10 flex flex-col justify-between p-16 w-full">

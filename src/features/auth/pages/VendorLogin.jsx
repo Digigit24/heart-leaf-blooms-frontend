@@ -51,9 +51,9 @@ export default function VendorLogin() {
                     <img
                         src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?q=80&w=3432&auto=format&fit=crop"
                         alt="Greenhouse Nursery"
-                        className="w-full h-full object-cover opacity-70 mix-blend-overlay"
+                        className="w-full h-full object-cover opacity-100"
                     />
-                    <div className="absolute inset-0 bg-linear-to-t from-[#0F3D2E] via-[#0F3D2E]/20 to-transparent" />
+                    <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
                 </div>
 
                 <div className="relative z-10 flex flex-col justify-between p-16 w-full">

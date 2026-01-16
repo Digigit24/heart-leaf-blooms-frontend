@@ -159,7 +159,7 @@ const About = () => {
     return (
         <div ref={containerRef} className="min-h-screen bg-bg relative overflow-x-hidden selection:bg-primary/20">
             {/* Gradient Overlay for atmosphere (simulating light filtering through canopy) */}
-            <div className="fixed inset-0 pointer-events-none z-0 bg-linear-to-b from-transparent via-sage/5 to-transparent"></div>
+            <div className="fixed inset-0 pointer-events-none z-0 bg-linear-to-b from-transparent via-brand/5 to-transparent"></div>
 
             {/* --- The Guided Neem Leaf Animation --- */}
             {/* Starting Position: Top Right, aligned with "Welcome to" header area approximately. */}
@@ -198,15 +198,15 @@ const About = () => {
                                 initial={{ opacity: 0, rotate: -15 }}
                                 animate={{ opacity: 1, rotate: 0 }}
                                 transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
-                                className="absolute -inset-4 border border-sage/30 rounded-full z-0 transform scale-110"
+                                className="absolute -inset-4 border border-brand/30 rounded-full z-0 transform scale-110"
                             />
 
                             {/* Main Image Container */}
-                            <div className="relative overflow-hidden rounded-2xl group cursor-pointer shadow-2xl shadow-sage/20">
+                            <div className="relative overflow-hidden rounded-2xl group cursor-pointer shadow-2xl shadow-brand/20">
                                 <motion.div
                                     whileHover={{ scale: 1.03 }}
                                     transition={{ duration: 0.7, ease: "easeOut" }}
-                                    className="bg-linear-to-br from-transparent to-sage/10 rounded-2xl border border-white/50 backdrop-blur-sm"
+                                    className="bg-linear-to-br from-transparent to-brand/10 rounded-2xl border border-white/50 backdrop-blur-sm"
                                 >
                                     <img
                                         src="/images/about-us.png"
@@ -244,10 +244,10 @@ const About = () => {
                                     transition={{ ...transition, delay: 0.2 }}
                                     className="flex flex-col gap-1"
                                 >
-                                    <span className="text-sm font-bold tracking-[0.3em] text-sage uppercase pl-1">Who We Are</span>
+                                    <span className="text-sm font-bold tracking-[0.3em] text-brand uppercase pl-1">Who We Are</span>
                                     <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-black text-primary leading-[0.95] tracking-tight">
                                         <span className="block overflow-hidden pb-2"><SplitText>Welcome to</SplitText></span>
-                                        <span className="block text-transparent bg-clip-text bg-linear-to-r from-sage to-primary overflow-hidden pb-4"><SplitText>Heart Leaf</SplitText></span>
+                                        <span className="block text-transparent bg-clip-text bg-linear-to-r from-brand to-primary overflow-hidden pb-4"><SplitText>Heart Leaf</SplitText></span>
                                     </h1>
                                 </motion.div>
                             </div>
@@ -259,7 +259,7 @@ const About = () => {
                                 variants={fadeInUp}
                                 initial="hidden"
                                 animate="visible"
-                                className="text-muted text-lg leading-relaxed font-body max-w-xl pl-1 border-l-2 border-sage/30 bg-bg/50 backdrop-blur-[2px] rounded-r-lg"
+                                className="text-muted text-lg leading-relaxed font-body max-w-xl pl-1 border-l-2 border-brand/30 bg-bg/50 backdrop-blur-[2px] rounded-r-lg"
                             >
                                 We bring the serenity of nature directly to your home.
                                 <span className="text-primary font-medium"> Heart Leaf Blooms</span> is more than a plant shop; it's a movement towards sustainable, greener living.
@@ -320,13 +320,13 @@ const About = () => {
                             ref={item.id ? goalCardRef : null}
                             variants={fadeInUp}
                             whileHover={{ y: -8 }}
-                            className="relative bg-surface/60 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-white shadow-[0_4px_20px_-10px_rgba(0,0,0,0.02)] hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08)] transition-all duration-300 group overflow-hidden z-20"
+                            className="relative bg-[#FDFBF7] p-8 md:p-10 rounded-3xl border border-brand/10 shadow-lg hover:shadow-xl transition-all duration-300 group overflow-hidden z-20"
                         >
                             {/* Hover Gradient Background */}
-                            <div className="absolute inset-0 bg-linear-to-br from-transparent to-sage/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div className="absolute inset-0 bg-linear-to-br from-transparent to-brand/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
                             {/* Icon */}
-                            <div className="relative z-10 w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-300 border border-sage/10">
+                            <div className="relative z-10 w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-300 border border-brand/10">
                                 <item.icon className={`w-8 h-8 ${item.color} stroke-[1.5px]`} />
                             </div>
 
@@ -353,15 +353,15 @@ const About = () => {
                     viewport={{ once: true }}
                     className="mb-32 max-w-5xl mx-auto"
                 >
-                    <div className="flex flex-col md:flex-row items-center gap-12 bg-surface/50 backdrop-blur-sm rounded-[40px] p-8 md:p-16 border border-white shadow-sm relative overflow-hidden">
+                    <div className="flex flex-col md:flex-row items-center gap-12 bg-[#FDFBF7] rounded-[40px] p-8 md:p-16 border border-brand/10 shadow-sm relative overflow-hidden">
 
                         {/* Background Decoration */}
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-sage/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-brand/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
 
                         {/* Image */}
                         <div className="w-48 h-48 md:w-64 md:h-64 shrink-0 relative group">
                             <div className="absolute inset-0 rounded-full border border-primary/10 transform rotate-6 transition-transform group-hover:rotate-12"></div>
-                            <div className="absolute inset-0 rounded-full border border-sage/20 transform -rotate-3 transition-transform group-hover:-rotate-6"></div>
+                            <div className="absolute inset-0 rounded-full border border-brand/20 transform -rotate-3 transition-transform group-hover:-rotate-6"></div>
                             <img
                                 src="/images/avatar-1.png"
                                 alt="xyz"
@@ -376,7 +376,7 @@ const About = () => {
                         <div className="flex-1 text-center md:text-left relative z-10">
                             <span className="inline-block py-1 px-3 rounded-full bg-primary/5 text-primary text-[10px] font-bold uppercase tracking-widest mb-4">The Root of It All</span>
                             <h2 className="text-3xl md:text-4xl font-heading font-black text-primary mb-2">blooms</h2>
-                            <p className="text-sm font-bold text-sage uppercase tracking-widest mb-8">Founder & Head Gardener</p>
+                            <p className="text-sm font-bold text-brand uppercase tracking-widest mb-8">Founder & Head Gardener</p>
 
                             <div className="space-y-6">
                                 <p className="text-text/80 leading-relaxed font-serif text-lg italic border-l-4 border-accent/30 pl-6 my-6">
