@@ -157,7 +157,7 @@ const About = () => {
     const scale = useTransform(smoothScroll, [0, 1], [1.2, 1.0]);
 
     return (
-        <div ref={containerRef} className="min-h-screen bg-bg relative overflow-x-hidden selection:bg-primary/20">
+        <div ref={containerRef} className="min-h-screen bg-[#FDFBF7] relative overflow-x-hidden selection:bg-brand/20">
             {/* Gradient Overlay for atmosphere (simulating light filtering through canopy) */}
             <div className="fixed inset-0 pointer-events-none z-0 bg-linear-to-b from-transparent via-brand/5 to-transparent"></div>
 
@@ -259,7 +259,7 @@ const About = () => {
                                 variants={fadeInUp}
                                 initial="hidden"
                                 animate="visible"
-                                className="text-muted text-lg leading-relaxed font-body max-w-xl pl-1 border-l-2 border-brand/30 bg-bg/50 backdrop-blur-[2px] rounded-r-lg"
+                                className="text-muted text-lg leading-relaxed font-body max-w-xl pl-6 py-2 border-l-2 border-brand/30 bg-[#FDFBF7] rounded-r-lg"
                             >
                                 We bring the serenity of nature directly to your home.
                                 <span className="text-primary font-medium"> Heart Leaf Blooms</span> is more than a plant shop; it's a movement towards sustainable, greener living.
@@ -271,7 +271,7 @@ const About = () => {
                             variants={fadeInUp}
                             initial="hidden"
                             animate="visible"
-                            className="bg-white/40 backdrop-blur-sm p-6 rounded-2xl border border-white/50 inline-block"
+                            className="bg-[#FDFBF7] p-6 rounded-2xl border border-brand/10 inline-block"
                         >
                             <div className="flex items-center gap-4">
                                 <span className="text-4xl">🏆</span>
@@ -401,7 +401,7 @@ const About = () => {
 
                 {/* Brands / Featured In */}
                 <div className="border-t border-border/60 pt-20 relative">
-                    <p className="text-center text-xs font-bold tracking-[0.2em] text-muted uppercase mb-16 opacity-60">As Featured In</p>
+                    <p className="text-center text-xs font-bold tracking-[0.2em]  text-muted uppercase mb-16 opacity-60">As Featured In</p>
                     <motion.div
                         variants={staggerContainer}
                         initial="hidden"
