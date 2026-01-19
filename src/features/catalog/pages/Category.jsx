@@ -226,19 +226,24 @@ export default function Category() {
                                     {/* Categories Section */}
                                     <div>
                                         <h3 className="font-heading font-bold text-primary mb-4 text-lg">Categories</h3>
-                                        <ul className="space-y-2.5">
+                                        <div className="space-y-3">
                                             {CATEGORIES.map((cat, i) => (
-                                                <li key={i}>
-                                                    <button
-                                                        onClick={() => { handleCategoryClick(cat); setShowMobileFilters(false); }}
-                                                        className={`text-sm font-medium flex items-center justify-between group w-full text-left transition-colors ${selectedFilters.category.includes(cat) ? 'text-primary font-bold' : 'text-muted/80 hover:text-primary'}`}
-                                                    >
+                                                <label key={i} className="flex items-center gap-3 cursor-pointer group select-none">
+                                                    <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${selectedFilters.category.includes(cat) ? 'bg-white border-primary' : 'border-muted/40 group-hover:border-primary bg-white'}`}>
+                                                        {selectedFilters.category.includes(cat) && <Check size={14} className="text-primary" strokeWidth={3} />}
+                                                    </div>
+                                                    <input
+                                                        type="checkbox"
+                                                        className="hidden"
+                                                        checked={selectedFilters.category.includes(cat)}
+                                                        onChange={() => { handleCategoryClick(cat); }}
+                                                    />
+                                                    <span className={`text-sm ${selectedFilters.category.includes(cat) ? 'text-primary font-medium' : 'text-muted/80 group-hover:text-primary'}`}>
                                                         {cat}
-                                                        {selectedFilters.category.includes(cat) && <Check size={16} className="text-primary" strokeWidth={3} />}
-                                                    </button>
-                                                </li>
+                                                    </span>
+                                                </label>
                                             ))}
-                                        </ul>
+                                        </div>
                                     </div>
                                     <hr className="border-border/60" />
                                     {/* Dynamic Filters */}
@@ -299,19 +304,24 @@ export default function Category() {
                             {/* Categories Section */}
                             <div>
                                 <h3 className="font-heading font-bold text-primary mb-4 text-lg">Categories</h3>
-                                <ul className="space-y-2.5">
+                                <div className="space-y-3">
                                     {CATEGORIES.map((cat, i) => (
-                                        <li key={i}>
-                                            <button
-                                                onClick={() => handleCategoryClick(cat)}
-                                                className={`text-sm font-medium flex items-center justify-between group w-full text-left transition-colors ${selectedFilters.category.includes(cat) ? 'text-primary font-bold' : 'text-muted/80 hover:text-primary'}`}
-                                            >
+                                        <label key={i} className="flex items-center gap-3 cursor-pointer group select-none">
+                                            <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${selectedFilters.category.includes(cat) ? 'bg-white border-primary' : 'border-muted/40 group-hover:border-primary bg-white'}`}>
+                                                {selectedFilters.category.includes(cat) && <Check size={14} className="text-primary" strokeWidth={3} />}
+                                            </div>
+                                            <input
+                                                type="checkbox"
+                                                className="hidden"
+                                                checked={selectedFilters.category.includes(cat)}
+                                                onChange={() => handleCategoryClick(cat)}
+                                            />
+                                            <span className={`text-sm ${selectedFilters.category.includes(cat) ? 'text-primary font-medium' : 'text-muted/80 group-hover:text-primary'}`}>
                                                 {cat}
-                                                {selectedFilters.category.includes(cat) && <Check size={16} className="text-primary" strokeWidth={3} />}
-                                            </button>
-                                        </li>
+                                            </span>
+                                        </label>
                                     ))}
-                                </ul>
+                                </div>
                             </div>
 
                             <hr className="border-border/60" />
@@ -500,9 +510,7 @@ export default function Category() {
                                                                     className="px-6 py-2 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                                                                     Add to Cart
                                                                 </button>
-                                                                <button className="px-4 py-2 border border-border text-text text-sm font-semibold rounded-lg hover:border-primary hover:text-primary transition-colors">
-                                                                    Quick View
-                                                                </button>
+
                                                             </div>
                                                         </div>
                                                     </div>

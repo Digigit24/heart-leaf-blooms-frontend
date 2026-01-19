@@ -76,13 +76,7 @@ export default function ProductCard({ product }) {
             <ShoppingBag size={14} />
             {inStock ? 'Add to Cart' : 'Sold Out'}
           </button>
-          <button
-            className="h-9 w-9 bg-white text-text rounded-full flex items-center justify-center hover:bg-stone-100 shadow-lg cursor-pointer"
-            title="Quick View"
-            onClick={(e) => { e.stopPropagation(); /* Add Quick View Logic later */ }}
-          >
-            <Search size={14} />
-          </button>
+
         </div>
       </div>
 
