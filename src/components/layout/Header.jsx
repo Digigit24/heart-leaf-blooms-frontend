@@ -92,16 +92,16 @@ export default function Header() {
                     className="relative group py-2"
                   >
                     <span className={cn(
-                      'font-medium transition-colors duration-300 font-heading tracking-wide text-lg', // Increased font size slightly
+                      'font-medium transition-colors duration-300 font-heading tracking-wide text-lg',
                       location.pathname === link.path
-                        ? 'text-[#0F3D2E]'
-                        : 'text-text/80 group-hover:text-[#0F3D2E]'
+                        ? 'text-[#2F6E1E] font-bold'
+                        : 'text-[#2F6E1E] group-hover:text-brand'
                     )}>
                       {link.name}
                     </span>
                     {/* Simplified Underline Effect */}
                     <span className={cn(
-                      "absolute bottom-0 left-0 h-[2px] bg-[#0F3D2E] transition-all duration-300 ease-out",
+                      "absolute bottom-0 left-0 h-[2px] bg-[#2F6E1E] transition-all duration-300 ease-out",
                       location.pathname === link.path ? "w-full" : "w-0 group-hover:w-full"
                     )} />
                   </Link>
@@ -111,13 +111,13 @@ export default function Header() {
               {/* Actions */}
               <div className="flex items-center gap-2 sm:gap-4">
 
-                <button className="p-2 text-text/80 hover:text-[#0F3D2E] hover:bg-[#0F3D2E]/5 rounded-full transition-all duration-300">
+                <button className="p-2 text-[#2F6E1E] hover:text-brand hover:bg-brand-soft/50 rounded-full transition-all duration-300">
                   <Search className="w-5 h-5 stroke-[1.5px]" />
                 </button>
 
                 <button
                   onClick={toggleWishlist}
-                  className="p-2 text-text/80 hover:text-[#0F3D2E] hover:bg-[#0F3D2E]/5 rounded-full transition-all duration-300 hidden sm:block relative"
+                  className="p-2 text-[#2F6E1E] hover:text-brand hover:bg-brand-soft/50 rounded-full transition-all duration-300 hidden sm:block relative"
                 >
                   <Heart className="w-5 h-5 stroke-[1.5px]" />
                   {wishlistItems.length > 0 && (
@@ -129,11 +129,11 @@ export default function Header() {
 
                 <button
                   onClick={toggleCart}
-                  className="p-2 text-text/80 hover:text-[#0F3D2E] hover:bg-[#0F3D2E]/5 rounded-full transition-all duration-300 relative"
+                  className="p-2 text-[#2F6E1E] hover:text-brand hover:bg-brand-soft/50 rounded-full transition-all duration-300 relative"
                 >
                   <ShoppingBag className="w-5 h-5 stroke-[1.5px]" />
                   {cartItems.length > 0 && (
-                    <span className="absolute top-1 right-1 inline-flex items-center justify-center w-4 h-4 text-[9px] font-bold text-white bg-[#0F3D2E] rounded-full">
+                    <span className="absolute top-1 right-1 inline-flex items-center justify-center w-4 h-4 text-[9px] font-bold text-white bg-[#2F6E1E] rounded-full">
                       {cartItems.length}
                     </span>
                   )}

@@ -151,27 +151,41 @@ export default function ProductDetails() {
         <div className="flex items-center gap-4 p-6 bg-surface-2/30 rounded-xl">
           <div className="text-center">
             <span className="block text-4xl font-serif font-black text-primary">{product.rating}</span>
-            <div className="flex text-yellow-500 text-xs mt-1 justify-center">
-              {[...Array(5)].map((_, i) => <Star key={i} size={12} fill="currentColor" />)}
+            <div className="flex gap-0.5 mt-1 justify-center">
+              {[...Array(5)].map((_, i) => (
+                <Star
+                  key={i}
+                  size={16}
+                  className={`${i < Math.round(product.rating) ? "text-[#facc15] fill-[#facc15]" : "text-gray-300 fill-gray-100"}`}
+                />
+              ))}
             </div>
-            <span className="text-xs text-muted mt-1 block">{product.reviews} Reviews</span>
+            <span className="text-xs text-muted mt-2 block font-medium">{product.reviews} Reviews</span>
           </div>
           <div className="h-12 w-px bg-border/20"></div>
-          <p className="text-sm text-muted italic">"Based on honest reviews from our verified plant parents."</p>
+          <p className="text-sm text-muted italic max-w-xs">"Based on honest reviews from our verified plant parents."</p>
         </div>
-        {[1, 2].map(i => (
+        {[
+          { name: "Jane Doe", rating: 5, date: "2 weeks ago", text: "Excellent quality! Exactly what I was looking for to spruce up my living room.", initials: "JD" },
+          { name: "Arjun K.", rating: 4, date: "1 month ago", text: "Healthy plant, but the pot was slightly chipped. Customer support helped immediately though.", initials: "AK" },
+          { name: "Sarah M.", rating: 3, date: "2 months ago", text: "Smaller than expected, but it is growing well.", initials: "SM" }
+        ].map((review, i) => (
           <div key={i} className="pb-6 border-b border-border/10 last:border-0">
             <div className="flex justify-between items-start mb-2">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs shadow-inner">JD</div>
+                <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm shadow-inner">{review.initials}</div>
                 <div>
-                  <p className="font-bold text-sm text-primary">Jane Doe</p>
-                  <div className="flex text-yellow-500"><Star size={10} fill="currentColor" /> <Star size={10} fill="currentColor" /> <Star size={10} fill="currentColor" /><Star size={10} fill="currentColor" /><Star size={10} fill="currentColor" /></div>
+                  <p className="font-bold text-sm text-primary">{review.name}</p>
+                  <div className="flex gap-0.5 text-[#facc15]">
+                    {[...Array(5)].map((_, idx) => (
+                      <Star key={idx} size={12} className={idx < review.rating ? "fill-[#facc15]" : "text-gray-300 fill-gray-100"} />
+                    ))}
+                  </div>
                 </div>
               </div>
-              <span className="text-xs text-muted">2 weeks ago</span>
+              <span className="text-xs text-muted">{review.date}</span>
             </div>
-            <p className="text-sm text-text/80">Excellent quality! Exactly what I was looking for to spruce up my living room.</p>
+            <p className="text-sm text-text/80">{review.text}</p>
           </div>
         ))}
       </div>
@@ -233,7 +247,7 @@ export default function ProductDetails() {
                     </div>
                   )}
                   <div className="bg-white/80 backdrop-blur-md px-3 py-1.5 rounded-full shadow-sm flex items-center gap-2 w-fit">
-                    <Star size={14} className="text-yellow-500 fill-current" />
+                    <Star size={14} className="text-[#facc15] fill-[#facc15]" />
                     <span className="text-[10px] font-bold uppercase tracking-wider text-primary">{product.rating} Rated</span>
                   </div>
                 </div>

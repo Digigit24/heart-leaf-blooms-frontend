@@ -18,7 +18,7 @@ const testimonials = [
         role: 'Software Engineer, Bangalore',
         image: '/images/avatar-2.png',
         content: "The quality is unmatched. I’ve bought from local nurseries in Indiranagar before, but Heart Leaf Blooms has much healthier soil mixes. Their care guide for the Snake Plant was actually helpful for a beginner like me.",
-        rating: 5,
+        rating: 4,
     },
     {
         id: 3,
@@ -34,7 +34,7 @@ const testimonials = [
         role: 'Ayurveda Practitioner, Pune',
         image: '/images/avatar-1.png',
         content: "I needed specific medicinal herbs for my home garden. Their Tulsi and Aloe Vera plants are organic and very potent. You can feel the purity. Fast delivery to Pune as well.",
-        rating: 5,
+        rating: 4,
     },
     {
         id: 5,
@@ -42,7 +42,7 @@ const testimonials = [
         role: 'Architect, Hyderabad',
         image: '/images/avatar-2.png',
         content: "Finally, a website that delivers what they show. The pot quality is premium, unlike the cheap plastic ones you usually get. Looks very elegant in my living room corner.",
-        rating: 5,
+        rating: 3,
     },
     {
         id: 6,
@@ -161,7 +161,7 @@ export default function TestimonialSection() {
                                     {/* Rating */}
                                     <div className="flex items-center gap-1">
                                         {[...Array(testimonial.rating)].map((_, i) => (
-                                            <Star key={i} className="w-4 h-4 fill-accent-clay text-accent-clay" />
+                                            <Star key={i} className="w-4 h-4 fill-[#facc15] text-[#facc15]" />
                                         ))}
                                     </div>
 
