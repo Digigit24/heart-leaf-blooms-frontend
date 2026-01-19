@@ -67,7 +67,7 @@ export default function ProductCard({ product }) {
         </div>
 
         {/* Hover Actions */}
-        <div className="absolute bottom-3 left-3 right-3 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 z-20 flex gap-2">
+        <div className="flex absolute bottom-3 left-3 right-3 translate-y-0 opacity-100 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-300 z-20 gap-2">
           <button
             onClick={handleAddToCart}
             disabled={!inStock}
@@ -82,19 +82,27 @@ export default function ProductCard({ product }) {
 
       {/* Product Details */}
       <div className="mt-3 space-y-1">
-        <h3 className="font-heading font-medium text-base text-stone-800 leading-tight group-hover:text-primary transition-colors truncate">
+        <h3 className="font-heading font-medium text-sm md:text-base text-stone-800 leading-tight group-hover:text-primary transition-colors truncate">
           {product.name}
         </h3>
 
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-1">
           <div className="flex flex-col">
-            <span className="text-xs text-muted/80">{product.category}</span>
+            <span className="text-[10px] md:text-xs text-muted/80">{product.category}</span>
           </div>
-          <div className="flex items-center gap-1.5">
-            {product.originalPrice && (
-              <span className="text-xs text-muted/60 line-through">₹{product.originalPrice.toFixed(2)}</span>
+          <div className="flex flex-col md:flex-row md:items-center gap-0.5 md:gap-1.5">
+            <div className="flex items-center gap-1.5">
+              <span className="font-bold text-sm text-primary">₹{product.price.toFixed(0)}</span>
+              {product.originalPrice && (
+                <span className="text-[10px] md:text-xs text-muted/60 line-through">₹{product.originalPrice.toFixed(0)}</span>
+              )}
+            </div>
+            {/* Discount Label like Reference Image */}
+            {product.originalPrice && product.originalPrice > product.price && (
+              <span className="text-[10px] md:text-xs font-bold text-green-600">
+                Min. {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% Off
+              </span>
             )}
-            <span className="font-bold text-sm text-primary">₹{product.price.toFixed(2)}</span>
           </div>
         </div>
       </div>

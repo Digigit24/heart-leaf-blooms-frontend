@@ -2,9 +2,10 @@ import client from '@/lib/http/client';
 
 export const adminApi = {
   // Products
-  createProduct: (data) => client.post('/product', data),
-  updateProduct: (id, data) => client.put(`/product/${id}`, data),
-  uploadImage: (formData) => client.post('/product/upload-image', formData, {
+  getAllProducts: () => client.get('/admin/products/public'),
+  createProduct: (data) => client.post('/admin/products', data),
+  updateProduct: (id, data) => client.put(`/admin/products/${id}`, data),
+  uploadImage: (formData) => client.post('/admin/products/upload-image', formData, {
     headers: { 'Content-Type': 'multipart/form-data' }
   }),
 
