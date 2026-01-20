@@ -13,7 +13,7 @@ const LIMITED_TIME_OFFERS = [
         code: "MONSOON40",
         discount: "40% OFF",
         expiry: "2026-02-15T23:59:59",
-        image: "https://images.unsplash.com/photo-1599598425947-6699d7a22eb3?q=80&w=1762&auto=format&fit=crop",
+        image: "/images/offers/monsoon_offer_plant_1768910679933.png",
         color: "bg-teal-900",
         accent: "text-teal-200"
     },
@@ -24,7 +24,7 @@ const LIMITED_TIME_OFFERS = [
         code: "NEWPARENT",
         discount: "Bundle @ ₹999",
         expiry: "2026-03-01T23:59:59",
-        image: "https://images.unsplash.com/photo-1459156212016-c812468e2115?q=80&w=900&auto=format&fit=crop",
+        image: "/images/offers/new_parent_kit_1768910980974.png",
         color: "bg-terracotta-800",
         colorClass: "bg-[#8B4513]",
         accent: "text-orange-200"
@@ -38,7 +38,7 @@ const SUMMER_COLLECTION = [
         description: "Brighten your space with sun-loving succulents and cacti. Drought tolerant and beautiful.",
         discount: "Buy 2 Get 1 Free",
         code: "SUNNY26",
-        image: "https://images.unsplash.com/photo-1459416417751-936c5ad621db?q=80&w=1000&auto=format&fit=crop",
+        image: "/images/offers/summer_sunshine_1768911014626.png",
         colorClass: "bg-orange-600",
         accent: "text-yellow-200"
     },
@@ -48,7 +48,7 @@ const SUMMER_COLLECTION = [
         description: "Lush ferns and tall palms to keep your interiors cool and fresh this summer.",
         discount: "Flat 20% OFF",
         code: "COOL20",
-        image: "https://images.unsplash.com/photo-1545241047-6083a3684587?q=80&w=1000&auto=format&fit=crop",
+        image: "/images/offers/cool_shade_1768911033774.png",
         colorClass: "bg-green-800",
         accent: "text-green-200"
     }
@@ -61,7 +61,7 @@ const BULK_ORDERS = [
         description: "Bulk orders for office desks, events, or employee appreciation. Custom branding available.",
         discount: "Volume Discounts",
         code: "CORP_GIFT",
-        image: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=1000&auto=format&fit=crop",
+        image: "/images/offers/corporate_gift_1768911067128.png",
         colorClass: "bg-slate-800",
         accent: "text-blue-200"
     },
@@ -71,7 +71,7 @@ const BULK_ORDERS = [
         description: "Mini succulents and saplings for sustainable and memorable return gifts.",
         discount: "Starting @ ₹49",
         code: "EVENT_BULK",
-        image: "https://images.unsplash.com/photo-1512428813835-6518081f8c4a?q=80&w=1000&auto=format&fit=crop",
+        image: "/images/offers/wedding_favors_1768911091705.png",
         colorClass: "bg-pink-900",
         accent: "text-pink-200"
     }
@@ -84,7 +84,7 @@ const OfferCard = ({ offer, showTimer = false }) => (
     >
         {/* Background Image with Overlay */}
         <div className="absolute inset-0">
-            <img src={offer.image} alt={offer.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+            <img src={offer.image} alt={offer.title} className="w-full h-full object-contain p-0 transition-transform duration-700 group-hover:scale-105" />
             <div className="absolute inset-0 bg-linear-to-r from-black/90 via-black/60 to-transparent"></div>
         </div>
 
@@ -167,13 +167,23 @@ export default function Offers() {
     return (
         <div className="min-h-screen bg-[#FDFBF7]">
             {/* --- Hero Header --- */}
-            <div className="text-primary relative overflow-hidden bg-brand/5">
-                <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-                {/* Decorative Blobs */}
-                <div className="absolute top-0 right-0 w-96 h-96 bg-brand/20 rounded-full blur-[100px] opacity-40 translate-x-1/3 -translate-y-1/3"></div>
-                <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/20 rounded-full blur-[80px] opacity-40 -translate-x-1/3 translate-y-1/3"></div>
+            <div className="text-white relative overflow-hidden h-[600px] flex items-center">
+                {/* Hero Background Image */}
+                <div className="absolute inset-0">
+                    <img
+                        src="/images/offers/offers_hero_bg_1768910661300.png"
+                        alt="Offers Hero"
+                        className="w-full h-full object-cover"
+                    />
+                    {/* Gradient Overlay for Text Readability */}
+                    <div className="absolute inset-0 bg-black/40 bg-linear-to-b from-black/60 via-transparent to-black/60"></div>
+                </div>
 
-                <div className="container mx-auto px-4 py-20 md:py-32 relative z-10 text-center">
+                {/* Decorative Blobs (Preserved) */}
+                <div className="absolute top-0 right-0 w-96 h-96 bg-brand/20 rounded-full blur-[100px] opacity-40 translate-x-1/3 -translate-y-1/3 mix-blend-overlay"></div>
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/20 rounded-full blur-[80px] opacity-40 -translate-x-1/3 translate-y-1/3 mix-blend-overlay"></div>
+
+                <div className="container mx-auto px-4 py-20 relative z-10 text-center">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -270,7 +280,7 @@ export default function Offers() {
                     <div className="relative z-10 max-w-2xl mx-auto">
                         <Star className="w-12 h-12 mx-auto text-yellow-400 mb-6 fill-current" />
                         <h2 className="text-4xl md:text-5xl font-heading font-black mb-6">Need a Custom Deal?</h2>
-                        <p className="text-lg text-white/80 mb-8 leading-relaxed">
+                        <p className="text-lg mb-8 leading-relaxed">
                             Looking for something specific or planning a large green event? Contact our sales team for personalized packages.
                         </p>
                         <button className="px-10 py-4 bg-white text-brand-dark font-bold text-lg rounded-full shadow-xl hover:bg-brand-soft hover:scale-105 transition-all active:scale-95 cursor-pointer">

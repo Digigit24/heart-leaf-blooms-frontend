@@ -1,0 +1,254 @@
+[
+    {
+        "product_id": "3e4baebd-7520-419c-a2a5-7b8b33ea1bfc",
+        "admin_id": "04dd1c",
+        "category_id": 5,
+        "product_name": "Tellus Molestie",
+        "product_title": "Tellus Molestie",
+        "slug": "tellus-molestie-1768373549745",
+        "product_description": "Leo vel fringilla est ullamcorper. Placerat duis ultricies lacus sed turpis. Eu feugiat pretium nibh ipsum consequat nisl vel pretium lectus.",
+        "product_price": "4599",
+        "discount_price": "2999",
+        "stock": 3,
+        "product_guide": "Lacus suspendisse faucibus interdum posuere lorem ipsum dolor. Aliquet porttitor lacus luctus accumsan tortor posuere ac. Enim eu turpis egestas pretium aenean pharetra magna. Aliquam ultrices sagittis orci a. Enim ut sem viverra aliquet. Lectus urna duis convallis convallis tellus id interdum velit. Morbi leo urna molestie at elementum eu facilisis sed.  Cursus mattis molestie a iaculis at erat pellentesque adipiscing commodo. Tellus id interdum velit laoreet. Donec enim diam vulputate ut pharetra sit amet.  Facilisis sed odio morbi quis commodo odio aenean sed. Sed pulvinar proin gravida hendrerit lectus.",
+        "status": "ACTIVE",
+        "is_featured": true,
+        "is_deleted": false,
+        "average_rating": 0,
+        "total_reviews": 0,
+        "createdAt": "2026-01-14T06:52:29.748Z",
+        "updatedAt": "2026-01-16T12:01:44.407Z",
+        "images": [
+            {
+                "image_id": 8,
+                "product_id": null,
+                "admin_product_id": "3e4baebd-7520-419c-a2a5-7b8b33ea1bfc",
+                "large_url": "https://main-bucket-digitech.s3.ap-south-1.amazonaws.com/products/5c2cb158-f806-4edb-bb53-44b9ba64cf6e/large.webp",
+                "medium_url": "https://main-bucket-digitech.s3.ap-south-1.amazonaws.com/products/5c2cb158-f806-4edb-bb53-44b9ba64cf6e/medium.webp",
+                "small_url": "https://main-bucket-digitech.s3.ap-south-1.amazonaws.com/products/5c2cb158-f806-4edb-bb53-44b9ba64cf6e/small.webp"
+            }
+        ],
+        "category": {
+            "category_id": 5,
+            "category_name": "Fruit Plants",
+            "category_description": "",
+            "category_icon": ""
+        }
+    },
+    {
+        "product_id": "ad2357cb-e86b-42cf-a4a1-d4f21d1937ac",
+        "admin_id": "04dd1c",
+        "category_id": 4,
+        "product_name": "Tellus Molestie",
+        "product_title": "Tellus Molestie",
+        "slug": "tellus-molestie-1768373126782",
+        "product_description": "Leo vel fringilla est ullamcorper. Placerat duis ultricies lacus sed turpis. Eu feugiat pretium nibh ipsum consequat nisl vel pretium lectus.",
+        "product_price": "599",
+        "discount_price": "299",
+        "stock": 2,
+        "product_guide": "Ultricies tristique nulla aliquet enim tortor at auctor urna. Neque egestas congue quisque egestas diam in arcu cursus. Sit amet luctus venenatis lectus magna. Tellus mauris a diam maecenas sed. A diam maecenas sed enim. Feugiat sed lectus vestibulum mattis ullamcorper velit. Sit amet mauris commodo quis. Dolor sed viverra ipsum nunc aliquet bibendum enim facilisis gravida.  Elit ullamcorper dignissim cras tincidunt lobortis. Ipsum nunc aliquet bibendum enim facilisis gravida. Vitae turpis massa sed elementum",
+        "status": "ACTIVE",
+        "is_featured": true,
+        "is_deleted": false,
+        "average_rating": 0,
+        "total_reviews": 0,
+        "createdAt": "2026-01-14T06:45:26.784Z",
+        "updatedAt": "2026-01-16T12:01:43.876Z",
+        "images": [
+            {
+                "image_id": 7,
+                "product_id": null,
+                "admin_product_id": "ad2357cb-e86b-42cf-a4a1-d4f21d1937ac",
+                "large_url": "https://main-bucket-digitech.s3.ap-south-1.amazonaws.com/products/b270dcce-4c4e-4ed8-ad39-5e00d9d4a04d/large.webp",
+                "medium_url": "https://main-bucket-digitech.s3.ap-south-1.amazonaws.com/products/b270dcce-4c4e-4ed8-ad39-5e00d9d4a04d/medium.webp",
+                "small_url": "https://main-bucket-digitech.s3.ap-south-1.amazonaws.com/products/b270dcce-4c4e-4ed8-ad39-5e00d9d4a04d/small.webp"
+            }
+        ],
+        "category": {
+            "category_id": 4,
+            "category_name": "Bonsai Plants",
+            "category_description": "",
+            "category_icon": ""
+        }
+    },
+    {
+        "product_id": "c32c8203-9311-463d-ad8d-6d168740caad",
+        "admin_id": "04dd1c",
+        "category_id": 4,
+        "product_name": "Augue Neque",
+        "product_title": "Augue Neque",
+        "slug": "augue-neque-1768372944031",
+        "product_description": "Lacus suspendisse faucibus interdum posuere lorem ipsum dolor. Aliquet porttitor lacus luctus accumsan tortor posuere ac. Enim eu turpis egestas pretium aenean pharetra magna. Aliquam ultrices sagittis orci a. Enim ut sem viverra aliquet. Lectus urna duis convallis convallis tellus id interdum velit. Morbi leo urna molestie at elementum eu facilisis sed.\n\nCursus mattis molestie a iaculis at erat pellentesque adipiscing commodo. Tellus id interdum velit laoreet. Donec enim diam vulputate ut pharetra sit amet.\n\nFacilisis sed odio morbi quis commodo odio aenean sed. Sed pulvinar proin gravida hendrerit lectus.",
+        "product_price": "4599",
+        "discount_price": "1299",
+        "stock": 4,
+        "product_guide": "Lacus suspendisse faucibus interdum posuere lorem ipsum dolor. Aliquet porttitor lacus luctus accumsan tortor posuere ac. Enim eu turpis egestas pretium aenean pharetra magna. Aliquam ultrices sagittis orci a. Enim ut sem viverra aliquet. Lectus urna duis convallis convallis tellus id interdum velit. Morbi leo urna molestie at elementum eu facilisis sed.  Cursus mattis molestie a iaculis at erat pellentesque adipiscing commodo. Tellus id interdum velit laoreet. Donec enim diam vulputate ut pharetra sit amet.  Facilisis sed odio morbi quis commodo odio aenean sed. Sed pulvinar proin gravida hendrerit lectus.",
+        "status": "ACTIVE",
+        "is_featured": true,
+        "is_deleted": false,
+        "average_rating": 0,
+        "total_reviews": 0,
+        "createdAt": "2026-01-14T06:42:24.033Z",
+        "updatedAt": "2026-01-16T09:17:57.153Z",
+        "images": [
+            {
+                "image_id": 6,
+                "product_id": null,
+                "admin_product_id": "c32c8203-9311-463d-ad8d-6d168740caad",
+                "large_url": "https://main-bucket-digitech.s3.ap-south-1.amazonaws.com/products/4b93dc9b-a653-4b74-969b-9d71f5a2072f/large.webp",
+                "medium_url": "https://main-bucket-digitech.s3.ap-south-1.amazonaws.com/products/4b93dc9b-a653-4b74-969b-9d71f5a2072f/medium.webp",
+                "small_url": "https://main-bucket-digitech.s3.ap-south-1.amazonaws.com/products/4b93dc9b-a653-4b74-969b-9d71f5a2072f/small.webp"
+            }
+        ],
+        "category": {
+            "category_id": 4,
+            "category_name": "Bonsai Plants",
+            "category_description": "",
+            "category_icon": ""
+        }
+    },
+    {
+        "product_id": "e45aa594-c3c2-4529-b483-031392e8be0c",
+        "admin_id": "04dd1c",
+        "category_id": 8,
+        "product_name": "Anthurium Red Plant",
+        "product_title": "Anthurium Red Plant",
+        "slug": "anthurium-red-plant-1768372779879",
+        "product_description": "Anthurium Red – The Symbol of Love \u0026 Elegance ❤️🌿\n\nBring home the exotic charm of the Anthurium Red, known for its glossy, heart-shaped red blooms and lush green foliage. This stunning plant adds a touch of sophistication to any space while purifying the air. Perfect for homes, offices, or as a thoughtful gift!\n\n🌿 Features \u0026 Benefits:\n✔ Striking Red Blooms – Long-lasting, vibrant flowers that brighten any room.\n✔ Air-Purifying – Removes toxins and improves indoor air quality.\n✔ Easy to Care For – Low-maintenance and thrives in indoor conditions.\n✔ Symbol of Love \u0026 Prosperity – Ideal for gifting and home décor.\n\n💧 Care Tips:\n\nWatering: Keep soil slightly moist but not soggy. Avoid overwatering.\nLight: Prefers bright, indirect light for best growth.\nTemperature \u0026 Humidity: Loves warmth and high humidity.",
+        "product_price": "4599",
+        "discount_price": "3999",
+        "stock": 5,
+        "product_guide": "Elevate your indoor space with the Anthurium Red – a timeless beauty with a touch of romance! 🌺✨",
+        "status": "ACTIVE",
+        "is_featured": true,
+        "is_deleted": false,
+        "average_rating": 0,
+        "total_reviews": 0,
+        "createdAt": "2026-01-14T06:39:39.882Z",
+        "updatedAt": "2026-01-14T06:39:39.882Z",
+        "images": [
+            {
+                "image_id": 5,
+                "product_id": null,
+                "admin_product_id": "e45aa594-c3c2-4529-b483-031392e8be0c",
+                "large_url": "https://main-bucket-digitech.s3.ap-south-1.amazonaws.com/products/ec5a8eb0-bd8a-4498-84f1-733c3585aaa6/large.webp",
+                "medium_url": "https://main-bucket-digitech.s3.ap-south-1.amazonaws.com/products/ec5a8eb0-bd8a-4498-84f1-733c3585aaa6/medium.webp",
+                "small_url": "https://main-bucket-digitech.s3.ap-south-1.amazonaws.com/products/ec5a8eb0-bd8a-4498-84f1-733c3585aaa6/small.webp"
+            }
+        ],
+        "category": {
+            "category_id": 8,
+            "category_name": "Indoor Plants",
+            "category_description": "",
+            "category_icon": ""
+        }
+    },
+    {
+        "product_id": "860f99ac-270e-4656-acd3-669ba15ec7ff",
+        "admin_id": "04dd1c",
+        "category_id": 1,
+        "product_name": "mango",
+        "product_title": "mango plant",
+        "slug": "mango-1768372047388",
+        "product_description": "n,sbc g z",
+        "product_price": "899",
+        "discount_price": "499",
+        "stock": 14,
+        "product_guide": "best tree in these section",
+        "status": "ACTIVE",
+        "is_featured": true,
+        "is_deleted": false,
+        "average_rating": 0,
+        "total_reviews": 0,
+        "createdAt": "2026-01-14T06:27:27.389Z",
+        "updatedAt": "2026-01-15T08:49:46.991Z",
+        "images": [
+            {
+                "image_id": 4,
+                "product_id": null,
+                "admin_product_id": "860f99ac-270e-4656-acd3-669ba15ec7ff",
+                "large_url": "https://main-bucket-digitech.s3.ap-south-1.amazonaws.com/products/90ac6aec-58dc-4cc3-8334-e878ab9abcea/large.webp",
+                "medium_url": "https://main-bucket-digitech.s3.ap-south-1.amazonaws.com/products/90ac6aec-58dc-4cc3-8334-e878ab9abcea/medium.webp",
+                "small_url": "https://main-bucket-digitech.s3.ap-south-1.amazonaws.com/products/90ac6aec-58dc-4cc3-8334-e878ab9abcea/small.webp"
+            }
+        ],
+        "category": {
+            "category_id": 1,
+            "category_name": "plant",
+            "category_description": "",
+            "category_icon": ""
+        }
+    },
+    {
+        "product_id": "8f2fcf6e-9a02-4fa8-a7e0-1d35f076a545",
+        "admin_id": "04dd1c",
+        "category_id": 1,
+        "product_name": "African Violet (Saintpaulia)",
+        "product_title": "African Violet (Saintpaulia)",
+        "slug": "african-violet-(saintpaulia)-1768371672040",
+        "product_description": "nice plant",
+        "product_price": "699",
+        "discount_price": "399",
+        "stock": 5,
+        "product_guide": "best tree in these section",
+        "status": "ACTIVE",
+        "is_featured": true,
+        "is_deleted": false,
+        "average_rating": 0,
+        "total_reviews": 0,
+        "createdAt": "2026-01-14T06:21:12.045Z",
+        "updatedAt": "2026-01-14T06:21:12.045Z",
+        "images": [
+            {
+                "image_id": 3,
+                "product_id": null,
+                "admin_product_id": "8f2fcf6e-9a02-4fa8-a7e0-1d35f076a545",
+                "large_url": "https://main-bucket-digitech.s3.ap-south-1.amazonaws.com/products/095b8b77-f2bc-4e15-ae4e-e46259ce0e26/large.webp",
+                "medium_url": "https://main-bucket-digitech.s3.ap-south-1.amazonaws.com/products/095b8b77-f2bc-4e15-ae4e-e46259ce0e26/medium.webp",
+                "small_url": "https://main-bucket-digitech.s3.ap-south-1.amazonaws.com/products/095b8b77-f2bc-4e15-ae4e-e46259ce0e26/small.webp"
+            }
+        ],
+        "category": {
+            "category_id": 1,
+            "category_name": "plant",
+            "category_description": "",
+            "category_icon": ""
+        }
+    },
+    {
+        "product_id": "a6ff3d4b-25c7-4135-b328-d823ef4e4cbb",
+        "admin_id": "04dd1c",
+        "category_id": 1,
+        "product_name": "African Milk Tree (Euphorbia trigona)",
+        "product_title": "African Milk Tree (Euphorbia trigona)",
+        "slug": "african-milk-tree-(euphorbia-trigona)-1768371545321",
+        "product_description": "African Milk Tree (Euphorbia trigona) is best ",
+        "product_price": "499",
+        "discount_price": "299",
+        "stock": 5,
+        "product_guide": "best tree in these section",
+        "status": "ACTIVE",
+        "is_featured": true,
+        "is_deleted": false,
+        "average_rating": 0,
+        "total_reviews": 0,
+        "createdAt": "2026-01-14T06:19:05.325Z",
+        "updatedAt": "2026-01-14T06:19:05.325Z",
+        "images": [
+            {
+                "image_id": 2,
+                "product_id": null,
+                "admin_product_id": "a6ff3d4b-25c7-4135-b328-d823ef4e4cbb",
+                "large_url": "https://main-bucket-digitech.s3.ap-south-1.amazonaws.com/products/bc8d679b-2cad-44ab-a13b-8d9ca2f2f7db/large.webp",
+                "medium_url": "https://main-bucket-digitech.s3.ap-south-1.amazonaws.com/products/bc8d679b-2cad-44ab-a13b-8d9ca2f2f7db/medium.webp",
+                "small_url": "https://main-bucket-digitech.s3.ap-south-1.amazonaws.com/products/bc8d679b-2cad-44ab-a13b-8d9ca2f2f7db/small.webp"
+            }
+        ],
+        "category": {
+            "category_id": 1,
+            "category_name": "plant",
+            "category_description": "",
+            "category_icon": ""
+        }
+    }
+]
