@@ -25,7 +25,7 @@ export default function CategoryMainContent({
     return (
         <>
             {/* Top Controls Toolbar - Wheat & Premium */}
-            <div className="sticky top-[72px] md:top-24 z-30 mb-8 p-1.5 rounded-full bg-[#fdfaf5]/98 backdrop-blur-xl border border-[#efe9dd] shadow-[0_8px_30px_rgb(0,0,0,0.04)] ring-1 ring-black/5 transition-all duration-300">
+            <div className="top-[72px] md:top-24 z-30 mb-8 p-1.5 rounded-full bg-[#fdfaf5]/98 backdrop-blur-xl border border-[#efe9dd] shadow-[0_8px_30px_rgb(0,0,0,0.04)] ring-1 ring-black/5 transition-all duration-300">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-2">
 
                     {/* Search Bar - Integrated Pill */}

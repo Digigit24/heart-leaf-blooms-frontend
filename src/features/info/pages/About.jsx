@@ -75,7 +75,7 @@ const NeemLeaf = ({ className, style }) => (
         />
 
         {/* Serrated Edges Detail - stylised overlay */}
-        <path d="M85 100 L90 105 L83 115" fill="none" class="hidden" />
+        <path d="M85 100 L90 105 L83 115" fill="none" className="hidden" />
 
         {/* Central Vein */}
         <path d="M50 5 L50 195" stroke="#14532d" strokeWidth="1.5" strokeLinecap="round" opacity="0.6" />
