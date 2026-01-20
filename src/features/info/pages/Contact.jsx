@@ -72,7 +72,7 @@ const TextAreaField = ({ label, id, placeholder, rows = 5, required = false }) =
 
 const Contact = () => {
     const formRef = useRef(null);
-    const containerRef = useRef(null);
+    // containerRef removed as it was unused and potentially causing confusion with useScroll
 
     // Parallax effect for scroll
     const { scrollY } = useScroll();
@@ -98,7 +98,7 @@ const Contact = () => {
     };
 
     return (
-        <div ref={containerRef} className="min-h-screen bg-[#FDFBF7] relative overflow-hidden selection:bg-brand/20 font-sans">
+        <div className="min-h-screen bg-[#FDFBF7] relative overflow-hidden selection:bg-brand/20 font-sans">
 
             {/* --- Oil Paint Background Layer --- */}
             <div className="absolute inset-0 z-0 opacity-[0.12] mix-blend-multiply pointer-events-none">
@@ -169,23 +169,23 @@ const Contact = () => {
                     </p>
                 </motion.div>
 
-                <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+                <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 items-stretch">
 
                     {/* --- Left Column: Info & Map (Compact) --- */}
-                    <div className="lg:col-span-12 xl:col-span-5 space-y-6">
+                    <div className="lg:col-span-12 xl:col-span-5">
                         <motion.div
                             variants={staggerContainer}
                             initial="hidden"
                             whileInView="visible"
                             viewport={{ once: true }}
-                            className="bg-white/60 backdrop-blur-xl p-6 rounded-4xl shadow-xl shadow-brand/5 overflow-hidden"
+                            className="bg-white/60 backdrop-blur-xl p-6 rounded-4xl shadow-xl shadow-brand/5 overflow-hidden h-full flex flex-col"
                         >
-                            <h3 className="text-xl font-heading font-bold text-primary mb-6 ml-2 flex items-center gap-2">
+                            <h3 className="text-xl font-heading font-bold text-primary mb-6 ml-2 flex items-center gap-2 shrink-0">
                                 <MapPin className="text-brand w-5 h-5" />
                                 Visit Our Greenhouse
                             </h3>
 
-                            <div className="space-y-4 mb-8">
+                            <div className="space-y-4 mb-8 shrink-0">
                                 <ContactItem
                                     icon={MapPin}
                                     title="Location"
@@ -209,7 +209,7 @@ const Contact = () => {
                             </div>
 
                             {/* Integrated Map */}
-                            <div className="relative h-[250px] w-full rounded-2xl overflow-hidden group">
+                            <div className="relative w-full rounded-2xl overflow-hidden group flex-1 min-h-[250px]">
                                 <iframe
                                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d121059.04360432742!2d73.79296687483734!3d18.52456485989721!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf2e67461101%3A0x828d43bf9d9ee343!2sPune%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1709825481234!5m2!1sen!2sin"
                                     width="100%"
@@ -219,7 +219,7 @@ const Contact = () => {
                                     loading="lazy"
                                     referrerPolicy="no-referrer-when-downgrade"
                                     title="Google Map"
-                                    className="relative z-10 grayscale-20 group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-110 group-hover:scale-100"
+                                    className="relative z-10 grayscale-20 group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-110 group-hover:scale-100 h-full"
                                 ></iframe>
 
                                 {/* Overlay Label */}
@@ -238,7 +238,7 @@ const Contact = () => {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.8, type: "spring", bounce: 0.3 }}
-                            className="bg-white/60 backdrop-blur-xl p-8 md:p-12 rounded-[2rem] shadow-xl shadow-brand/5 relative overflow-hidden"
+                            className="bg-white/60 backdrop-blur-xl p-8 md:p-12 rounded-4xl shadow-xl shadow-brand/5 relative overflow-hidden h-full"
                         >
                             <div className="relative z-10 mb-8">
                                 <h3 className="text-3xl font-heading font-black text-primary mb-2">

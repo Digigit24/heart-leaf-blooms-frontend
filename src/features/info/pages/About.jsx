@@ -1,17 +1,14 @@
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Eye, Sprout, Target } from 'lucide-react';
 
 // --- Animation Variants ---
-
-const transition = { duration: 0.8, ease: [0.22, 1, 0.36, 1] };
-
 const fadeInUp = {
-    hidden: { opacity: 0, y: 40 },
+    hidden: { opacity: 0, y: 30 },
     visible: {
         opacity: 1,
         y: 0,
-        transition: { ...transition, duration: 1 }
+        transition: { duration: 0.8, ease: "easeOut" }
     }
 };
 
@@ -20,407 +17,208 @@ const staggerContainer = {
     visible: {
         opacity: 1,
         transition: {
-            staggerChildren: 0.2,
+            staggerChildren: 0.15,
             delayChildren: 0.1
         }
     }
 };
 
-const scaleIn = {
-    hidden: { opacity: 0, scale: 0.9 },
-    visible: {
-        opacity: 1,
-        scale: 1,
-        transition: { ...transition, duration: 1.2 }
-    }
-};
-
-// --- Helper Components ---
-
-const SplitText = ({ children, className }) => {
-    const letter = {
-        visible: { y: 0, opacity: 1, transition: { type: "spring", damping: 12, stiffness: 100 } },
-        hidden: { y: 20, opacity: 0, transition: { type: "spring", damping: 12, stiffness: 100 } },
-    };
-
-    const container = {
-        hidden: { opacity: 0 },
-        visible: (i = 1) => ({ opacity: 1, transition: { staggerChildren: 0.05, delayChildren: 0.04 * i } }),
-    };
-
-    return (
-        <motion.span variants={container} initial="hidden" whileInView="visible" viewport={{ once: true }} className={`inline-block ${className}`}>
-            {children.split("").map((char, index) => (
-                <motion.span variants={letter} key={index} className="inline-block">
-                    {char === " " ? "\u00A0" : char}
-                </motion.span>
-            ))}
-        </motion.span>
-    );
-};
-
-// Realistic Neem Leaf Component (Serrated, Elongated, Curvy)
-const NeemLeaf = ({ className, style }) => (
-    <motion.svg
-        viewBox="0 0 100 200"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className={className}
-        style={style}
-    >
-        {/* Elongated leaf shape with serrated edges */}
-        <path
-            d="M50 0 C60 20 80 50 85 100 C88 130 75 160 55 190 L50 200 L45 190 C25 160 12 130 15 100 C20 50 40 20 50 0 Z"
-            fill="url(#neemGradient)"
-        />
-
-        {/* Serrated Edges Detail - stylised overlay */}
-        <path d="M85 100 L90 105 L83 115" fill="none" className="hidden" />
-
-        {/* Central Vein */}
-        <path d="M50 5 L50 195" stroke="#14532d" strokeWidth="1.5" strokeLinecap="round" opacity="0.6" />
-
-        {/* Side Veins - Asymmetric and angled */}
-        <path d="M50 30 C50 30 70 40 75 45" stroke="#164e3b" strokeWidth="0.8" opacity="0.4" />
-        <path d="M50 50 C50 50 25 60 20 65" stroke="#164e3b" strokeWidth="0.8" opacity="0.4" />
-        <path d="M50 70 C50 70 78 80 82 85" stroke="#164e3b" strokeWidth="0.8" opacity="0.4" />
-        <path d="M50 90 C50 90 22 100 18 105" stroke="#164e3b" strokeWidth="0.8" opacity="0.4" />
-        <path d="M50 110 C50 110 75 120 78 125" stroke="#164e3b" strokeWidth="0.8" opacity="0.4" />
-        <path d="M50 130 C50 130 25 140 22 145" stroke="#164e3b" strokeWidth="0.8" opacity="0.4" />
-        <path d="M50 150 C50 150 65 160 68 165" stroke="#164e3b" strokeWidth="0.8" opacity="0.4" />
-
-        <defs>
-            <linearGradient id="neemGradient" x1="50" y1="0" x2="50" y2="200" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stopColor="#86EFAC" />
-                <stop offset="0.6" stopColor="#22C55E" />
-                <stop offset="1" stopColor="#15803D" />
-            </linearGradient>
-            <filter id="leafShadow" x="-20%" y="-20%" width="140%" height="140%">
-                <feGaussianBlur in="SourceAlpha" stdDeviation="2" />
-                <feOffset dx="2" dy="2" result="offsetblur" />
-                <feComponentTransfer>
-                    <feFuncA type="linear" slope="0.2" />
-                </feComponentTransfer>
-                <feMerge>
-                    <feMergeNode in="offsetblur" />
-                    <feMergeNode in="SourceGraphic" />
-                </feMerge>
-            </filter>
-        </defs>
-    </motion.svg>
-);
-
 const About = () => {
-    // Refs for tracking elements
     const containerRef = useRef(null);
-    const heroRef = useRef(null); // Added heroRef
-    const goalCardRef = useRef(null);
-
-    // Scroll progress for the entire container
-    // Using a slightly longer offset to ensure full travel
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ["start start", "end end"]
     });
 
-    // Ultra-smooth physics (Lenis-like feel)
-    // Higher mass = more inertia, Lower stiffness = softer movement
-    const smoothScroll = useSpring(scrollYProgress, {
-        stiffness: 25,
-        damping: 18,
-        mass: 1.2
-    });
-
-    // --- Path Calculations ---
-
-    // Vertical (Y):
-    // Starts high (0), Falls down to the Founder's Story card (Middle-Bottom).
-    // Adjusted to 1650px to land on the right side of the Founder/Blooms card.
-    const y = useTransform(smoothScroll, [0, 1], [0, 1650]);
-
-    // Horizontal (X) - Swaying "S" Curve:
-    // Weaves Left/Right through content sections.
-    // Ends at -60px (Moved left from start) to overlap the right edge of the Founder card.
-    const x = useTransform(smoothScroll,
-        [0, 0.25, 0.5, 0.75, 1],
-        [0, -300, 50, -200, -60]
-    );
-
-    // Rotation - Synced with the S-curve turns
-    const rotate = useTransform(smoothScroll,
-        [0, 0.25, 0.5, 0.75, 1],
-        [15, -30, 25, -20, 15]
-    );
-
-    // Scale:
-    // Starts detached (normal), slight flutter.
-    const scale = useTransform(smoothScroll, [0, 1], [1.2, 1.0]);
+    // Subtle parallax for background elements
+    const yBg = useTransform(scrollYProgress, [0, 1], [0, -100]);
+    const rotate = useTransform(scrollYProgress, [0, 1], [0, 45]);
 
     return (
-        <div ref={containerRef} className="min-h-screen bg-[#FDFBF7] relative overflow-x-hidden selection:bg-brand/20">
-            {/* Gradient Overlay for atmosphere (simulating light filtering through canopy) */}
-            <div className="fixed inset-0 pointer-events-none z-0 bg-linear-to-b from-transparent via-brand/5 to-transparent"></div>
+        <div ref={containerRef} className="min-h-screen bg-[#FDFBF7] relative overflow-hidden selection:bg-brand/20">
+            {/* Ambient Background - Subtle Gradients */}
+            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+            <div className="absolute bottom-1/3 left-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[100px] -translate-x-1/2 pointer-events-none"></div>
 
-            {/* --- The Guided Neem Leaf Animation --- */}
-            {/* Starting Position: Top Right, aligned with "Welcome to" header area approximately. */}
-            <div
-                className="absolute z-40 pointer-events-none hidden lg:block will-change-transform"
-                style={{
-                    top: '120px',
-                    right: '12%', // Moved slightly inward to start near the text block
-                }}
-            >
-                <NeemLeaf
-                    className="w-16 h-32 drop-shadow-xl" // Narrower and taller for Neem
-                    style={{
-                        y,
-                        x,
-                        rotate,
-                        scale,
-                    }}
-                />
-            </div>
+            <div className="container mx-auto px-4 py-12 md:py-20 relative z-10">
 
-            <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
-                {/* Hero Section */}
-                <div ref={heroRef} className="flex flex-col md:flex-row items-center gap-16 md:gap-24 mb-32">
+                {/* --- Hero Section --- */}
+                <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-stretch mb-24 lg:mb-32">
 
-                    {/* Image Section - Left */}
-                    <div className="w-full md:w-1/2 flex justify-center md:justify-start relative md:pl-8">
-                        <motion.div
-                            variants={scaleIn}
-                            initial="hidden"
-                            animate="visible"
-                            className="relative z-10 w-full max-w-lg"
-                        >
-                            {/* Decorative ring */}
-                            <motion.div
-                                initial={{ opacity: 0, rotate: -15 }}
-                                animate={{ opacity: 1, rotate: 0 }}
-                                transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
-                                className="absolute -inset-4 border border-brand/30 rounded-full z-0 transform scale-110"
+                    {/* Image Section */}
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1 }}
+                        className="relative order-2 lg:order-1 h-full"
+                    >
+                        <div className="relative rounded-4xl overflow-hidden shadow-2xl shadow-brand/10 h-full max-h-[600px] w-full">
+                            <img
+                                src="/images/about-us.png"
+                                alt="Our Green Sanctuary"
+                                className="w-full h-full object-cover relative z-10 hover:scale-105 transition-transform duration-700"
                             />
-
-                            {/* Main Image Container */}
-                            <div className="relative overflow-hidden rounded-2xl group cursor-pointer shadow-2xl shadow-brand/20">
-                                <motion.div
-                                    whileHover={{ scale: 1.03 }}
-                                    transition={{ duration: 0.7, ease: "easeOut" }}
-                                    className="bg-linear-to-br from-transparent to-brand/10 rounded-2xl border border-white/50 backdrop-blur-sm"
-                                >
-                                    <img
-                                        src="/images/about-us.png"
-                                        alt="About Heart Leaf Blooms"
-                                        className="relative z-10 w-full object-contain drop-shadow-2xl"
-                                    />
-                                </motion.div>
-                            </div>
-
-                            {/* Floating Badge */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 1, duration: 0.8 }}
-                                className="absolute -bottom-6 -right-6 md:right-0 bg-surface/90 backdrop-blur-xl p-6 rounded-2xl shadow-xl border border-white/60 max-w-[180px]"
-                            >
-                                <div className="flex items-center gap-3 mb-2">
-                                    <div className="p-2 bg-primary/10 rounded-full text-primary">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-leaf"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" /><path d="M2 21c0-3 1.85-5.36 5.08-6L9 14" /></svg>
-                                    </div>
-                                    <span className="text-xs font-bold text-primary uppercase tracking-wider">Est. 2020</span>
-                                </div>
-                                <p className="text-[11px] text-muted leading-tight font-medium">Cultivating nature for over 10,000 happy homes globally.</p>
-                            </motion.div>
-                        </motion.div>
-                    </div>
-
-                    {/* Text Content - Right */}
-                    <div className="w-full md:w-1/2 space-y-12 relative z-0">
-                        <div className="space-y-6 relative">
-                            <div className="overflow-hidden">
-                                <motion.div
-                                    initial={{ y: "100%" }}
-                                    animate={{ y: 0 }}
-                                    transition={{ ...transition, delay: 0.2 }}
-                                    className="flex flex-col gap-1"
-                                >
-                                    <span className="text-sm font-bold tracking-[0.3em] text-brand uppercase pl-1">Who We Are</span>
-                                    <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-black text-primary leading-[0.95] tracking-tight">
-                                        <span className="block overflow-hidden pb-2"><SplitText>Welcome to</SplitText></span>
-                                        <span className="block text-transparent bg-clip-text bg-linear-to-r from-brand to-primary overflow-hidden pb-4"><SplitText>Heart Leaf</SplitText></span>
-                                    </h1>
-                                </motion.div>
-                            </div>
-
-                            {/* This is the gap the leaf will pass through */}
-                            <div className="h-4"></div>
-
-                            <motion.p
-                                variants={fadeInUp}
-                                initial="hidden"
-                                animate="visible"
-                                className="text-muted text-lg leading-relaxed font-body max-w-xl pl-6 py-2 border-l-2 border-brand/30 bg-[#FDFBF7] rounded-r-lg"
-                            >
-                                We bring the serenity of nature directly to your home.
-                                <span className="text-primary font-medium"> Heart Leaf Blooms</span> is more than a plant shop; it's a movement towards sustainable, greener living.
-                                Each leaf tells a story of care, resilience, and beauty.
-                            </motion.p>
+                            {/* Overlay/Tint */}
+                            <div className="absolute inset-0 bg-brand/5 z-20 pointer-events-none mix-blend-multiply"></div>
                         </div>
 
+                        {/* Floating Decoration */}
                         <motion.div
-                            variants={fadeInUp}
-                            initial="hidden"
-                            animate="visible"
-                            className="bg-[#FDFBF7] p-6 rounded-2xl border border-brand/10 inline-block"
+                            style={{ y: yBg, rotate }}
+                            className="absolute -top-12 -right-12 text-brand/10 opacity-50 z-0 pointer-events-none"
                         >
-                            <div className="flex items-center gap-4">
-                                <span className="text-4xl">🏆</span>
+                            <Sprout size={200} strokeWidth={0.5} />
+                        </motion.div>
+                    </motion.div>
+
+                    {/* Text Content */}
+                    <div className="order-1 lg:order-2 flex flex-col justify-center h-full">
+                        <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true }}
+                            variants={fadeInUp}
+                        >
+                            <span className="text-sm font-bold tracking-[0.25em] text-brand uppercase mb-4 block">Who We Are</span>
+                            <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-black text-primary leading-[0.9] tracking-tight mb-8">
+                                Cultivating <br />
+                                <span className="text-transparent bg-clip-text bg-linear-to-r from-brand to-[#8BC34A]">Happiness</span>
+                            </h1>
+                            <p className="text-lg md:text-xl text-text/70 leading-relaxed font-light max-w-lg">
+                                We believe that nature isn't just a place to visit—it's home. Heart Leaf Blooms is a bridge between the wild and your windowsill.
+                            </p>
+
+                            <div className="pt-8 grid grid-cols-2 gap-8 border-t border-brand/10 mt-8">
                                 <div>
-                                    <h2 className="text-lg font-heading font-bold text-primary">
-                                        Best Online Plant Shop 2024
-                                    </h2>
-                                    <p className="text-muted text-sm font-medium">Recognized for Excellence in Quality</p>
+                                    <p className="text-3xl font-heading font-bold text-primary mb-1">10k+</p>
+                                    <p className="text-xs uppercase tracking-wider text-muted">Happy Plant Parents</p>
+                                </div>
+                                <div>
+                                    <p className="text-3xl font-heading font-bold text-primary mb-1">100%</p>
+                                    <p className="text-xs uppercase tracking-wider text-muted">Organic Growth</p>
                                 </div>
                             </div>
                         </motion.div>
                     </div>
                 </div>
 
-                {/* Core Values Grid */}
-                <motion.div
-                    variants={staggerContainer}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, margin: "-50px" }}
-                    className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32 relative"
-                >
-                    {[
-                        {
-                            title: "Our Vision",
-                            text: "To create a greener world where every indoor space is transformed into a sanctuary of life and calm.",
-                            icon: Eye,
-                            color: "text-blue-900/80"
-                        },
-                        {
-                            title: "Our Mission",
-                            text: "To provide healthy, sustainable, and beautiful plants while educating our community on the joy of plant parenthood.",
-                            icon: Sprout,
-                            color: "text-primary"
-                        },
-                        {
-                            id: "goal-card", // Target for the leaf
-                            title: "Our Goal",
-                            text: "To be the most reliable and inspiring partner in your indoor gardening journey, offering quality you can trust.",
-                            icon: Target,
-                            color: "text-amber-700/80"
-                        }
-                    ].map((item, index) => (
-                        <motion.div
-                            key={index}
-                            ref={item.id ? goalCardRef : null}
-                            variants={fadeInUp}
-                            whileHover={{ y: -8 }}
-                            className="relative bg-[#FDFBF7] p-8 md:p-10 rounded-3xl border border-brand/10 shadow-lg hover:shadow-xl transition-all duration-300 group overflow-hidden z-20"
-                        >
-                            {/* Hover Gradient Background */}
-                            <div className="absolute inset-0 bg-linear-to-br from-transparent to-brand/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                {/* --- Core Values (Clean Layout) --- */}
+                <div className="mb-24 lg:mb-32">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-center max-w-2xl mx-auto mb-16"
+                    >
+                        <h2 className="text-3xl md:text-4xl font-heading font-bold text-primary mb-4">Our Roots</h2>
+                        <p className="text-text/60">Guided by principles that help us grow together.</p>
+                    </motion.div>
 
-                            {/* Icon */}
-                            <div className="relative z-10 w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-300 border border-brand/10">
-                                <item.icon className={`w-8 h-8 ${item.color} stroke-[1.5px]`} />
-                            </div>
-
-                            {/* Target Anchor for the Leaf Land */}
-                            {item.id === 'goal-card' && (
-                                <div className="absolute top-0 right-0 w-8 h-8 opacity-0" id="goal-target-anchor"></div>
-                            )}
-
-                            <h3 className="relative z-10 text-xl font-heading font-bold text-primary mb-3 bg-clip-text">
-                                {item.title}
-                            </h3>
-                            <p className="relative z-10 text-muted leading-relaxed font-body text-sm">
-                                {item.text}
-                            </p>
-                        </motion.div>
-                    ))}
-                </motion.div>
-
-                {/* Founder's Story Section */}
-                <motion.div
-                    variants={fadeInUp}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    className="mb-32 max-w-5xl mx-auto"
-                >
-                    <div className="flex flex-col md:flex-row items-center gap-12 bg-[#FDFBF7] rounded-[40px] p-8 md:p-16 border border-brand/10 shadow-sm relative overflow-hidden">
-
-                        {/* Background Decoration */}
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-brand/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
-
-                        {/* Image */}
-                        <div className="w-48 h-48 md:w-64 md:h-64 shrink-0 relative group">
-                            <div className="absolute inset-0 rounded-full border border-primary/10 transform rotate-6 transition-transform group-hover:rotate-12"></div>
-                            <div className="absolute inset-0 rounded-full border border-brand/20 transform -rotate-3 transition-transform group-hover:-rotate-6"></div>
-                            <img
-                                src="/images/avatar-1.png"
-                                alt="xyz"
-                                className="w-full h-full object-cover rounded-full border-4 border-white shadow-2xl relative z-10 grayscale-[10%] group-hover:grayscale-0 transition-all duration-500"
-                            />
-                            <div className="absolute bottom-4 right-4 z-20 bg-white p-2 rounded-full shadow-lg text-primary">
-                                <Sprout size={20} />
-                            </div>
-                        </div>
-
-                        {/* Content */}
-                        <div className="flex-1 text-center md:text-left relative z-10">
-                            <span className="inline-block py-1 px-3 rounded-full bg-primary/5 text-primary text-[10px] font-bold uppercase tracking-widest mb-4">The Root of It All</span>
-                            <h2 className="text-3xl md:text-4xl font-heading font-black text-primary mb-2">blooms</h2>
-                            <p className="text-sm font-bold text-brand uppercase tracking-widest mb-8">Founder & Head Gardener</p>
-
-                            <div className="space-y-6">
-                                <p className="text-text/80 leading-relaxed font-serif text-lg italic border-l-4 border-accent/30 pl-6 my-6">
-                                    "I didn't choose this path; the plants chose me. It started with a single dying pothos I nursed back to health, and in its new leaf, I found a new purpose."
-                                </p>
-                                <p className="text-muted leading-relaxed">
-                                    Before Heart Leaf Blooms, I was caught in the concrete jungle, disconnected from nature. My small balcony garden became my sanctuary—a place where time slowed down. I realized that plants are more than just decor; they are living companions that heal our spaces and spirits.
-                                </p>
-                                <p className="text-muted leading-relaxed">
-                                    I founded this company with a simple mission: <span className="text-primary font-semibold">to bridge the gap between people and nature</span>, making plant parenthood accessible, rewarding, and undeniably beautiful for everyone.
-                                </p>
-                            </div>
-
-                            {/* Signoff */}
-                            <div className="mt-8 pt-8 border-t border-border/40 flex items-center justify-center md:justify-start gap-4">
-                                <div className="h-px w-12 bg-primary/20"></div>
-                                <span className="font-serif italic text-2xl text-primary/80 transform -rotate-2">blooms.</span>
-                            </div>
-                        </div>
-                    </div>
-                </motion.div>
-
-                {/* Brands / Featured In */}
-                <div className="border-t border-border/60 pt-20 relative">
-                    <p className="text-center text-xs font-bold tracking-[0.2em]  text-muted uppercase mb-16 opacity-60">As Featured In</p>
                     <motion.div
                         variants={staggerContainer}
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true }}
-                        className="flex flex-wrap justify-center items-center gap-x-16 gap-y-12"
+                        className="grid md:grid-cols-3 gap-12 lg:gap-16"
                     >
-                        {['Vogue Living', 'Architectural Digest', 'Plant Life', 'Modern Home', 'Green Spaces'].map((brand, i) => (
-                            <motion.span
-                                key={brand}
+                        {[
+                            {
+                                icon: Eye,
+                                title: "Vision",
+                                desc: "To transform every gray concrete corner into a thriving green sanctuary."
+                            },
+                            {
+                                icon: Sprout,
+                                title: "Mission",
+                                desc: "Providing sustainable, healthy plants and the knowledge to keep them that way."
+                            },
+                            {
+                                icon: Target,
+                                title: "Promise",
+                                desc: "Quality you can trust, delivered safely from our nursery to your doorstep."
+                            }
+                        ].map((item, idx) => (
+                            <motion.div
+                                key={idx}
                                 variants={fadeInUp}
-                                whileHover={{ scale: 1.05, color: "var(--primary)" }}
-                                className={`text-2xl md:text-3xl font-serif font-medium text-muted/40 hover:text-primary transition-all duration-300 cursor-default select-none ${i % 2 === 0 ? 'italic' : ''}`}
+                                className="text-center group"
                             >
-                                {brand}
-                            </motion.span>
+                                <div className="w-16 h-16 mx-auto bg-white rounded-2xl flex items-center justify-center text-brand mb-6 shadow-sm shadow-brand/10 group-hover:scale-110 transition-transform duration-300">
+                                    <item.icon className="w-8 h-8" />
+                                </div>
+                                <h3 className="text-xl font-heading font-bold text-primary mb-3">{item.title}</h3>
+                                <p className="text-text/70 leading-relaxed text-sm md:text-base">{item.desc}</p>
+                            </motion.div>
                         ))}
                     </motion.div>
                 </div>
+
+                {/* --- Founder's Story (Clean Editorial) --- */}
+                <div className="mb-24 relative">
+                    <div className="grid md:grid-cols-12 gap-8 items-center bg-white/50 backdrop-blur-sm rounded-[3rem] p-8 md:p-0 overflow-hidden">
+
+                        {/* Image Strip */}
+                        <div className="md:col-span-5 h-[400px] md:h-full min-h-[500px] relative">
+                            <img
+                                src="/images/avatar-1.png"
+                                alt="Founder"
+                                className="w-full h-full object-cover md:absolute inset-0 grayscale-[10%]"
+                            />
+                        </div>
+
+                        {/* Content */}
+                        <div className="md:col-span-7 md:p-12 lg:p-20">
+                            <span className="text-primary/20 font-heading font-black text-9xl absolute top-0 right-10 -translate-y-1/2 select-none z-0 opacity-20 hidden md:block">
+                                ''
+                            </span>
+
+                            <motion.div
+                                initial="hidden"
+                                whileInView="visible"
+                                viewport={{ once: true }}
+                                variants={staggerContainer}
+                                className="relative z-10"
+                            >
+                                <motion.p variants={fadeInUp} className="text-sm font-bold text-brand uppercase tracking-widest mb-6">The Gardener's Note</motion.p>
+
+                                <motion.blockquote variants={fadeInUp} className="text-2xl md:text-3xl font-serif text-primary/80 italic leading-relaxed mb-8">
+                                    "I didn't choose this path; the plants chose me. In every new leaf, I found a new purpose."
+                                </motion.blockquote>
+
+                                <motion.div variants={fadeInUp} className="space-y-4 text-text/70 leading-loose">
+                                    <p>
+                                        Before Heart Leaf Blooms, I felt disconnected in the city. My balcony garden became my escape—a place where time slowed down.
+                                    </p>
+                                    <p>
+                                        I founded this company to <strong className="text-primary">bridge the gap between people and nature</strong>, making plant parenthood accessible and rewarding for everyone.
+                                    </p>
+                                </motion.div>
+
+                                <motion.div variants={fadeInUp} className="mt-8 pt-8 border-t border-brand/10 flex items-center gap-4">
+                                    <div>
+                                        <p className="font-heading font-bold text-primary text-lg">blooms</p>
+                                        <p className="text-xs text-muted">Founder & Head Gardener</p>
+                                    </div>
+                                    <img src="/images/signature.png" alt="" className="h-8 opacity-50 ml-auto hidden" /> {/* Placeholder for signature if needed */}
+                                </motion.div>
+                            </motion.div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* --- Featured In (Minimal) --- */}
+                <div className="border-t border-brand/5 pt-16 text-center opacity-60 hover:opacity-100 transition-opacity duration-500">
+                    <p className="text-xs font-bold tracking-[0.2em] text-muted uppercase mb-12">As Featured In</p>
+                    <div className="flex flex-wrap justify-center gap-12 md:gap-20">
+                        {['Vogue Living', 'Architectural Digest', 'Plant Life', 'Modern Home'].map((brand) => (
+                            <span key={brand} className="text-xl md:text-2xl font-serif text-primary/40 hover:text-primary transition-colors cursor-default">
+                                {brand}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+
             </div>
         </div>
     );
