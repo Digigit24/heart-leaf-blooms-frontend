@@ -40,6 +40,7 @@ export default function Header() {
     { name: 'Offers', path: PATHS.OFFERS },
     ...(isMultivendor ? [{ name: 'Vendors', path: PATHS.VENDORS }] : []),
     { name: 'About', path: PATHS.ABOUT },
+    { name: 'Contact', path: PATHS.CONTACT },
   ];
 
   const handleLogout = () => {

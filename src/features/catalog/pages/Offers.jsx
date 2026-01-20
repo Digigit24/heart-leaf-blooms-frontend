@@ -191,7 +191,7 @@ export default function Offers() {
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <button
                                 onClick={() => document.getElementById('flash-sales').scrollIntoView({ behavior: 'smooth' })}
-                                className="px-8 py-3 bg-brand-dark text-white font-bold rounded-full hover:bg-brand transition-all shadow-lg active:scale-95 cursor-pointer"
+                                className="px-8 py-3 bg-brand-dark font-bold rounded-full hover:bg-brand transition-all shadow-lg active:scale-95 cursor-pointer"
                             >
                                 View Flash Sales
                             </button>
@@ -267,7 +267,7 @@ export default function Offers() {
                     <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-fixed"></div>
                     <div className="absolute top-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-[80px]"></div>
 
-                    <div className="relative z-10 max-w-2xl mx-auto text-white">
+                    <div className="relative z-10 max-w-2xl mx-auto">
                         <Star className="w-12 h-12 mx-auto text-yellow-400 mb-6 fill-current" />
                         <h2 className="text-4xl md:text-5xl font-heading font-black mb-6">Need a Custom Deal?</h2>
                         <p className="text-lg text-white/80 mb-8 leading-relaxed">
