@@ -60,24 +60,24 @@ import fallbackData from '../data/fallbackProducts.json';
 const FALLBACK_PRODUCTS = fallbackData.map(mapProduct);
 
 export const useProducts = () => {
+    // FORCE DEMO DATA DIRECTLY - BYPASSING REACT QUERY TO FIX LOADER ISSUE
+    return {
+        data: FALLBACK_PRODUCTS,
+        isLoading: false,
+        isError: false,
+        error: null
+    };
+
+    /* 
     return useQuery({
         queryKey: ['products'],
         queryFn: async () => {
-            // Fetch live data
-            try {
-                const response = await catalogApi.getAllProducts();
-                // Return real data if available and valid
-                if (response.data && response.data.length > 0) {
-                    return response.data.map(mapProduct);
-                }
-            } catch (error) {
-                console.warn("Server fetch failed, using fallback data:", error);
-            }
-            // Fallback to offline/cached data if fetch fails or is empty
-            return FALLBACK_PRODUCTS;
+            // FORCE DEMO DATA AS REQUESTED
+            return FALLBACK_PRODUCTS; 
         },
         // Show fallback data immediately (SSR-like behavior for client-side)
         initialData: FALLBACK_PRODUCTS,
-        staleTime: 60 * 1000, // Consider fallback "fresh" for 1 min to avoid instant refetch flicker, or set to 0 to prefer live immediately
+        staleTime: Infinity, // Keep data fresh essentially forever since it's demo data
     });
+    */
 };

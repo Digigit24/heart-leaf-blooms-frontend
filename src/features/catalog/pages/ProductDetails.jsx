@@ -455,6 +455,30 @@ export default function ProductDetails() {
                     navigate(PATHS.LOGIN);
                     return;
                   }
+                  // Add to cart and immediately go to checkout
+                  addItem({
+                    id: product.id,
+                    name: product.name,
+                    price: currentPrice,
+                    image: product.image,
+                    quantity: quantity,
+                    variant: (product.category === 'Flower Pots' && activeSize && activePot)
+                      ? `${activeSize.label} - ${activePot.label}`
+                      : activeSize ? activeSize.label : 'Standard',
+                  }, user?.id || user?._id);
+                  navigate('/checkout');
+                }}
+                className="h-14 px-8 font-heading font-black uppercase tracking-widest text-sm rounded-full border-2 border-[#0F3D2E] text-[#0F3D2E] hover:bg-[#0F3D2E] hover:text-white transition-all cursor-pointer active:scale-[0.98] flex items-center gap-2"
+              >
+                Buy Now
+              </button>
+
+              <button
+                onClick={() => {
+                  if (!user) {
+                    navigate(PATHS.LOGIN);
+                    return;
+                  }
                   addToWishlist(product, user.id || user._id);
                 }}
                 className={`h-14 w-14 rounded-full border border-border/40 flex items-center justify-center transition-all group cursor-pointer active:scale-95 shadow-sm ${isWishlisted ? 'bg-red-50 text-red-500 border-red-200' : 'bg-white text-primary/80 hover:bg-red-50 hover:text-red-500 hover:border-red-200'}`}

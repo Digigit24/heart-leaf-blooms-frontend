@@ -69,13 +69,33 @@ export default function ProductCard({ product, ...props }) {
         {/* Hover Actions */}
         {!props.hideAddToCart && (
           <div className="flex absolute bottom-3 left-3 right-3 translate-y-0 opacity-100 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-300 z-20 gap-2">
+
+            {/* Add to Cart */}
             <button
               onClick={handleAddToCart}
               disabled={!inStock}
-              className="flex-1 h-9 bg-[#56BA39]/80 backdrop-blur-md border border-white/20 text-white rounded-full flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider hover:bg-[#56BA39] hover:shadow-[0_8px_16px_rgba(86,186,57,0.3)] transition-all duration-300 shadow-lg disabled:cursor-not-allowed disabled:bg-stone-400 cursor-pointer"
+              className="h-9 bg-white/80 backdrop-blur-md border border-stone-200 text-stone-800 rounded-full flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-wider hover:bg-white hover:text-[#56BA39] transition-all duration-300 shadow-sm flex-1 disabled:cursor-not-allowed disabled:opacity-50"
+              title="Add to Cart"
             >
               <ShoppingBag size={14} />
-              {inStock ? 'Add to Cart' : 'Sold Out'}
+            </button>
+
+            {/* Buy Now */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!inStock) return;
+                if (!user) {
+                  navigate(PATHS.LOGIN);
+                  return;
+                }
+                addItem({ ...product, quantity: 1 }, user?.id || user?._id);
+                navigate('/checkout');
+              }}
+              disabled={!inStock}
+              className="h-9 bg-[#0F3D2E] text-white rounded-full flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-wider hover:bg-[#1a4f3b] shadow-lg hover:shadow-[0_4px_12px_rgba(15,61,46,0.3)] transition-all duration-300 flex-[2] disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-stone-400"
+            >
+              {inStock ? 'Buy Now' : 'Sold Out'}
             </button>
           </div>
         )}

@@ -143,24 +143,24 @@ const About = () => {
                         <div className="w-24 h-1 bg-brand/10 mx-auto rounded-full"></div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[300px]">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
                         {/* Card 1: Vision (Large) */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            className="md:col-span-2 bg-[#E6F4EA] rounded-[2.5rem] p-10 relative overflow-hidden group hover:shadow-xl transition-shadow duration-500"
+                            className="md:col-span-2 bg-[#0F3D2E] rounded-[2.5rem] p-10 relative overflow-hidden group hover:shadow-xl transition-shadow duration-500 min-h-[320px] flex flex-col justify-between"
                         >
-                            <div className="absolute top-0 right-0 w-64 h-64 bg-white/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 transition-transform group-hover:scale-110"></div>
-                            <div className="relative z-10 flex flex-col justify-between h-full">
-                                <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#0F3D2E] shadow-sm mb-6">
+                            <div className="absolute top-0 right-0 w-80 h-80 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 transition-transform group-hover:scale-110"></div>
+                            <div className="relative z-10">
+                                <div className="w-14 h-14 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center text-[#C6A15B] shadow-sm mb-6 border border-white/10">
                                     <Eye className="w-7 h-7" />
                                 </div>
                                 <div>
-                                    <h3 className="text-3xl font-heading font-bold text-[#0F3D2E] mb-3">Our Vision</h3>
-                                    <p className="text-[#0F3D2E]/70 text-lg leading-relaxed max-w-md">
-                                        To transform every gray concrete corner into a thriving green sanctuary. We see a future where every home breathes.
+                                    <h3 className="text-3xl font-heading font-bold text-white mb-4">Our Vision</h3>
+                                    <p className="text-white/80 text-lg leading-relaxed max-w-2xl font-light">
+                                        To transform every gray concrete corner into a thriving green sanctuary. We see a future where nature isn't just a destination you visit, but a daily companion in every home—purifying the air, calming the mind, and reminding us of our deep connection to the earth.
                                     </p>
                                 </div>
                             </div>
@@ -172,31 +172,42 @@ const About = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.1 }}
-                            className="bg-[#2D2D2D] md:row-span-2 rounded-[2.5rem] p-10 relative overflow-hidden text-white flex flex-col"
+                            className="bg-[#2D2D2D] md:row-span-2 rounded-[2.5rem] p-10 relative overflow-hidden text-white flex flex-col justify-between min-h-[400px] lg:h-full"
                         >
-                            <div className="absolute inset-0 bg-[url('/images/pattern-leaf.png')] opacity-5"></div> {/* Placeholder pattern */}
-                            <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center text-white mb-auto backdrop-blur-md">
-                                <Target className="w-7 h-7" />
-                            </div>
-                            <div className="mt-8">
-                                <h3 className="text-3xl font-heading font-bold mb-4 text-[#FDFBF7]">The Mission</h3>
-                                <ul className="space-y-4 text-white/70">
-                                    <li className="flex items-start gap-3">
-                                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#8BC34A] shrink-0"></span>
-                                        <span>Sustainable Sourcing</span>
+                            <div className="absolute inset-0 bg-[url('/images/pattern-leaf.png')] opacity-5"></div>
+                            <div className="relative z-10 h-full flex flex-col">
+                                <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center text-white mb-8 backdrop-blur-md">
+                                    <Target className="w-7 h-7" />
+                                </div>
+
+                                <h3 className="text-3xl font-heading font-bold mb-6 text-[#FDFBF7]">The Mission</h3>
+                                <ul className="space-y-6 text-white/70 flex-1">
+                                    <li className="flex items-start gap-4">
+                                        <span className="mt-2 w-1.5 h-1.5 rounded-full bg-[#8BC34A] shrink-0"></span>
+                                        <div>
+                                            <span className="block font-bold text-white mb-1">Sustainable Sourcing</span>
+                                            <span className="text-sm font-light">We work directly with ethical growers who prioritize soil health.</span>
+                                        </div>
                                     </li>
-                                    <li className="flex items-start gap-3">
-                                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#8BC34A] shrink-0"></span>
-                                        <span>Plant Education</span>
+                                    <li className="flex items-start gap-4">
+                                        <span className="mt-2 w-1.5 h-1.5 rounded-full bg-[#8BC34A] shrink-0"></span>
+                                        <div>
+                                            <span className="block font-bold text-white mb-1">Plant Education</span>
+                                            <span className="text-sm font-light">Democratizing botanical knowledge for every skill level.</span>
+                                        </div>
                                     </li>
-                                    <li className="flex items-start gap-3">
-                                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#8BC34A] shrink-0"></span>
-                                        <span>Community Growth</span>
+                                    <li className="flex items-start gap-4">
+                                        <span className="mt-2 w-1.5 h-1.5 rounded-full bg-[#8BC34A] shrink-0"></span>
+                                        <div>
+                                            <span className="block font-bold text-white mb-1">Community Growth</span>
+                                            <span className="text-sm font-light">Fostering a global network of passionate plant lovers.</span>
+                                        </div>
                                     </li>
                                 </ul>
-                            </div>
-                            <div className="mt-auto pt-8 border-t border-white/10">
-                                <p className="text-xs font-bold uppercase tracking-widest text-[#8BC34A]">Since 2020</p>
+
+                                <div className="mt-8 pt-8 border-t border-white/10">
+                                    <p className="text-xs font-bold uppercase tracking-widest text-[#8BC34A]">Since 2020</p>
+                                </div>
                             </div>
                         </motion.div>
 
@@ -206,35 +217,42 @@ const About = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.2 }}
-                            className="bg-white rounded-[2.5rem] p-10 border border-[#0F3D2E]/5 shadow-sm hover:border-[#0F3D2E]/10 transition-colors duration-300"
+                            className="bg-white rounded-[2.5rem] p-10 border border-[#0F3D2E]/5 shadow-sm hover:border-[#0F3D2E]/10 transition-colors duration-300 min-h-[280px] flex flex-col"
                         >
-                            <div className="relative z-10">
+                            <div className="relative z-10 h-full flex flex-col justify-between">
                                 <div className="w-14 h-14 bg-[#F5F3EF] rounded-2xl flex items-center justify-center text-[#C6A15B] mb-6">
                                     <Heart className="w-7 h-7" />
                                 </div>
-                                <h3 className="text-2xl font-heading font-bold text-[#0F3D2E] mb-2">Our Promise</h3>
-                                <p className="text-[#0F3D2E]/60 text-sm leading-relaxed">
-                                    Every plant is hand-inspected and comes with a 14-day happiness guarantee.
-                                </p>
+                                <div>
+                                    <h3 className="text-2xl font-heading font-bold text-[#0F3D2E] mb-3">Our Promise</h3>
+                                    <p className="text-[#0F3D2E]/70 text-sm leading-relaxed">
+                                        Every plant is hand-inspected by our experts and shipped with eco-friendly care. We stand by our roots with a <strong>14-day happiness guarantee</strong>—if your plant doesn't thrive, we help you fix it or replace it.
+                                    </p>
+                                </div>
                             </div>
                         </motion.div>
 
-                        {/* Card 4: Light (Light) - New Grid Item */}
+                        {/* Card 4: Light (Light) */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.3 }}
-                            className="bg-[#FDF0D5] rounded-[2.5rem] p-10 relative overflow-hidden"
+                            className="bg-[#FDF0D5] rounded-[2.5rem] p-10 relative overflow-hidden min-h-[280px] flex flex-col"
                         >
                             <div className="absolute -right-8 -bottom-8 text-[#F9E2B2]">
                                 <Sun size={150} />
                             </div>
-                            <div className="relative z-10">
-                                <h3 className="text-2xl font-heading font-bold text-[#0F3D2E] mb-2">Expert Light</h3>
-                                <p className="text-[#0F3D2E]/60 text-sm max-w-[150px]">
-                                    We guide you to the perfect spot for every leaf.
-                                </p>
+                            <div className="relative z-10 h-full flex flex-col justify-between">
+                                <div className="w-14 h-14 bg-white/40 rounded-2xl flex items-center justify-center text-[#d97706] mb-6 backdrop-blur-sm">
+                                    <Sun className="w-7 h-7" />
+                                </div>
+                                <div>
+                                    <h3 className="text-2xl font-heading font-bold text-[#0F3D2E] mb-3">Expert Light</h3>
+                                    <p className="text-[#0F3D2E]/70 text-sm max-w-[200px] leading-relaxed">
+                                        Not sure where to place your new friend? We guide you to the perfect spot for every leaf with personalized light analysis and care tips.
+                                    </p>
+                                </div>
                             </div>
                         </motion.div>
 

@@ -21,6 +21,10 @@ import Category from '@/features/catalog/pages/Category';
 import About from '@/features/info/pages/About';
 import Offers from '@/features/catalog/pages/Offers';
 import Contact from '@/features/info/pages/Contact';
+import OrderTracking from '@/features/orders/pages/OrderTracking';
+import Payment from '@/features/checkout/pages/Payment';
+import AddressList from '@/features/profile/pages/AddressList';
+import AddressForm from '@/features/profile/pages/AddressForm';
 
 import MainLayout from '@/components/layout/MainLayout';
 import AdminLayout from '@/features/admin/components/AdminLayout';
@@ -57,8 +61,16 @@ const AppRoutes = () => {
                 {/* User Protected Routes */}
                 <Route element={<ProtectedRoute />}>
                     <Route path={PATHS.CHECKOUT} element={<Checkout />} />
+                    <Route path="/checkout/payment" element={<Payment />} />
+
                     <Route path={PATHS.ORDERS} element={<Orders />} />
                     <Route path="/orders/:id" element={<OrderDetails />} />
+                    <Route path="/orders/track/:id" element={<OrderTracking />} />
+
+                    {/* Profile Routes */}
+                    <Route path="/profile/addresses" element={<AddressList />} />
+                    <Route path="/profile/addresses/new" element={<AddressForm />} />
+                    <Route path="/profile/addresses/edit/:id" element={<AddressForm />} />
                 </Route>
 
                 {/* Vendor Protected Routes */}

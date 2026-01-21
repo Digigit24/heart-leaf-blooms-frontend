@@ -18,6 +18,26 @@ export default function AdminLogin() {
         e.preventDefault();
         setLoading(true);
 
+        // DEMO ADMIN LOGIN BYPASS
+        if (formData.email === 'admin@demo.com' && formData.password === 'admin') {
+            const demoAdmin = {
+                id: 'demo-admin-123',
+                name: 'Demo Admin',
+                email: 'admin@demo.com',
+                role: 'admin',
+            };
+
+            localStorage.setItem('admin_token', 'demo-admin-token-123');
+            const host = window.location.hostname;
+            document.cookie = `token=demo-admin-token-123; path=/; max-age=604800; secure; samesite=strict`;
+
+            login({ ...demoAdmin, role: 'admin' });
+            toast.success('Welcome, Demo Administrator.');
+            navigate(PATHS.ADMIN_DASHBOARD);
+            setLoading(false);
+            return;
+        }
+
         try {
             const response = await authApi.loginAdmin(formData);
             const { token, admin, message } = response.data;

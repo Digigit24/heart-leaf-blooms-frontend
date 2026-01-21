@@ -2,5 +2,7 @@
 import client from '@/lib/http/client';
 
 export const ordersApi = {
-  // endpoints
+  createOrder: (data) => client.post('/orders', data),
+  getUserOrders: (userId) => client.get(`/orders/user/${userId}`),
+  getOrderDetails: (orderId) => client.get(`/orders/${orderId}`),
 };

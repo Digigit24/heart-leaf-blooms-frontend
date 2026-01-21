@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { PATHS } from '@/app/routes/paths';
 
 // --- Mock Offers Data ---
+// --- Mock Offers Data ---
 const LIMITED_TIME_OFFERS = [
     {
         id: 1,
@@ -14,7 +15,7 @@ const LIMITED_TIME_OFFERS = [
         discount: "40% OFF",
         expiry: "2026-02-15T23:59:59",
         image: "/images/offers/monsoon_offer_plant_1768910679933.png",
-        color: "bg-teal-900",
+        colorClass: "bg-teal-900",
         accent: "text-teal-200"
     },
     {
@@ -25,7 +26,6 @@ const LIMITED_TIME_OFFERS = [
         discount: "Bundle @ ₹999",
         expiry: "2026-03-01T23:59:59",
         image: "/images/offers/new_parent_kit_1768910980974.png",
-        color: "bg-terracotta-800",
         colorClass: "bg-[#8B4513]",
         accent: "text-orange-200"
     }
@@ -39,7 +39,7 @@ const SUMMER_COLLECTION = [
         discount: "Buy 2 Get 1 Free",
         code: "SUNNY26",
         image: "/images/offers/summer_sunshine_1768911014626.png",
-        colorClass: "bg-orange-600",
+        colorClass: "bg-orange-700",
         accent: "text-yellow-200"
     },
     {
@@ -49,7 +49,7 @@ const SUMMER_COLLECTION = [
         discount: "Flat 20% OFF",
         code: "COOL20",
         image: "/images/offers/cool_shade_1768911033774.png",
-        colorClass: "bg-green-800",
+        colorClass: "bg-green-900",
         accent: "text-green-200"
     }
 ];
@@ -62,7 +62,7 @@ const BULK_ORDERS = [
         discount: "Volume Discounts",
         code: "CORP_GIFT",
         image: "/images/offers/corporate_gift_1768911067128.png",
-        colorClass: "bg-slate-800",
+        colorClass: "bg-slate-900",
         accent: "text-blue-200"
     },
     {
@@ -79,39 +79,73 @@ const BULK_ORDERS = [
 
 const OfferCard = ({ offer, showTimer = false }) => (
     <motion.div
-        whileHover={{ y: -8 }}
-        className={`relative rounded-[32px] overflow-hidden shadow-2xl min-h-[420px] flex group ${offer.colorClass || offer.color}`}
+        whileHover={{ y: -5 }}
+        className={`relative rounded-[2rem] overflow-hidden shadow-xl min-h-[450px] flex flex-col group ${offer.colorClass}`}
     >
-        {/* Background Image with Overlay */}
-        <div className="absolute inset-0">
-            <img src={offer.image} alt={offer.title} className="w-full h-full object-contain p-0 transition-transform duration-700 group-hover:scale-105" />
-            <div className="absolute inset-0 bg-linear-to-r from-black/90 via-black/60 to-transparent"></div>
+        {/* Background Image with Gradient Overlay */}
+        <div className="absolute inset-0 z-0">
+            <img
+                src={offer.image}
+                alt={offer.title}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            {/* Stronger gradient for better text legibility */}
+            <div className="absolute inset-0 bg-linear-to-r from-black/95 via-black/70 to-transparent"></div>
         </div>
 
-        <div className="relative z-10 p-10 flex flex-col justify-center max-w-lg h-full">
-            <div className="inline-block px-3 py-1 bg-white/20 backdrop-blur-md border border-white/30 rounded text-xs font-bold uppercase tracking-wider text-white w-fit mb-4 shadow-sm">
-                {offer.discount}
-            </div>
-            <h3 className="text-4xl font-heading font-black text-white mb-4 leading-tight drop-shadow-lg">{offer.title}</h3>
-            <p className="text-white/90 mb-8 leading-relaxed text-lg font-medium drop-shadow-md">{offer.description}</p>
+        {/* Content Container */}
+        <div className="relative z-10 p-8 md:p-10 flex flex-col h-full justify-between max-w-xl">
 
-            <div className="mt-auto">
-                <div className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20 w-fit group-hover:bg-white/20 transition-colors">
-                    <p className="text-[10px] text-white/70 uppercase tracking-widest mb-1 font-bold">Use Coupon Code</p>
-                    <div className="flex items-center gap-4">
-                        <span className={`text-2xl font-mono font-bold tracking-wider ${offer.accent} drop-shadow-sm`}>{offer.code}</span>
-                        <button
-                            onClick={() => {
-                                navigator.clipboard.writeText(offer.code);
-                            }}
-                            className="p-1.5 hover:bg-white/20 rounded-lg transition-colors text-white border border-white/30 hover:border-white"
-                            title="Copy Code"
-                        >
-                            <span className="text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">Copy</span>
-                        </button>
-                    </div>
+            {/* Top Badge & Text */}
+            <div>
+                <div className="inline-flex px-3 py-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-md text-xs font-bold uppercase tracking-widest text-white mb-6 shadow-sm">
+                    {offer.discount}
                 </div>
-                {showTimer && offer.expiry && <CountdownTimer targetDate={offer.expiry} />}
+                <h3 className="text-3xl md:text-4xl font-heading font-bold text-white mb-4 leading-tight drop-shadow-md">
+                    {offer.title}
+                </h3>
+                <p className="text-white/80 leading-relaxed text-base md:text-lg font-light max-w-md drop-shadow-sm">
+                    {offer.description}
+                </p>
+            </div>
+
+            {/* Bottom Actions */}
+            <div className="mt-8 pt-6 border-t border-white/10">
+                <div className="flex flex-col sm:flex-row gap-6 sm:items-end">
+
+                    {/* Coupon Code Box */}
+                    <div className="bg-white/5 backdrop-blur-md rounded-xl p-4 border border-white/10 group-hover:bg-white/10 transition-colors w-full sm:w-auto">
+                        <p className="text-[10px] text-white/50 uppercase tracking-widest mb-2 font-bold">Coupon Code</p>
+                        <div className="flex items-center justify-between gap-4">
+                            <span className={`text-xl font-mono font-bold tracking-widest ${offer.accent} drop-shadow-sm`}>
+                                {offer.code}
+                            </span>
+                            <button
+                                onClick={() => {
+                                    navigator.clipboard.writeText(offer.code);
+                                }}
+                                className="p-2 hover:bg-white/20 rounded-lg transition-colors text-white border border-white/20 hover:border-white/50"
+                                title="Copy Code"
+                            >
+                                <span className="text-[10px] font-bold px-1 uppercase">Copy</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Timer (if applicable) */}
+                    {showTimer && offer.expiry && (
+                        <div className="hidden sm:block">
+                            <CountdownTimer targetDate={offer.expiry} />
+                        </div>
+                    )}
+                </div>
+
+                {/* Mobile Timer Fallback */}
+                {showTimer && offer.expiry && (
+                    <div className="block sm:hidden mt-6">
+                        <CountdownTimer targetDate={offer.expiry} />
+                    </div>
+                )}
             </div>
         </div>
     </motion.div>

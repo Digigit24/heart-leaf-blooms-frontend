@@ -30,6 +30,24 @@ export default function Login() {
     setLoading(true);
     setError('');
 
+    // DEMO LOGIN BYPASS
+    if (formData.user_email === 'user@demo.com' && formData.user_password === 'demo') {
+      const demoUser = {
+        _id: 'demo-user-123',
+        name: 'Demo User',
+        email: 'user@demo.com',
+        role: 'user',
+        phone: '1234567890',
+        address: '123 Demo St, Demo City'
+      };
+      login(demoUser);
+      localStorage.setItem('token', 'demo-token-123');
+      localStorage.setItem('userId', demoUser._id);
+      navigate(PATHS.HOME);
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await authApi.loginUser(formData);
       const data = response.data;

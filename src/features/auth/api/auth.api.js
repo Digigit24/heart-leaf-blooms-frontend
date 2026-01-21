@@ -6,6 +6,7 @@ export const authApi = {
   registerUser: (data) => client.post('/user/register', data),
   loginUser: (data) => client.post('/user/login', data),
   getUserProfile: (id) => client.get(`/user/${id}`),
+  updateUser: (id, data) => client.put(`/user/${id}`, data), // Added PUT
   addUserAddress: (id, data) => client.post(`/user/${id}/address`, data),
 
   // Vendor Auth
