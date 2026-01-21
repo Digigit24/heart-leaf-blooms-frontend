@@ -38,7 +38,7 @@ function App() {
                 }
             }
             // Minimum loading time for aesthetic purposes, but ensure auth check is done
-            setTimeout(() => setIsLoading(false), 1000);
+            setTimeout(() => setIsLoading(false), 2500);
         };
 
         initAuth();
