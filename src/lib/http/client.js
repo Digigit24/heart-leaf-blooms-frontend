@@ -2,8 +2,8 @@ import axios from 'axios';
 import { useAuthStore } from '@/app/store/auth.store';
 
 const client = axios.create({
-  // Use /api proxy in development to solve CORS/Cookie issues, direct URL in production
-  baseURL: import.meta.env.DEV ? '/api' : 'https://heart-leaf-blooms-backend.onrender.com',
+  // Direct URL as requested to bypass localhost/proxy issues
+  baseURL: 'https://heart-leaf-blooms-backend.onrender.com',
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',

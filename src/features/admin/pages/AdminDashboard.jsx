@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
-import { Package, Users, ShoppingBag, TrendingUp, DollarSign, Store, ArrowRight, Activity, Calendar, MoreHorizontal, Clock, CheckCircle } from 'lucide-react';
+import { Package, Users, ShoppingBag, TrendingUp, IndianRupee, Store, ArrowRight, Activity, Calendar, MoreHorizontal, Clock, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const STATS = [
-  { label: 'Total Revenue', value: '₹1,24,500', icon: DollarSign, trend: '+12.5% this week', trendUp: true },
+  { label: 'Total Revenue', value: '₹1,24,500', icon: IndianRupee, trend: '+12.5% this week', trendUp: true },
   { label: 'Active Orders', value: '24', icon: ShoppingBag, trend: '+4 new today', trendUp: true },
   { label: 'Products', value: '145', icon: Package, trend: 'Stock healthy', trendUp: true },
   { label: 'Vendors', value: '18', icon: Users, trend: '2 pending approval', trendUp: false },
@@ -23,7 +23,7 @@ export default function AdminDashboard() {
             <Calendar size={16} />
             {new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
           </span>
-          <Link to="/admin/products" className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-bold shadow-sm hover:bg-primary/90 transition-colors flex items-center gap-2">
+          <Link to="/admin/products" className="px-4 py-2 bg-primary text-black rounded-lg text-sm font-bold shadow-sm hover:bg-primary/90 transition-colors flex items-center gap-2">
             <Package size={16} />
             Add Product
           </Link>
@@ -50,7 +50,7 @@ export default function AdminDashboard() {
                   {stat.trend}
                 </span>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</h3>
+              <div className="text-2xl font-bold font-sans text-gray-900 mb-1">{stat.value}</div>
               <p className="text-sm text-gray-500 font-medium">{stat.label}</p>
             </motion.div>
           );

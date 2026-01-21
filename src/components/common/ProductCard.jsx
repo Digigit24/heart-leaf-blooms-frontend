@@ -5,7 +5,7 @@ import { useAuthStore } from '@/app/store/auth.store';
 import { toast } from 'react-hot-toast';
 import { PATHS } from '@/app/routes/paths';
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, ...props }) {
   const navigate = useNavigate();
   const { addItem } = useCartStore();
   const { user } = useAuthStore();
@@ -67,17 +67,18 @@ export default function ProductCard({ product }) {
         </div>
 
         {/* Hover Actions */}
-        <div className="flex absolute bottom-3 left-3 right-3 translate-y-0 opacity-100 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-300 z-20 gap-2">
-          <button
-            onClick={handleAddToCart}
-            disabled={!inStock}
-            className="flex-1 h-9 bg-[#56BA39]/80 backdrop-blur-md border border-white/20 text-white rounded-full flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider hover:bg-[#56BA39] hover:shadow-[0_8px_16px_rgba(86,186,57,0.3)] transition-all duration-300 shadow-lg disabled:cursor-not-allowed disabled:bg-stone-400 cursor-pointer"
-          >
-            <ShoppingBag size={14} />
-            {inStock ? 'Add to Cart' : 'Sold Out'}
-          </button>
-
-        </div>
+        {!props.hideAddToCart && (
+          <div className="flex absolute bottom-3 left-3 right-3 translate-y-0 opacity-100 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-300 z-20 gap-2">
+            <button
+              onClick={handleAddToCart}
+              disabled={!inStock}
+              className="flex-1 h-9 bg-[#56BA39]/80 backdrop-blur-md border border-white/20 text-white rounded-full flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider hover:bg-[#56BA39] hover:shadow-[0_8px_16px_rgba(86,186,57,0.3)] transition-all duration-300 shadow-lg disabled:cursor-not-allowed disabled:bg-stone-400 cursor-pointer"
+            >
+              <ShoppingBag size={14} />
+              {inStock ? 'Add to Cart' : 'Sold Out'}
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Product Details */}

@@ -164,7 +164,7 @@ export default function Category() {
                             <motion.div
                                 initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
                                 transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                                className="fixed inset-y-0 right-0 w-80 bg-surface z-50 p-6 overflow-y-auto shadow-2xl md:hidden"
+                                className="fixed inset-y-0 right-0 w-80 bg-[#FDFCF8] z-50 p-6 overflow-y-auto shadow-2xl md:hidden border-l border-[#2F6E1E]/5"
                             >
                                 <div className="flex justify-between items-center mb-6">
                                     <h2 className="text-xl font-heading font-bold text-primary">Filters & Sort</h2>

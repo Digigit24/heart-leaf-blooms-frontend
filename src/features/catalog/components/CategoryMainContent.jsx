@@ -27,10 +27,10 @@ export default function CategoryMainContent({
     return (
         <>
             {/* Top Controls Toolbar - Wheat & Premium */}
-            <div className="top-[72px] md:top-24 z-30 mb-8 p-1.5 rounded-full bg-[#fdfaf5]/98 backdrop-blur-xl border border-[#efe9dd] shadow-[0_8px_30px_rgb(0,0,0,0.04)] ring-1 ring-black/5 transition-all duration-300">
-                <div className="flex flex-col md:flex-row items-center justify-between gap-2">
+            <div className="top-[72px] md:top-24 z-30 mb-8 p-1.5 rounded-3xl md:rounded-full bg-[#fdfaf5]/98 backdrop-blur-xl border border-[#efe9dd] shadow-[0_8px_30px_rgb(0,0,0,0.04)] ring-1 ring-black/5 transition-all duration-300">
+                <div className="flex flex-col md:flex-row items-center gap-2">
 
-                    {/* Search Bar - Integrated Pill */}
+                    {/* Search Bar - Integrated Pill relative to container width */}
                     <div className="relative w-full md:flex-1 group">
                         <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8c8475] group-focus-within:text-primary transition-colors duration-300">
                             <Search size={18} />
@@ -46,14 +46,14 @@ export default function CategoryMainContent({
 
                     <div className="hidden md:block w-px h-6 bg-[#efe9dd]"></div>
 
-                    {/* Controls Group - Right Aligned */}
-                    <div className="flex items-center gap-1 w-full md:w-auto overflow-x-auto md:overflow-visible pb-1 md:pb-0 px-1 md:px-0 no-scrollbar justify-end shrink-0">
+                    {/* Controls Group - Right Aligned & Stable */}
+                    <div className="flex items-center justify-between md:justify-end gap-2 w-full md:w-auto shrink-0">
 
                         {/* Sort Dropdown - Refined Pill */}
-                        <div className="relative shrink-0">
+                        <div className="relative flex-1 md:flex-none">
                             <button
                                 onClick={() => setIsSortOpen(!isSortOpen)}
-                                className="whitespace-nowrap flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#F5DEB3]/20 hover:bg-[#F5DEB3]/40 border border-[#efe9dd] transition-all duration-300 text-sm group"
+                                className="w-full md:w-auto whitespace-nowrap flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-[#F5DEB3]/20 hover:bg-[#F5DEB3]/40 border border-[#efe9dd] transition-all duration-300 text-sm group"
                             >
                                 <span className="text-[#8c8475] font-medium text-xs uppercase tracking-wide">Sort:</span>
                                 <span className="text-primary font-bold flex items-center gap-1">
@@ -72,7 +72,7 @@ export default function CategoryMainContent({
                                         animate={{ opacity: 1, y: 0, scale: 1 }}
                                         exit={{ opacity: 0, y: 8, scale: 0.96 }}
                                         transition={{ type: "spring", bounce: 0, duration: 0.2 }}
-                                        className="absolute right-0 top-full mt-2 w-56 bg-[#fdfaf5] rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-[#efe9dd] p-1.5 z-50 origin-top-right ring-1 ring-black/5"
+                                        className="absolute right-0 top-full mt-2 w-full md:w-56 bg-[#fdfaf5] rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-[#efe9dd] p-1.5 z-50 origin-top-right ring-1 ring-black/5"
                                         onMouseLeave={() => setIsSortOpen(false)}
                                     >
                                         {[
@@ -99,10 +99,10 @@ export default function CategoryMainContent({
                         </div>
 
                         {/* Divider */}
-                        <div className="w-px h-6 bg-[#efe9dd] mx-1"></div>
+                        <div className="w-px h-6 bg-[#efe9dd] mx-1 hidden md:block"></div>
 
                         {/* View Toggle - Animated Switch */}
-                        <div className="flex bg-[#efe9dd]/40 p-1 rounded-full border border-[#efe9dd] relative">
+                        <div className="flex bg-[#efe9dd]/40 p-1 rounded-full border border-[#efe9dd] relative shrink-0">
                             {/* Animated Background Indicator */}
                             <div
                                 className={`absolute top-1 bottom-1 rounded-full bg-white shadow-sm transition-all duration-300 ease-out z-0`}

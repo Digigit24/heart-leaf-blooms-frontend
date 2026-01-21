@@ -88,11 +88,11 @@ export default function AdminSidebar({ isOpen, onClose }) {
                                                 "group flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200",
                                                 isActive
                                                     ? "bg-[#1C5B45] text-white shadow-md shadow-black/10 border border-[#1C5B45]"
-                                                    : "text-[#8FAF9B] hover:text-white hover:bg-[#1C5B45]/50 border border-transparent"
+                                                    : "text-white hover:bg-[#1C5B45]/50 border border-transparent"
                                             )}
                                         >
                                             <div className="flex items-center gap-3">
-                                                <Icon size={18} className={cn("transition-colors", isActive ? "text-[#C6A15B]" : "text-[#5C6B63] group-hover:text-[#C6A15B]")} />
+                                                <Icon size={18} className={cn("transition-colors text-[#C6A15B]")} />
                                                 <span>{item.label}</span>
                                             </div>
                                             {isActive && <ChevronRight size={14} className="opacity-50 text-[#C6A15B]" />}
@@ -110,10 +110,10 @@ export default function AdminSidebar({ isOpen, onClose }) {
                                     return (
                                         <button
                                             key={item.href}
-                                            className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-[#8FAF9B] hover:text-white hover:bg-[#1C5B45]/50 transition-all duration-200 cursor-not-allowed opacity-60"
+                                            className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-white hover:bg-[#1C5B45]/50 transition-all duration-200 cursor-not-allowed opacity-60"
                                         >
                                             <div className="flex items-center gap-3">
-                                                <Icon size={18} className="text-[#5C6B63]" />
+                                                <Icon size={18} className="text-[#C6A15B]" />
                                                 <span>{item.label}</span>
                                             </div>
                                         </button>

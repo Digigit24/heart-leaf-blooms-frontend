@@ -30,10 +30,24 @@ export default function TrendingProducts() {
             const cardWidth = container.firstElementChild?.getBoundingClientRect().width || 300;
             const scrollAmount = cardWidth + 16;
 
-            container.scrollBy({
-                left: direction === 'left' ? -scrollAmount : scrollAmount,
-                behavior: 'smooth'
-            });
+            const maxScrollLeft = container.scrollWidth - container.clientWidth;
+            // Buffer to detect edge
+            const isAtEnd = container.scrollLeft >= maxScrollLeft - 10;
+            const isAtStart = container.scrollLeft <= 10;
+
+            if (direction === 'left') {
+                if (isAtStart) {
+                    container.scrollTo({ left: maxScrollLeft, behavior: 'smooth' });
+                } else {
+                    container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+                }
+            } else {
+                if (isAtEnd) {
+                    container.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                    container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+                }
+            }
         }
     };
 
@@ -158,7 +172,7 @@ export default function TrendingProducts() {
                                         viewport={{ once: true, margin: "-50px" }}
                                         className="w-[160px] min-w-[160px] sm:min-w-[260px] md:min-w-[calc(25%-1.5rem)] flex-shrink-0 snap-center"
                                     >
-                                        <ProductCard product={product} />
+                                        <ProductCard product={product} hideAddToCart={true} />
                                     </motion.div>
                                 ))
                             ) : (
