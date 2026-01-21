@@ -225,8 +225,8 @@ export default function Header() {
                 className={cn(
                   'block px-5 py-3.5 rounded-2xl text-lg font-heading font-medium transition-all',
                   location.pathname === link.path
-                    ? 'bg-brand text-white shadow-lg shadow-brand/20'
-                    : 'text-text-secondary hover:bg-brand-soft/50 hover:text-brand-dark'
+                    ? 'bg-[#EAF6E6] text-[#56BA39] font-bold shadow-sm'
+                    : 'text-text-secondary hover:bg-[#EAF6E6]/50 hover:text-[#2F6E1E]'
                 )}
               >
                 {link.name}

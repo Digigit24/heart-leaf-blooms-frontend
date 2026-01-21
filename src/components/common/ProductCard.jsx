@@ -71,7 +71,7 @@ export default function ProductCard({ product }) {
           <button
             onClick={handleAddToCart}
             disabled={!inStock}
-            className="flex-1 h-9 bg-primary/90 backdrop-blur-md text-white rounded-full flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider hover:bg-primary/95 shadow-lg disabled:cursor-not-allowed disabled:bg-stone-400 cursor-pointer"
+            className="flex-1 h-9 bg-[#56BA39]/80 backdrop-blur-md border border-white/20 text-white rounded-full flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider hover:bg-[#56BA39] hover:shadow-[0_8px_16px_rgba(86,186,57,0.3)] transition-all duration-300 shadow-lg disabled:cursor-not-allowed disabled:bg-stone-400 cursor-pointer"
           >
             <ShoppingBag size={14} />
             {inStock ? 'Add to Cart' : 'Sold Out'}
