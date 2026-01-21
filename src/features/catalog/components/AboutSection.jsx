@@ -67,7 +67,7 @@ export default function AboutSection() {
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.2 }}
                             viewport={{ once: true }}
-                            className="space-y-6 w-full"
+                            className="space-y-6 w-full p-8 rounded-[2.5rem] bg-white/60 backdrop-blur-md border border-white/40 shadow-sm"
                         >
                             {/* Tag - Aligned Left (No padding) */}
                             <div className="flex items-center gap-3">
@@ -101,7 +101,7 @@ export default function AboutSection() {
                                 viewport={{ once: true }}
                                 className="group flex flex-col items-start gap-4"
                             >
-                                <div className="w-14 h-14 rounded-2xl bg-brand-soft/60 flex items-center justify-center text-brand-dark group-hover:bg-brand group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-brand/20 group-hover:scale-110 group-hover:rotate-3">
+                                <div className="w-14 h-14 rounded-2xl bg-brand-soft/60 flex items-center justify-center text-brand-dark group-hover:bg-[#0F3D2E] group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-brand/20 group-hover:scale-110 group-hover:rotate-3">
                                     <Leaf className="w-7 h-7" />
                                 </div>
                                 <div className="space-y-2">
@@ -120,7 +120,7 @@ export default function AboutSection() {
                                 viewport={{ once: true }}
                                 className="group flex flex-col items-start gap-4"
                             >
-                                <div className="w-14 h-14 rounded-2xl bg-brand-soft/60 flex items-center justify-center text-brand-dark group-hover:bg-brand group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-brand/20 group-hover:scale-110 group-hover:-rotate-3">
+                                <div className="w-14 h-14 rounded-2xl bg-brand-soft/60 flex items-center justify-center text-brand-dark group-hover:bg-[#0F3D2E] group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-brand/20 group-hover:scale-110 group-hover:-rotate-3">
                                     <CheckCircle2 className="w-7 h-7" />
                                 </div>
                                 <div className="space-y-2">

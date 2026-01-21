@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '@/app/store/auth.store';
 import { authApi } from '@/features/auth/api/auth.api';
 import { PATHS } from '@/app/routes/paths';
 import { Eye, EyeOff, Loader2, ArrowRight, Sparkles } from 'lucide-react';
 import { useConfig } from '@/context/ConfigContext';
+import Lottie from "lottie-react";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -15,6 +16,14 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [focusedField, setFocusedField] = useState(null);
+  const [animationData, setAnimationData] = useState(null);
+
+  useEffect(() => {
+    fetch('/images/animations/blooming-flowers.json')
+      .then((res) => res.json())
+      .then((data) => setAnimationData(data))
+      .catch((err) => console.error("Failed to load Lottie animation:", err));
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,183 +62,211 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex bg-[#FDFBF7]">
-      {/* Left Panel - Visual & Brand */}
-      <div className="hidden lg:flex w-1/2 relative overflow-hidden bg-[#0F3D2E] text-white">
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://images.unsplash.com/photo-1614531341773-3e9750e0ce64?q=80&w=3348&auto=format&fit=crop"
-            alt="Botanical Background"
-            className="w-full h-full object-cover opacity-100"
-          />
-          <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
-        </div>
+    <div className="min-h-screen w-full flex items-center justify-center bg-[#FDFBF7] p-4">
+      {/* Centered Card Container */}
+      <div className="bg-white w-full max-w-[1000px] h-[600px] rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col lg:flex-row shadow-[#0F3D2E]/10">
 
-        <div className="relative z-10 flex flex-col justify-between p-16 w-full">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
-              <Sparkles size={18} className="text-[#C6A15B]" />
-            </div>
-            <span className="font-serif text-xl tracking-wide italic">Heart Leaf Blooms</span>
-          </div>
-
-          <div className="space-y-6 max-w-lg">
-            <h1 className="font-serif text-5xl leading-tight">
-              Bring nature's <br />
-              <span className="text-[#C6A15B] italic">serenity</span> indoors.
-            </h1>
-            <p className="text-white/80 text-lg font-light leading-relaxed">
-              Curating the finest rare plants and botanical accessories for your personal sanctuary. Join our community of plant lovers today.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-4 text-sm text-white/60 font-medium tracking-widest uppercase">
-            <span>Est. 2024</span>
-            <div className="w-12 h-px bg-white/20" />
-            <span>Premium Botanicals</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Right Panel - Login Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 lg:p-16 relative">
-        {/* Mobile Background Texture (Subtle) */}
-        <div className="absolute inset-0 lg:hidden bg-[#FDFBF7]">
-          <div className="absolute top-0 left-0 w-64 h-64 bg-[#C6A15B]/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
-          <div className="absolute bottom-0 right-0 w-64 h-64 bg-[#0F3D2E]/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
-        </div>
-
-        <div className="w-full max-w-md relative z-10">
-          <div className="mb-10">
-            <h2 className="font-serif text-4xl text-[#0F3D2E] mb-3">Welcome Back</h2>
-            <p className="text-[#5C6B63]">Please enter your details to sign in.</p>
-          </div>
-
-          {error && (
-            <div className="mb-6 p-4 bg-red-50 text-red-700 text-sm rounded-xl border border-red-100 flex items-start gap-3">
-              <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 shrink-0" />
-              {error}
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="relative group">
-              <input
-                type="email"
-                required
-                className={`peer w-full h-14 px-4 bg-white rounded-xl border-2 outline-none transition-all duration-300 font-medium text-[#0F3D2E] placeholder-transparent
-                  ${focusedField === 'email' || formData.user_email ? 'border-[#0F3D2E] shadow-lg shadow-[#0F3D2E]/5' : 'border-gray-200 hover:border-gray-300'}
-                `}
-                id="email"
-                placeholder="Email"
-                value={formData.user_email}
-                onChange={(e) => setFormData({ ...formData, user_email: e.target.value })}
-                onFocus={() => setFocusedField('email')}
-                onBlur={() => setFocusedField(null)}
+        {/* Left Panel - Visual & Brand (Restricted width) */}
+        <div className="hidden lg:flex w-5/12 relative  text-white overflow-hidden">
+          <div className="absolute inset-0 z-0">
+            {animationData && (
+              <Lottie
+                animationData={animationData}
+                loop={true}
+                className="w-full h-full object-cover opacity-90 scale-110"
               />
-              <label
-                htmlFor="email"
-                className={`absolute left-4 transition-all duration-300 pointer-events-none text-[#5C6B63] font-medium
-                  ${focusedField === 'email' || formData.user_email
-                    ? '-top-3 bg-white px-2 text-xs text-[#0F3D2E] font-bold tracking-wider'
-                    : 'top-1/2 -translate-y-1/2 text-sm'}
-                `}
-              >
-                EMAIL ADDRESS
-              </label>
-            </div>
+            )}
+            <div className="absolute inset-0 bg-linear-to-t from-[#0F3D2E]/50 to-transparent" />
+          </div>
 
-            <div className="relative group">
-              <input
-                type={showPassword ? 'text' : 'password'}
-                required
-                className={`peer w-full h-14 px-4 bg-white rounded-xl border-2 outline-none transition-all duration-300 font-medium text-[#0F3D2E] placeholder-transparent pr-12
-                  ${focusedField === 'password' || formData.user_password ? 'border-[#0F3D2E] shadow-lg shadow-[#0F3D2E]/5' : 'border-gray-200 hover:border-gray-300'}
-                `}
-                id="password"
-                placeholder="Password"
-                value={formData.user_password}
-                onChange={(e) => setFormData({ ...formData, user_password: e.target.value })}
-                onFocus={() => setFocusedField('password')}
-                onBlur={() => setFocusedField(null)}
-              />
-              <label
-                htmlFor="password"
-                className={`absolute left-4 transition-all duration-300 pointer-events-none text-[#5C6B63] font-medium
-                  ${focusedField === 'password' || formData.user_password
-                    ? '-top-3 bg-white px-2 text-xs text-[#0F3D2E] font-bold tracking-wider'
-                    : 'top-1/2 -translate-y-1/2 text-sm'}
-                `}
-              >
-                PASSWORD
-              </label>
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-[#5C6B63] hover:text-[#0F3D2E] transition-colors p-1"
-              >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </button>
-            </div>
-
-            <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center gap-2 cursor-pointer group">
-                <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-[#0F3D2E] focus:ring-[#0F3D2E] transition-all cursor-pointer" />
-                <span className="text-[#5C6B63] group-hover:text-[#0F3D2E] transition-colors">Remember me</span>
-              </label>
-              <Link to={PATHS.FORGOT_PASSWORD} className="font-medium text-[#C6A15B] hover:text-[#0F3D2E] transition-colors">
-                Forgot Password?
-              </Link>
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="group relative w-full h-14 bg-[#0F3D2E] text-white font-bold rounded-xl overflow-hidden hover:shadow-xl hover:shadow-[#0F3D2E]/30 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
-            >
-              <div className="absolute inset-0 w-full h-full bg-linear-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
-              <div className="relative flex items-center justify-center gap-2 tracking-widest text-sm uppercase">
-                {loading ? (
-                  <>
-                    <Loader2 className="animate-spin" size={18} />
-                    <span>Authenticating...</span>
-                  </>
-                ) : (
-                  <>
-                    <span>Sign In</span>
-                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                  </>
-                )}
+          <div className="relative z-10 flex flex-col justify-between p-10 w-full h-full">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
+                <Sparkles size={14} className="text-[#C6A15B]" />
               </div>
-            </button>
-          </form>
-
-          <div className="mt-10 flex items-center gap-4">
-            <div className="h-px bg-gray-200 flex-1" />
-            <span className="text-xs text-[#5C6B63] font-medium uppercase tracking-wider">Or continue with</span>
-            <div className="h-px bg-gray-200 flex-1" />
-          </div>
-
-          <div className="mt-6 text-center">
-            <p className="text-[#5C6B63]">
-              Don't have an account?{' '}
-              <Link to={PATHS.REGISTER} className="font-bold text-[#0F3D2E] hover:underline decoration-2 underline-offset-4">
-                Create free account
-              </Link>
-            </p>
-          </div>
-
-          {isMultivendor && (
-            <div className="mt-8 text-center">
-              <Link
-                to={PATHS.VENDOR_LOGIN}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gray-200 text-xs font-bold text-[#5C6B63] hover:border-[#0F3D2E] hover:text-[#0F3D2E] bg-white transition-all uppercase tracking-wider"
-              >
-                <Sparkles size={14} />
-                Vendor Access
-              </Link>
             </div>
-          )}
+
+
+          </div>
+        </div>
+
+        {/* Right Panel - Login Form */}
+        <div className="w-full lg:w-7/12 h-full flex flex-col justify-center p-8 lg:p-12 relative bg-white">
+          <div className="w-full max-w-sm mx-auto space-y-5">
+
+            <div className="text-center lg:text-left mb-6">
+              <h2 className="font-serif text-3xl text-[#0F3D2E] mb-2">Welcome Back</h2>
+              <p className="text-[#5C6B63] text-sm">Please enter your details to sign in.</p>
+            </div>
+
+            {error && (
+              <div className="p-3 bg-red-50 text-red-700 text-xs font-medium rounded-lg border border-red-100 flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
+                {error}
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-4">
+                <div className="relative group">
+                  <input
+                    type="email"
+                    required
+                    className={`peer w-full h-11 px-4 bg-[#F8F9FA] rounded-xl border outline-none transition-all duration-300 font-medium text-[#0F3D2E] placeholder-transparent focus:bg-white
+                      ${focusedField === 'email' || formData.user_email ? 'border-[#0F3D2E] ring-1 ring-[#0F3D2E]/5' : 'border-transparent hover:border-gray-200'}
+                    `}
+                    id="email"
+                    placeholder="Email"
+                    value={formData.user_email}
+                    onChange={(e) => setFormData({ ...formData, user_email: e.target.value })}
+                    onFocus={() => setFocusedField('email')}
+                    onBlur={() => setFocusedField(null)}
+                  />
+                  <label
+                    htmlFor="email"
+                    className={`absolute left-4 transition-all duration-300 pointer-events-none text-[#5C6B63] font-medium
+                      ${focusedField === 'email' || formData.user_email
+                        ? '-top-2 bg-white px-2 text-[10px] text-[#0F3D2E] font-bold tracking-widest'
+                        : 'top-1/2 -translate-y-1/2 text-xs'}
+                    `}
+                  >
+                    EMAIL ADDRESS
+                  </label>
+                </div>
+
+                <div className="relative group">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    className={`peer w-full h-11 px-4 bg-[#F8F9FA] rounded-xl border outline-none transition-all duration-300 font-medium text-[#0F3D2E] placeholder-transparent focus:bg-white pr-10
+                      ${focusedField === 'password' || formData.user_password ? 'border-[#0F3D2E] ring-1 ring-[#0F3D2E]/5' : 'border-transparent hover:border-gray-200'}
+                    `}
+                    id="password"
+                    placeholder="Password"
+                    value={formData.user_password}
+                    onChange={(e) => setFormData({ ...formData, user_password: e.target.value })}
+                    onFocus={() => setFocusedField('password')}
+                    onBlur={() => setFocusedField(null)}
+                  />
+                  <label
+                    htmlFor="password"
+                    className={`absolute left-4 transition-all duration-300 pointer-events-none text-[#5C6B63] font-medium
+                      ${focusedField === 'password' || formData.user_password
+                        ? '-top-2 bg-white px-2 text-[10px] text-[#0F3D2E] font-bold tracking-widest'
+                        : 'top-1/2 -translate-y-1/2 text-xs'}
+                    `}
+                  >
+                    PASSWORD
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#5C6B63] hover:text-[#0F3D2E] transition-colors p-1"
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between text-xs">
+                <label className="flex items-center gap-2 cursor-pointer group">
+                  <input type="checkbox" className="w-3.5 h-3.5 rounded border-gray-300 text-[#0F3D2E] focus:ring-[#0F3D2E] transition-all cursor-pointer" />
+                  <span className="text-[#5C6B63] group-hover:text-[#0F3D2E] transition-colors font-medium">Remember me</span>
+                </label>
+                <Link to={PATHS.FORGOT_PASSWORD} className="font-bold text-[#0F3D2E] hover:text-[#C6A15B] transition-colors">
+                  Forgot Password?
+                </Link>
+              </div>
+
+              <div className="h-14 w-full relative">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="btn-star"
+                >
+                  {loading ? (
+                    <div className="flex items-center gap-2 relative z-10">
+                      <Loader2 className="animate-spin" size={18} />
+                      <span>Authenticating...</span>
+                    </div>
+                  ) : (
+                    <span className="relative z-10">Sign In</span>
+                  )}
+
+                  {/* Star Animations */}
+                  <div className="star-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlSpace="preserve" version="1.1" style={{ shapeRendering: "geometricPrecision", textRendering: "geometricPrecision", imageRendering: "optimizeQuality", fillRule: "evenodd", clipRule: "evenodd" }} viewBox="0 0 784.11 815.53">
+                      <g id="Layer_x0020_1">
+                        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                        <path className="fil0" d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"></path>
+                      </g>
+                    </svg>
+                  </div>
+                  <div className="star-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlSpace="preserve" version="1.1" style={{ shapeRendering: "geometricPrecision", textRendering: "geometricPrecision", imageRendering: "optimizeQuality", fillRule: "evenodd", clipRule: "evenodd" }} viewBox="0 0 784.11 815.53">
+                      <g id="Layer_x0020_1">
+                        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                        <path className="fil0" d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"></path>
+                      </g>
+                    </svg>
+                  </div>
+                  <div className="star-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlSpace="preserve" version="1.1" style={{ shapeRendering: "geometricPrecision", textRendering: "geometricPrecision", imageRendering: "optimizeQuality", fillRule: "evenodd", clipRule: "evenodd" }} viewBox="0 0 784.11 815.53">
+                      <g id="Layer_x0020_1">
+                        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                        <path className="fil0" d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"></path>
+                      </g>
+                    </svg>
+                  </div>
+                  <div className="star-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlSpace="preserve" version="1.1" style={{ shapeRendering: "geometricPrecision", textRendering: "geometricPrecision", imageRendering: "optimizeQuality", fillRule: "evenodd", clipRule: "evenodd" }} viewBox="0 0 784.11 815.53">
+                      <g id="Layer_x0020_1">
+                        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                        <path className="fil0" d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"></path>
+                      </g>
+                    </svg>
+                  </div>
+                  <div className="star-5">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlSpace="preserve" version="1.1" style={{ shapeRendering: "geometricPrecision", textRendering: "geometricPrecision", imageRendering: "optimizeQuality", fillRule: "evenodd", clipRule: "evenodd" }} viewBox="0 0 784.11 815.53">
+                      <g id="Layer_x0020_1">
+                        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                        <path className="fil0" d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"></path>
+                      </g>
+                    </svg>
+                  </div>
+                  <div className="star-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlSpace="preserve" version="1.1" style={{ shapeRendering: "geometricPrecision", textRendering: "geometricPrecision", imageRendering: "optimizeQuality", fillRule: "evenodd", clipRule: "evenodd" }} viewBox="0 0 784.11 815.53">
+                      <g id="Layer_x0020_1">
+                        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                        <path className="fil0" d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"></path>
+                      </g>
+                    </svg>
+                  </div>
+                </button>
+              </div>
+            </form>
+
+            <div className="mt-6 flex items-center gap-3 opacity-60">
+              <div className="h-px bg-gray-300 flex-1" />
+              <span className="text-[10px] text-[#5C6B63] font-bold uppercase tracking-wider">Or</span>
+              <div className="h-px bg-gray-300 flex-1" />
+            </div>
+
+            <div className="flex flex-col items-center gap-4">
+              <p className="text-[#5C6B63] text-xs">
+                New here?{' '}
+                <Link to={PATHS.REGISTER} className="font-bold text-[#0F3D2E] hover:underline decoration-[#C6A15B] decoration-2 underline-offset-4">
+                  Create an account
+                </Link>
+              </p>
+              {isMultivendor && (
+                <Link to={PATHS.VENDOR_LOGIN} className="text-[10px] text-[#5C6B63] hover:text-[#0F3D2E] transition-colors uppercase tracking-widest font-bold">
+                  Vendor Portal
+                </Link>
+              )}
+            </div>
+
+          </div>
         </div>
       </div>
     </div>
