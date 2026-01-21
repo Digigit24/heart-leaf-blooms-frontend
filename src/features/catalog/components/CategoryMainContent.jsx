@@ -4,6 +4,7 @@ import { Filter, ChevronDown, Grid, List, Search, Check } from 'lucide-react';
 import ProductCard from '@/components/common/ProductCard';
 import LeafLoader from '@/components/ui/LeafLoader';
 import { useNavigate } from 'react-router-dom';
+import { PATHS } from '@/app/routes/paths';
 
 export default function CategoryMainContent({
     products,
@@ -21,6 +22,7 @@ export default function CategoryMainContent({
     clearFilters
 }) {
     const [isSortOpen, setIsSortOpen] = useState(false);
+    const navigate = useNavigate();
 
     return (
         <>
@@ -152,34 +154,54 @@ export default function CategoryMainContent({
                                     {viewMode === 'grid' ? (
                                         <ProductCard product={product} />
                                     ) : (
-                                        <div className="flex gap-6 items-center bg-surface border border-border p-4 rounded-xl hover:shadow-lg transition-all group">
-                                            <div className="w-32 h-32 shrink-0 bg-sage/10 rounded-lg overflow-hidden relative">
+                                        <div className="flex flex-row gap-4 sm:gap-6 items-start sm:items-center bg-surface border border-border p-4 rounded-xl hover:shadow-lg transition-all group">
+                                            <div className="w-24 h-24 sm:w-32 sm:h-32 shrink-0 bg-sage/10 rounded-lg overflow-hidden relative">
                                                 <img src={product.image} alt={product.name} className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500" />
                                                 {!product.inStock && (
                                                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white text-xs font-bold uppercase">Out of Stock</div>
                                                 )}
                                             </div>
-                                            <div className="flex-1">
-                                                <div className="flex justify-between items-start">
-                                                    <div>
-                                                        <div className="text-xs text-primary font-bold uppercase tracking-wider mb-1">{product.category}</div>
-                                                        <h3 className="font-heading font-bold text-xl text-primary mb-1">{product.name}</h3>
-                                                        <p className="text-muted text-sm mb-3">Perfect for your home or office. Easy to care for.</p>
+                                            <div className="flex-1 w-full min-w-0">
+                                                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 h-full">
+                                                    <div className="flex flex-col gap-1 sm:flex-1">
+                                                        <div className="text-[10px] sm:text-xs text-primary font-bold uppercase tracking-wider mb-0.5">{product.category}</div>
+                                                        <h3 className="font-heading font-bold text-lg sm:text-xl text-primary mb-0.5 truncate">{product.name}</h3>
+                                                        <p className="text-muted text-xs sm:text-sm line-clamp-1 hidden sm:block">Perfect for your home or office. Easy to care for.</p>
                                                     </div>
-                                                    <div className="text-right">
-                                                        <div className="text-2xl font-bold text-primary">₹{product.price.toFixed(2)}</div>
-                                                        <div className="text-xs text-muted">Free Shipping</div>
+
+                                                    <div className="flex flex-col sm:items-end gap-2 sm:gap-3 w-full sm:w-auto shrink-0">
+                                                        <div className="text-left sm:text-right flex flex-col sm:items-end">
+                                                            <div className="flex items-center gap-2 sm:justify-end">
+                                                                <div className="text-xl sm:text-2xl font-bold text-primary">₹{product.price.toFixed(2)}</div>
+                                                                {product.originalPrice && (
+                                                                    <div className="text-xs sm:text-sm text-muted/60 line-through">₹{product.originalPrice.toFixed(2)}</div>
+                                                                )}
+                                                            </div>
+                                                            {product.originalPrice && product.originalPrice > product.price && (
+                                                                <div className="text-xs sm:text-sm font-bold text-[#56BA39] mt-0.5">
+                                                                    Min. {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% Off
+                                                                </div>
+                                                            )}
+                                                        </div>
+
+                                                        <div className="flex flex-row gap-2 w-full sm:w-auto">
+                                                            <button
+                                                                disabled={!product.inStock}
+                                                                onClick={(e) => handleAddToCart(e, product)}
+                                                                className="flex-1 sm:flex-none px-3 sm:px-6 py-2 bg-[#2F6E1E] text-white text-xs sm:text-sm font-bold rounded-lg hover:bg-[#1f4a14] transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap">
+                                                                Add to Cart
+                                                            </button>
+                                                            <button
+                                                                disabled={!product.inStock}
+                                                                onClick={(e) => {
+                                                                    handleAddToCart(e, product);
+                                                                    navigate(PATHS.CART || '/cart');
+                                                                }}
+                                                                className="flex-1 sm:flex-none px-3 sm:px-6 py-2 bg-[#56BA39] text-white text-xs sm:text-sm font-bold rounded-lg hover:bg-[#46992e] transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap">
+                                                                Buy Now
+                                                            </button>
+                                                        </div>
                                                     </div>
-                                                </div>
-
-                                                <div className="flex gap-3 mt-2">
-                                                    <button
-                                                        disabled={!product.inStock}
-                                                        onClick={(e) => handleAddToCart(e, product)}
-                                                        className="px-6 py-2 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                                                        Add to Cart
-                                                    </button>
-
                                                 </div>
                                             </div>
                                         </div>
