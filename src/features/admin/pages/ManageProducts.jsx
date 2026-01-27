@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Plus, Search, Edit, Trash2, Image as ImageIcon } from 'lucide-react';
+import { Plus, Search, Edit, Trash2, Image as ImageIcon, Eye } from 'lucide-react';
 import { adminApi } from '@/features/admin/api/admin.api';
 import toast from 'react-hot-toast';
 import CreateProductModal from '../components/CreateProductModal';
+import ViewProductModal from '../components/ViewProductModal';
 
 export default function ManageProducts() {
   const queryClient = useQueryClient();
   const [isCreateOpen, setCreateOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
+  const [viewingProduct, setViewingProduct] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
 
   // Fetch Products
@@ -34,6 +37,72 @@ export default function ManageProducts() {
     }
   });
 
+  // Update Product Mutation
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }) => adminApi.updateProduct(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['adminValues']);
+      setCreateOpen(false);
+      setEditingProduct(null);
+      toast.success('Product details updated successfully!');
+    },
+    onError: (err) => {
+      toast.error('Failed to update product');
+      console.error(err);
+    }
+  });
+
+  // Delete Product Mutation
+  const deleteMutation = useMutation({
+    mutationFn: adminApi.deleteProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['adminValues']);
+      toast.success('Product deleted successfully');
+    },
+    onError: (err) => {
+      toast.error('Failed to delete product');
+      console.error(err);
+    }
+  });
+
+  const handleDelete = (id) => {
+    toast((t) => (
+      <div className="flex flex-col gap-3">
+        <p className="font-medium text-gray-800">Are you sure you want to delete this product?</p>
+        <div className="flex gap-2 justify-end">
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="px-3 py-1.5 text-xs font-semibold text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={() => {
+              deleteMutation.mutate(id);
+              toast.dismiss(t.id);
+            }}
+            className="px-3 py-1.5 text-xs font-semibold text-white bg-red-500 rounded-md hover:bg-red-600"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    ), {
+      duration: 5000,
+      position: 'top-center',
+    });
+  };
+
+  const handleEdit = (product) => {
+    setEditingProduct(product);
+    setCreateOpen(true);
+  };
+
+  const handleCreateOpen = () => {
+    setEditingProduct(null);
+    setCreateOpen(true);
+  };
+
   const filteredProducts = products.filter(p =>
     p.product_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     p.product_title?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -47,7 +116,7 @@ export default function ManageProducts() {
           <p className="text-text/60 mt-2">Manage your product catalog</p>
         </div>
         <button
-          onClick={() => setCreateOpen(true)}
+          onClick={handleCreateOpen}
           className="flex items-center gap-2 px-6 py-2.5 bg-[#1C5B45] text-white font-bold rounded-full shadow-lg hover:bg-[#144233] transition-all transform hover:-translate-y-0.5"
         >
           <Plus size={18} />
@@ -117,10 +186,22 @@ export default function ManageProducts() {
                       </span>
 
                       <div className="flex items-center gap-1">
-                        <button className="p-1.5 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors">
+                        <button
+                          onClick={() => setViewingProduct(product)}
+                          className="p-1.5 text-gray-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
+                        >
+                          <Eye size={14} />
+                        </button>
+                        <button
+                          onClick={() => handleEdit(product)}
+                          className="p-1.5 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                        >
                           <Edit size={14} />
                         </button>
-                        <button className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+                        <button
+                          onClick={() => handleDelete(product.product_id || product.id)}
+                          disabled={deleteMutation.isPending}
+                          className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
                           <Trash2 size={14} />
                         </button>
                       </div>
@@ -188,10 +269,22 @@ export default function ManageProducts() {
                         </td>
                         <td className="p-4 text-right pr-6">
                           <div className="flex items-center justify-end gap-2">
-                            <button className="p-2 text-text/50 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors">
+                            <button
+                              onClick={() => setViewingProduct(product)}
+                              className="p-2 text-text/50 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
+                            >
+                              <Eye size={16} />
+                            </button>
+                            <button
+                              onClick={() => handleEdit(product)}
+                              className="p-2 text-text/50 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                            >
                               <Edit size={16} />
                             </button>
-                            <button className="p-2 text-text/50 hover:text-danger hover:bg-danger/5 rounded-lg transition-colors">
+                            <button
+                              onClick={() => handleDelete(product.product_id || product.id)}
+                              disabled={deleteMutation.isPending}
+                              className="p-2 text-text/50 hover:text-danger hover:bg-danger/5 rounded-lg transition-colors">
                               <Trash2 size={16} />
                             </button>
                           </div>
@@ -206,8 +299,22 @@ export default function ManageProducts() {
         </div>
       </div>
 
-      {/* Create Modal */}
-      <CreateProductModal isOpen={isCreateOpen} onClose={() => setCreateOpen(false)} createMutation={createMutation} />
+      {/* Create/Edit Modal */}
+      <CreateProductModal
+        isOpen={isCreateOpen}
+        onClose={() => setCreateOpen(false)}
+        createMutation={createMutation}
+        updateMutation={updateMutation}
+        productToEdit={editingProduct}
+        isEditMode={!!editingProduct}
+      />
+
+      {/* View Modal */}
+      <ViewProductModal
+        isOpen={!!viewingProduct}
+        onClose={() => setViewingProduct(null)}
+        product={viewingProduct}
+      />
     </div>
   );
 }
