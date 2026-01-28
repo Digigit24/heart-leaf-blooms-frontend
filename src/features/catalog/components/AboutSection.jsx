@@ -141,7 +141,7 @@ export default function AboutSection() {
                         >
                             <Link
                                 to="/about"
-                                className="group inline-flex items-center gap-3 bg-brand-dark text-white px-8 py-4 rounded-full font-subheading font-medium tracking-wide transition-all hover:bg-brand hover:shadow-lg hover:shadow-brand/25 hover:-translate-y-1"
+                                className="group inline-flex items-center gap-3 bg-brand-dark text-black px-8 py-4 rounded-full font-subheading font-medium tracking-wide transition-all hover:bg-brand hover:shadow-lg hover:shadow-brand/25 hover:-translate-y-1"
                             >
                                 <Sprout className="w-5 h-5 group-hover:animate-bounce" />
                                 <span>Discover Our Journey</span>

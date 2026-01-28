@@ -259,7 +259,7 @@ export default function CreateProductModal({ isOpen, onClose, createMutation, up
             stock: Number(formData.stock),
             is_featured: formData.is_featured,
             status: formData.status,
-            product_images: finalImages // Send array of strings
+            images: finalImages // Send array of strings using key 'images' as requested
         };
 
         // Call mutation with JSON payload, not FormData

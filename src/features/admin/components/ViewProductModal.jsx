@@ -44,9 +44,11 @@ export default function ViewProductModal({ isOpen, onClose, product, isLoading }
     };
 
     // Get display image
-    const displayImage = product?.product_images?.length > 0
-        ? getImageUrl(product.product_images[0])
-        : (product?.image ? getImageUrl(product.image) : null);
+    const displayImage = product?.images?.length > 0
+        ? getImageUrl(product.images[0])
+        : (product?.product_images?.length > 0
+            ? getImageUrl(product.product_images[0])
+            : (product?.image ? getImageUrl(product.image) : null));
 
     return createPortal(
         <div data-lenis-prevent className="fixed inset-0 z-[100] overflow-y-auto bg-gray-900/50 backdrop-blur-sm">
@@ -88,7 +90,7 @@ export default function ViewProductModal({ isOpen, onClose, product, isLoading }
                                         )}
                                     </div>
                                     <div className="grid grid-cols-4 gap-2">
-                                        {product.product_images?.slice(1).map((img, idx) => (
+                                        {(product.images || product.product_images)?.slice(1).map((img, idx) => (
                                             <div key={idx} className="aspect-square rounded-lg border border-gray-200 overflow-hidden bg-white">
                                                 <img src={getImageUrl(img)} alt="" className="w-full h-full object-cover" />
                                             </div>
