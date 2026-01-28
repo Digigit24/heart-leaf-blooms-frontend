@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, Users, ShoppingBag, Store, LogOut, ChevronRight, Settings, HelpCircle, X } from 'lucide-react';
+import { LayoutDashboard, Package, Users, ShoppingBag, Store, LogOut, ChevronRight, Settings, HelpCircle, X, GalleryHorizontal } from 'lucide-react';
 import { cn } from '@/utils/cn';
 import { useAuthStore } from '@/app/store/auth.store';
 import { PATHS } from '@/app/routes/paths';
@@ -9,6 +9,7 @@ const NAV_ITEMS = [
     { label: 'Products', href: '/admin/products', icon: Package },
     { label: 'Vendors', href: '/admin/vendors', icon: Users },
     { label: 'Orders', href: '/admin/orders', icon: ShoppingBag },
+    { label: 'Banners', href: '/admin/banners', icon: GalleryHorizontal },
 ];
 
 const SECONDARY_ITEMS = [

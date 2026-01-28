@@ -11,6 +11,17 @@ export const adminApi = {
     headers: { 'Content-Type': 'multipart/form-data' }
   }),
 
+  // Banners
+  uploadBanner: (formData) => client.post('/banner/upload', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  }),
+  getAllBanners: () => client.get('/banner'),
+  getActiveBanners: () => client.get('/banner/active'),
+  updateBanner: (id, formData) => client.put(`/banner/${id}`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  }),
+  deleteBanner: (id) => client.delete(`/banner/${id}`),
+
   // Vendors
   getAllVendors: () => client.get('/admin/vendor-list'),
 

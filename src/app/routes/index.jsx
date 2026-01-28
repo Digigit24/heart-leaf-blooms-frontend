@@ -31,6 +31,7 @@ import AdminLayout from '@/features/admin/components/AdminLayout';
 import ManageProducts from '@/features/admin/pages/ManageProducts';
 import ManageVendors from '@/features/admin/pages/ManageVendors';
 import ManageOrders from '@/features/admin/pages/ManageOrders';
+import ManageBanners from '@/features/admin/pages/ManageBanners';
 
 import { useConfig } from '@/context/ConfigContext';
 
@@ -88,6 +89,7 @@ const AppRoutes = () => {
                     <Route path={PATHS.ADMIN_PRODUCTS} element={<ManageProducts />} />
                     {isMultivendor && <Route path={PATHS.ADMIN_VENDORS} element={<ManageVendors />} />}
                     <Route path={PATHS.ADMIN_ORDERS} element={<ManageOrders />} />
+                    <Route path={PATHS.ADMIN_BANNERS} element={<ManageBanners />} />
                 </Route>
             </Route>
         </Routes>
