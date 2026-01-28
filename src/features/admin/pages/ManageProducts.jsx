@@ -185,23 +185,23 @@ export default function ManageProducts() {
                         In Stock
                       </span>
 
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-2">
                         <button
                           onClick={() => setViewingProduct(product)}
-                          className="p-1.5 text-gray-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
+                          className="w-8 h-8 flex items-center justify-center rounded-full bg-white border border-gray-200 text-gray-400 hover:text-blue-600 hover:bg-blue-50 hover:border-blue-200 transition-all shadow-sm active:scale-95"
                         >
                           <Eye size={14} />
                         </button>
                         <button
                           onClick={() => handleEdit(product)}
-                          className="p-1.5 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                          className="w-8 h-8 flex items-center justify-center rounded-full bg-white border border-gray-200 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 hover:border-emerald-200 transition-all shadow-sm active:scale-95"
                         >
                           <Edit size={14} />
                         </button>
                         <button
                           onClick={() => handleDelete(product.product_id || product.id)}
                           disabled={deleteMutation.isPending}
-                          className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+                          className="w-8 h-8 flex items-center justify-center rounded-full bg-white border border-gray-200 text-gray-400 hover:text-red-600 hover:bg-red-50 hover:border-red-200 transition-all shadow-sm active:scale-95">
                           <Trash2 size={14} />
                         </button>
                       </div>
@@ -271,21 +271,25 @@ export default function ManageProducts() {
                           <div className="flex items-center justify-end gap-2">
                             <button
                               onClick={() => setViewingProduct(product)}
-                              className="p-2 text-text/50 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
+                              title="View Details"
+                              className="group relative w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-gray-200 text-gray-400 hover:text-blue-600 hover:bg-blue-50 hover:border-blue-200 transition-all duration-200 shadow-[0_2px_4px_rgba(0,0,0,0.02)] hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:shadow-none"
                             >
-                              <Eye size={16} />
+                              <Eye size={18} className="transition-transform duration-200 group-hover:scale-110" />
                             </button>
                             <button
                               onClick={() => handleEdit(product)}
-                              className="p-2 text-text/50 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                              title="Edit Product"
+                              className="group relative w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-gray-200 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 hover:border-emerald-200 transition-all duration-200 shadow-[0_2px_4px_rgba(0,0,0,0.02)] hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:shadow-none"
                             >
-                              <Edit size={16} />
+                              <Edit size={18} className="transition-transform duration-200 group-hover:scale-110" />
                             </button>
                             <button
                               onClick={() => handleDelete(product.product_id || product.id)}
                               disabled={deleteMutation.isPending}
-                              className="p-2 text-text/50 hover:text-danger hover:bg-danger/5 rounded-lg transition-colors">
-                              <Trash2 size={16} />
+                              title="Delete Product"
+                              className="group relative w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-gray-200 text-gray-400 hover:text-red-600 hover:bg-red-50 hover:border-red-200 transition-all duration-200 shadow-[0_2px_4px_rgba(0,0,0,0.02)] hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:shadow-none"
+                            >
+                              <Trash2 size={18} className="transition-transform duration-200 group-hover:scale-110" />
                             </button>
                           </div>
                         </td>
