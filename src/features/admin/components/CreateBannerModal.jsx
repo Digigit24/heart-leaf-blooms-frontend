@@ -7,6 +7,7 @@ export default function CreateBannerModal({ isOpen, onClose, createMutation, upd
     const [subtitle, setSubtitle] = useState('');
     const [imageFile, setImageFile] = useState(null);
     const [preview, setPreview] = useState(null);
+    const [removeBackground, setRemoveBackground] = useState(false);
 
     // Reset or populate when modal opens/closes
     useEffect(() => {
@@ -23,6 +24,7 @@ export default function CreateBannerModal({ isOpen, onClose, createMutation, upd
                 setSubtitle('');
                 setImageFile(null);
                 setPreview(null);
+                setRemoveBackground(false);
             }
         }
     }, [isOpen, isEditMode, bannerToEdit]);
@@ -57,6 +59,9 @@ export default function CreateBannerModal({ isOpen, onClose, createMutation, upd
 
         if (imageFile) {
             formData.append('image', imageFile);
+            if (removeBackground) {
+                formData.append('removeBackground', 'true');
+            }
         }
 
         if (isEditMode && bannerToEdit) {
@@ -145,6 +150,23 @@ export default function CreateBannerModal({ isOpen, onClose, createMutation, upd
                         </div>
                     </div>
 
+                    {/* Remove Background Option */}
+                    {!isEditMode && imageFile && (
+                        <div className="flex items-center gap-3 p-3 bg-indigo-50 rounded-lg border border-indigo-100">
+                            <input
+                                type="checkbox"
+                                id="removeBg"
+                                checked={removeBackground}
+                                onChange={(e) => setRemoveBackground(e.target.checked)}
+                                className="w-5 h-5 text-[#1C5B45] rounded focus:ring-[#1C5B45] border-gray-300 cursor-pointer"
+                            />
+                            <label htmlFor="removeBg" className="text-sm font-medium text-indigo-900 cursor-pointer select-none flex-1">
+                                Remove Background (AI)
+                                <span className="block text-xs text-indigo-500 font-normal">May take a few extra seconds</span>
+                            </label>
+                        </div>
+                    )}
+
                     {/* Footer Actions */}
                     <div className="pt-2 flex gap-3">
                         <button
@@ -170,8 +192,8 @@ export default function CreateBannerModal({ isOpen, onClose, createMutation, upd
                         </button>
                     </div>
                 </form>
-            </div>
-        </div>,
+            </div >
+        </div >,
         document.body
     );
 }
