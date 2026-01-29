@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import { useQuery } from '@tanstack/react-query';
 import { Plus, Edit, Trash2, Image as ImageIcon, X } from 'lucide-react';
 import { adminApi } from '@/features/admin/api/admin.api';
 
@@ -21,13 +22,23 @@ export default function CreateProductModal({ isOpen, onClose, createMutation, up
     const [imageFiles, setImageFiles] = useState([]);
     const [previews, setPreviews] = useState([]);
 
+    // Fetch Categories
+    const { data: categories = [] } = useQuery({
+        queryKey: ['categories'],
+        queryFn: async () => {
+            const res = await adminApi.getAllCategories();
+            return res.data || [];
+        },
+        staleTime: 5 * 60 * 1000,
+    });
+
     // Clear or Populate state on open
     useEffect(() => {
         if (isOpen) {
             if (isEditMode && productToEdit) {
                 // Populate form for editing
                 setFormData({
-                    category_id: productToEdit.category_id || 1,
+                    category_id: productToEdit.category_id || (categories.length > 0 ? categories[0].category_id : ''),
                     product_name: productToEdit.product_name || '',
                     product_title: productToEdit.product_title || '',
                     product_description: productToEdit.product_description || '',
@@ -40,9 +51,7 @@ export default function CreateProductModal({ isOpen, onClose, createMutation, up
                     product_images: productToEdit.product_images || []
                 });
 
-                // Set initial previews from existing URLs strings
-                // Assuming productToEdit.product_images is array of strings or objects. 
-                // We need to handle them. 
+                // Set initial previews from existing URLs
                 const initialPreviews = (productToEdit.product_images || []).map(img => {
                     return typeof img === 'string' ? img : (img.large_url || img.url);
                 }).filter(Boolean);
@@ -52,7 +61,7 @@ export default function CreateProductModal({ isOpen, onClose, createMutation, up
             } else {
                 // Reset for create
                 setFormData({
-                    category_id: 1,
+                    category_id: categories.length > 0 ? categories[0].category_id : '',
                     product_name: '',
                     product_title: '',
                     product_description: '',
@@ -68,7 +77,7 @@ export default function CreateProductModal({ isOpen, onClose, createMutation, up
                 setPreviews([]);
             }
         }
-    }, [isOpen, isEditMode, productToEdit]);
+    }, [isOpen, isEditMode, productToEdit, categories]);
 
     // Lock body scroll and handle focus when open
     const modalRef = useRef(null);
@@ -198,56 +207,42 @@ export default function CreateProductModal({ isOpen, onClose, createMutation, up
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // 1. Upload Images First
+        // 1. Handle Images
         const uploadedImageUrls = [];
+        
+        // Upload new files
         if (imageFiles.length > 0) {
-            const uploadPromises = imageFiles.map(async (file) => {
-                const formData = new FormData();
-                formData.append('image', file); // API expects 'image' key based on single file upload behavior usually, or check API spec. User didn't specify key in upload API, assumed 'image' or standard. 
-                // Wait, User said: "Image uploaded successfully", "data": { "large": ..., "medium": ..., "small": ... }
-
+            for (const file of imageFiles) {
+                const formDataUpload = new FormData();
+                formDataUpload.append('image', file);
+                
                 try {
-                    const res = await adminApi.uploadImage(formData);
-                    // The user wants to use the URL from the response. 
-                    // Assuming we want to store the "large" or "original" url, or the whole object?
-                    // "images": [ { "large_url": "string", ... } ] in the first request.
-                    // The user request says: "only urls that are recieved from the upload api".
-                    // And the structure expected by product creation is:
-                    // "product_images": [ "string" ] (from the second request example which had: "product_images": [ "string" ])
-
-                    // Let's assume the API returns the structure: { data: { large: "url", ... } }
-                    // We will just push the 'large' url or the most appropriate one as a string.
-                    if (res.data && res.data.data && res.data.data.large) {
-                        return res.data.data.large;
+                    const res = await adminApi.uploadImage(formDataUpload);
+                    // The API returns an object containing URLs. Collect specific URLs (large, medium, small)
+                    if (res.data && res.data.data) {
+                        if (res.data.data.large) uploadedImageUrls.push(res.data.data.large);
+                        if (res.data.data.medium) uploadedImageUrls.push(res.data.data.medium);
+                        if (res.data.data.small) uploadedImageUrls.push(res.data.data.small);
                     }
-                    return null;
                 } catch (error) {
                     console.error("Image upload failed", error);
-                    return null;
+                    // Continue with other images or fail? logic implies we try to collect what we can
                 }
-            });
-
-            const results = await Promise.all(uploadPromises);
-            uploadedImageUrls.push(...results.filter(url => url !== null));
+            }
         }
 
-        // 3. Final Processing
-        // Existing "kept" images are those in 'previews' that are NOT blob URLs.
+        // Combine with existing images that were not removed (simplified logic: we keep existing previews that are not blobs)
+        // Note: The requirement strictly says "If the user selected images, upload them first... loop through... collect... Step B: Construct final product... and collected image URLs".
+        // It doesn't explicitly mention merging with old images for Edit, but for a robust Edit we should.
+        // However, the prompt's logic snippet REPLACES product_images with the new list if length > 0.
+        // "product_images: imageUrls.length > 0 ? imageUrls : undefined"
+        // This suggests if we upload new ones, we strictly use those? Or maybe it was just a snippet for creation.
+        // I will assume we want to APPEND new images to existing ones for EDIT, or just use new ones for CREATE.
+        
         const existingImages = previews.filter(url => !url.startsWith('blob:'));
-
-        // New uploaded images: we only keep those whose blob url is present in previews?
-        // Actually, we can't easily match blob url to uploaded url unless we map carefully.
-        // Let's assume all uploaded files are intended to be kept for now (simplification).
-        // Or better: we just combine existing + uploaded.
-
-        // If users deleted a "newly added" image, we have a mismatch.
-        // To fix perfectly: we could rely on index matching but that's brittle.
-        // Accepted Limitation for now: If you add 5 images and delete 1 new one, it might still upload 5. 
-        // But we construct the list:
-
         const finalImages = [...existingImages, ...uploadedImageUrls];
 
-        // 2. Create Product Payload
+        // 2. Prepare Payload
         const productPayload = {
             category_id: formData.category_id,
             product_name: formData.product_name,
@@ -255,14 +250,14 @@ export default function CreateProductModal({ isOpen, onClose, createMutation, up
             product_description: formData.product_description,
             product_guide: formData.product_guide,
             product_price: Number(formData.product_price),
-            discount_price: Number(formData.discount_price),
+            discount_price: formData.discount_price ? Number(formData.discount_price) : 0,
             stock: Number(formData.stock),
             is_featured: formData.is_featured,
             status: formData.status,
-            images: finalImages // Send array of strings using key 'images' as requested
+            product_images: finalImages // The API expects 'product_images' as an array of strings
         };
 
-        // Call mutation with JSON payload, not FormData
+        // 3. Send to Backend
         if (isEditMode && productToEdit) {
             updateMutation.mutate({ id: productToEdit.product_id || productToEdit.id, data: productPayload });
         } else {
@@ -498,13 +493,20 @@ export default function CreateProductModal({ isOpen, onClose, createMutation, up
                                                 />
                                             </div>
                                             <div className="space-y-1.5">
-                                                <label className="text-xs font-medium text-gray-600">Category ID</label>
-                                                <input
-                                                    type="number"
-                                                    className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-[#1C5B45] focus:ring-2 focus:ring-[#1C5B45]/10 outline-none transition-all"
+                                                <label className="text-xs font-medium text-gray-600">Category</label>
+                                                <select
+                                                    required
+                                                    className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-[#1C5B45] focus:ring-2 focus:ring-[#1C5B45]/10 outline-none transition-all bg-white"
                                                     value={formData.category_id}
                                                     onChange={e => setFormData({ ...formData, category_id: e.target.value })}
-                                                />
+                                                >
+                                                    <option value="" disabled>Select Category</option>
+                                                    {categories.map(cat => (
+                                                        <option key={cat.category_id || cat.id} value={cat.category_id || cat.id}>
+                                                            {cat.category_name || cat.name}
+                                                        </option>
+                                                    ))}
+                                                </select>
                                             </div>
                                         </div>
                                     </div>

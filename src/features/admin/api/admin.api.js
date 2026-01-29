@@ -20,6 +20,7 @@ export const adminApi = {
   updateBanner: (id, formData) => client.put(`/banner/${id}`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' }
   }),
+  toggleBannerStatus: (id, isActive) => client.put(`/banner/${id}`, { isActive }), // JSON update for status
   deleteBanner: (id) => client.delete(`/banner/${id}`),
 
   // Vendors

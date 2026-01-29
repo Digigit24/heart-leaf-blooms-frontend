@@ -63,6 +63,19 @@ export default function ManageBanners() {
         }
     });
 
+    // Toggle Status Mutation
+    const toggleStatusMutation = useMutation({
+        mutationFn: ({ id, isActive }) => adminApi.toggleBannerStatus(id, isActive),
+        onSuccess: () => {
+            queryClient.invalidateQueries(['banners']);
+            toast.success('Banner status updated');
+        },
+        onError: (err) => {
+            toast.error('Failed to update status');
+            console.error(err);
+        }
+    });
+
     const handleEdit = (banner) => {
         setEditingBanner(banner);
         setCreateOpen(true);
@@ -123,123 +136,101 @@ export default function ManageBanners() {
                 </motion.button>
             </div>
 
-            {/* Content Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <AnimatePresence mode="popLayout">
-                    {isLoading ? (
-                        <div className="col-span-full py-32 flex flex-col items-center justify-center text-gray-400">
-                            <Loader2 className="animate-spin mb-4 text-[#1C5B45]" size={40} />
-                            <p className="text-lg animate-pulse">Loading amazing banners...</p>
-                        </div>
-                    ) : banners.length === 0 ? (
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            className="col-span-full"
-                        >
-                            <div className="bg-white rounded-3xl p-16 text-center border-3 border-dashed border-gray-100 flex flex-col items-center">
-                                <div className="w-24 h-24 bg-green-50 rounded-full flex items-center justify-center mb-6 text-[#1C5B45]">
-                                    <ImageIcon size={40} />
-                                </div>
-                                <h3 className="text-2xl font-bold text-gray-900 mb-2">No Banners Yet</h3>
-                                <p className="text-gray-500 max-w-md mx-auto leading-relaxed mb-8">
-                                    Your homepage looks a bit empty. Upload your first banner to make a great first impression.
-                                </p>
-                                <button
-                                    onClick={handleCreateOpen}
-                                    className="px-8 py-3 rounded-xl bg-white border-2 border-[#1C5B45] text-[#1C5B45] font-bold hover:bg-[#1C5B45] hover:text-white transition-all duration-300"
-                                >
-                                    Create First Banner
-                                </button>
-                            </div>
-                        </motion.div>
-                    ) : (
-                        banners.map((banner, idx) => (
-                            <motion.div
-                                key={banner.id || banner._id || idx}
-                                layout
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, scale: 0.9 }}
-                                transition={{ duration: 0.3, delay: idx * 0.1 }}
-                                className="group relative bg-white rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 flex flex-col"
-                            >
-                                {/* Image Container */}
-                                <div className="relative h-56 overflow-hidden bg-gray-100">
-                                    {getBannerImageUrl(banner) ? (
-                                        <img
-                                            src={getBannerImageUrl(banner)}
-                                            alt={banner.title}
-                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 will-change-transform"
-                                        />
-                                    ) : (
-                                        <div className="w-full h-full flex flex-col items-center justify-center text-gray-300 bg-gray-50">
-                                            <ImageIcon size={40} />
-                                            <span className="text-xs mt-2 font-medium">No Image</span>
+            {/* Banners Table */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left">
+                        <thead className="bg-[#1C5B45]/5 text-[#1C5B45] text-xs uppercase tracking-wider font-semibold border-b border-gray-200">
+                            <tr>
+                                <th className="p-4 pl-6">Banner Detail</th>
+                                <th className="p-4">Subtitle</th>
+                                <th className="p-4">Status</th>
+                                <th className="p-4">Created At</th>
+                                <th className="p-4 text-right pr-6">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                            {isLoading ? (
+                                <tr>
+                                    <td colSpan="5" className="p-12 text-center text-gray-500">
+                                        <Loader2 className="animate-spin inline-block mr-2" /> Loading banners...
+                                    </td>
+                                </tr>
+                            ) : banners.length === 0 ? (
+                                <tr>
+                                    <td colSpan="5" className="p-12 text-center text-gray-500">
+                                        <div className="flex flex-col items-center">
+                                            <ImageIcon size={32} className="mb-2 opacity-50" />
+                                            <p>No banners found. Create your first one!</p>
                                         </div>
-                                    )}
-
-                                    {/* Overlay Gradient */}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
-
-                                    {/* Active Badge */}
-                                    <div className="absolute top-4 left-4">
-                                        {banner.isActive ? (
-                                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/95 backdrop-blur-md text-emerald-700 text-xs font-bold shadow-sm">
-                                                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                                                Active
-                                            </span>
-                                        ) : (
-                                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/95 backdrop-blur-md text-gray-500 text-xs font-bold shadow-sm">
-                                                <span className="w-2 h-2 rounded-full bg-gray-400" />
-                                                Inactive
-                                            </span>
-                                        )}
-                                    </div>
-
-                                    {/* Actions - Always visible, Glassmorphism pill */}
-                                    <div className="absolute top-4 right-4 flex items-center gap-1 p-1 rounded-xl bg-black/20 backdrop-blur-md border border-white/10 shadow-lg">
-                                        <button
-                                            onClick={(e) => { e.stopPropagation(); handleEdit(banner); }}
-                                            className="w-9 h-9 flex items-center justify-center rounded-lg text-white/90 hover:text-white hover:bg-white/20 transition-all active:scale-95"
-                                            title="Edit Banner"
-                                        >
-                                            <Edit size={16} />
-                                        </button>
-                                        <div className="w-px h-4 bg-white/20"></div>
-                                        <button
-                                            onClick={(e) => { e.stopPropagation(); handleDelete(banner.id || banner._id); }}
-                                            className="w-9 h-9 flex items-center justify-center rounded-lg text-white/90 hover:text-red-200 hover:bg-red-500/20 transition-all active:scale-95"
-                                            title="Delete Banner"
-                                        >
-                                            <Trash2 size={16} />
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {/* Content Body */}
-                                <div className="p-6 flex-1 flex flex-col relative">
-                                    <div className="mb-4">
-                                        <h3 className="text-xl font-bold text-gray-900 leading-tight mb-2 line-clamp-1 group-hover:text-[#1C5B45] transition-colors">{banner.title || 'Untitled Banner'}</h3>
-                                        <p className="text-gray-500 text-sm leading-relaxed line-clamp-2">{banner.subtitle || 'No subtitle provided for this banner.'}</p>
-                                    </div>
-
-                                    <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
-                                        {banner.createdAt && (
-                                            <div className="flex items-center gap-2 text-xs font-medium text-gray-400">
-                                                <Calendar size={14} />
-                                                <span>{new Date(banner.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                                    </td>
+                                </tr>
+                            ) : (
+                                banners.map((banner) => (
+                                    <tr key={banner.id || banner._id} className="hover:bg-gray-50/50 transition-colors">
+                                        <td className="p-4 pl-6">
+                                            <div className="flex items-center gap-4">
+                                                <div className="w-20 h-10 rounded-lg bg-gray-100 overflow-hidden border border-gray-200 shrink-0">
+                                                    {getBannerImageUrl(banner) ? (
+                                                        <img
+                                                            src={getBannerImageUrl(banner)}
+                                                            alt={banner.title}
+                                                            className="w-full h-full object-cover"
+                                                        />
+                                                    ) : (
+                                                        <div className="w-full h-full flex items-center justify-center text-gray-300">
+                                                            <ImageIcon size={16} />
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                <div className="font-semibold text-gray-900">{banner.title || 'Untitled'}</div>
                                             </div>
-                                        )}
-                                    </div>
-
-                                    {/* Decorative flourish */}
-                                    <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-[#1C5B45]/5 to-transparent rounded-tl-full opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                                </div>
-                            </motion.div>
-                        ))
-                    )}
-                </AnimatePresence>
+                                        </td>
+                                        <td className="p-4">
+                                            <span className="text-sm text-gray-600 line-clamp-1 max-w-[200px]" title={banner.subtitle}>
+                                                {banner.subtitle || '-'}
+                                            </span>
+                                        </td>
+                                        <td className="p-4">
+                                            <button
+                                                onClick={() => toggleStatusMutation.mutate({ id: banner.id || banner._id, isActive: !banner.isActive })}
+                                                disabled={toggleStatusMutation.isPending}
+                                                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${banner.isActive ? 'bg-[#1C5B45]' : 'bg-gray-300'}`}
+                                            >
+                                                <span
+                                                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm ${banner.isActive ? 'translate-x-6' : 'translate-x-1'}`}
+                                                />
+                                            </button>
+                                        </td>
+                                        <td className="p-4">
+                                            <span className="text-xs text-gray-500">
+                                                {banner.createdAt ? new Date(banner.createdAt).toLocaleDateString() : '-'}
+                                            </span>
+                                        </td>
+                                        <td className="p-4 text-right pr-6">
+                                            <div className="flex items-center justify-end gap-2">
+                                                <button
+                                                    onClick={() => handleEdit(banner)}
+                                                    className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-[#1C5B45] hover:bg-[#1C5B45]/10 transition-colors"
+                                                    title="Edit"
+                                                >
+                                                    <Edit size={16} />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(banner.id || banner._id)}
+                                                    className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors"
+                                                    title="Delete"
+                                                >
+                                                    <Trash2 size={16} />
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <CreateBannerModal
