@@ -34,6 +34,7 @@ import ManageOrders from '@/features/admin/pages/ManageOrders';
 
 import ManageBanners from '@/features/admin/pages/ManageBanners';
 import ManageCategories from '@/features/admin/pages/ManageCategories';
+import ManageReviews from '@/features/admin/pages/ManageReviews';
 
 import { useConfig } from '@/context/ConfigContext';
 
@@ -93,6 +94,7 @@ const AppRoutes = () => {
                     <Route path={PATHS.ADMIN_ORDERS} element={<ManageOrders />} />
                     <Route path={PATHS.ADMIN_BANNERS} element={<ManageBanners />} />
                     <Route path={PATHS.ADMIN_CATEGORIES} element={<ManageCategories />} />
+                    <Route path={PATHS.ADMIN_REVIEWS} element={<ManageReviews />} />
                 </Route>
             </Route>
         </Routes>

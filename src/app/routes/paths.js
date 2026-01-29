@@ -18,6 +18,7 @@ export const PATHS = {
     ADMIN_USERS: '/admin/users',
     ADMIN_BANNERS: '/admin/banners',
     ADMIN_CATEGORIES: '/admin/categories',
+    ADMIN_REVIEWS: '/admin/reviews',
     ABOUT: '/about',
     VENDOR_LOGIN: '/vendor/login',
     ADMIN_LOGIN: '/admin/login',
