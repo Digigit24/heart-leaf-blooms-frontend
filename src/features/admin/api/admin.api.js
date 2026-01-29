@@ -29,6 +29,8 @@ export const adminApi = {
   // Categories
   createCategory: (data) => client.post('/category', data),
   getAllCategories: () => client.get('/category'),
+  deleteCategory: (id) => client.delete(`/category/${id}`),
+  updateCategory: (id, data) => client.put(`/category/${id}`, data),
 
   // Orders
   getAllOrders: () => client.get('/order/admin'),
