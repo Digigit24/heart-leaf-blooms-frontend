@@ -127,7 +127,7 @@ export default function TrendingProducts() {
                             className="ml-4 group flex items-center gap-3 px-8 py-4 bg-white border border-brand/20 rounded-full shadow-sm hover:shadow-lg hover:border-brand/40 transition-all duration-300 active:scale-95"
                         >
                             <span className="font-heading font-bold text-brand-dark text-sm tracking-wide uppercase">View Full Collection</span>
-                            <div className="w-8 h-8 rounded-full bg-brand-soft flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-colors">
+                            <div className="w-8 h-8 rounded-full bg-brand-soft flex items-center justify-center group-hover:bg-brand transition-colors">
                                 <ArrowRight className="w-4 h-4" />
                             </div>
                         </Link>

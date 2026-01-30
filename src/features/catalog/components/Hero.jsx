@@ -99,7 +99,7 @@ export default function Hero() {
                             </p>
                             <Link
                                 to={SLIDES[current].link}
-                                className="inline-flex items-center gap-2 px-8 py-4 bg-white text-stone-900 font-bold rounded-full hover:bg-brand hover:text-white transition-all transform hover:scale-105 shadow-xl"
+                                className="inline-flex items-center gap-2 px-8 py-4 bg-white text-stone-900 font-bold rounded-full hover:bg-brand hover:text-green-800 transition-all transform hover:scale-105 shadow-xl"
                             >
                                 {SLIDES[current].cta}
                                 <ArrowRight size={20} />
