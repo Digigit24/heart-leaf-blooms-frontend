@@ -1,9 +1,22 @@
 import { useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { X, Calendar, Tag, Package, CreditCard, Info } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { adminApi } from '@/features/admin/api/admin.api';
 
-export default function ViewProductModal({ isOpen, onClose, product, isLoading }) {
+export default function ViewProductModal({ isOpen, onClose, product: initialProduct }) {
     const modalRef = useRef(null);
+
+    // Fetch fresh data
+    const productId = initialProduct?.product_id || initialProduct?.id;
+    const { data: product, isLoading } = useQuery({
+        queryKey: ['adminProduct', productId],
+        queryFn: async () => {
+            const res = await adminApi.getProductById(productId);
+            return res.data;
+        },
+        enabled: isOpen && !!productId,
+    });
 
     // Lock body scroll and handle focus when open
     useEffect(() => {
