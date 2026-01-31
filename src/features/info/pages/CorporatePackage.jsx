@@ -262,67 +262,174 @@ export default function CorporatePackage() {
                 </div>
             </section>
 
-            {/* --- CUSTOMIZATION ZONES (Timeline / Vertical List Style) --- */}
-            <section className="py-24 px-6 md:px-12 bg-white">
-                <div className="max-w-6xl mx-auto">
-                    <div className="flex flex-col md:flex-row justify-between items-end mb-16 border-b-2 border-gray-100 pb-6">
+            {/* --- CUSTOMIZATION ZONES (Premium Interactive Section) --- */}
+            <section className="py-24 px-6 md:px-12 bg-[#F5F7F6]">
+                <div className="max-w-7xl mx-auto">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="flex flex-col md:flex-row justify-between items-end mb-16"
+                    >
                         <div>
-                            <h2 className="text-3xl md:text-5xl font-serif font-bold text-[#0F3D2E]">Customized Zones</h2>
-                            <p className="text-gray-500 mt-2 text-lg">Tailored plantscapes for every corner of your office.</p>
+                            <span className="text-[#C6A15B] font-bold uppercase tracking-widest text-xs">Strategic Placement</span>
+                            <h2 className="text-3xl md:text-5xl font-serif font-bold text-[#0F3D2E] mt-3">Curated Green Zones</h2>
+                            <p className="text-gray-500 mt-4 text-lg max-w-xl">
+                                We treat every corner of your office as a unique ecosystem, selecting species that align with the specific energy and function of the space.
+                            </p>
                         </div>
-                        <Link to="/contact" className="hidden md:inline-block px-6 py-3 bg-[#0F3D2E] text-white rounded-lg font-bold hover:bg-[#1C5B45] transition-colors">
-                            Get Your Plan
+                        <Link to="/contact" className="hidden md:flex items-center gap-2 text-[#0F3D2E] font-bold border-b border-[#0F3D2E] pb-1 hover:text-[#C6A15B] hover:border-[#C6A15B] transition-all">
+                            Start Your Planning <ArrowRight size={18} />
                         </Link>
+                    </motion.div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {ZONES.map((zone, idx) => (
+                            <motion.div
+                                key={idx}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: idx * 0.1, duration: 0.5 }}
+                                className="group relative bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden"
+                            >
+                                <div className="absolute inset-0 bg-linear-to-br from-[#EAF6E6]/0 via-[#EAF6E6]/0 to-[#EAF6E6] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                                <div className="relative z-10">
+                                    <div className="flex justify-between items-start mb-6">
+                                        <div className="w-12 h-12 rounded-xl bg-[#0F3D2E]/5 group-hover:bg-[#0F3D2E] text-[#0F3D2E] group-hover:text-[#C6A15B] flex items-center justify-center transition-all duration-300">
+                                            <zone.icon size={24} />
+                                        </div>
+                                        <span className="text-4xl font-serif font-bold text-gray-100 group-hover:text-[#C6A15B]/20 transition-colors">0{idx + 1}</span>
+                                    </div>
+
+                                    <h3 className="text-2xl font-bold text-[#0F3D2E] mb-4 group-hover:translate-x-1 transition-transform">{zone.title}</h3>
+
+                                    <div className="space-y-4">
+                                        <div className="bg-[#FAF9F6] p-4 rounded-lg group-hover:bg-white/80 transition-colors">
+                                            <span className="text-xs font-bold text-[#C6A15B] uppercase tracking-wider mb-1 block">Impact</span>
+                                            <p className="text-sm text-gray-600 leading-relaxed">{zone.impact}</p>
+                                        </div>
+
+                                        <div>
+                                            <span className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 block">Ideal Flora</span>
+                                            <div className="flex flex-wrap gap-2">
+                                                {zone.plants.split(',').map((plant, i) => (
+                                                    <span key={i} className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-md border border-gray-200">
+                                                        {plant.trim()}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        <div className="pt-4 border-t border-gray-100">
+                                            <div className="flex items-start gap-2">
+                                                <div className="mt-1 w-1.5 h-1.5 rounded-full bg-[#C6A15B]" />
+                                                <p className="text-xs text-gray-500 italic">
+                                                    <span className="font-bold text-gray-700 not-italic mr-1">Design Tip:</span>
+                                                    {zone.custom}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        ))}
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
-                        {ZONES.map((zone, idx) => (
-                            <div key={idx} className="flex gap-6">
-                                <div className="hidden sm:flex shrink-0 w-16 h-16 rounded-2xl bg-[#EAF6E6] text-[#0F3D2E] items-center justify-center">
-                                    <span className="font-serif font-bold text-xl opacity-40">0{idx + 1}</span>
-                                </div>
-                                <div className="space-y-3">
-                                    <div className="flex items-center gap-3">
-                                        <zone.icon size={20} className="text-[#C6A15B] sm:hidden" />
-                                        <h3 className="text-2xl font-bold text-[#0F3D2E]">{zone.title}</h3>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 gap-4 text-sm bg-[#F9F9F9] p-5 rounded-xl border border-gray-100 hover:border-[#C6A15B]/30 transition-colors">
-                                        <div>
-                                            <span className="font-bold text-[#0F3D2E] block mb-1">Recommended Plants:</span>
-                                            <p className="text-gray-600">{zone.plants}</p>
-                                        </div>
-                                        <div>
-                                            <span className="font-bold text-[#0F3D2E] block mb-1">Impact:</span>
-                                            <p className="text-gray-600">{zone.impact}</p>
-                                        </div>
-                                        <div>
-                                            <span className="font-bold text-[#0F3D2E] block mb-1">Customization:</span>
-                                            <p className="text-gray-600 italic">"{zone.custom}"</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
+                    <div className="mt-12 text-center md:hidden">
+                        <Link to="/contact" className="inline-flex items-center gap-2 text-[#0F3D2E] font-bold border-b border-[#0F3D2E] pb-1">
+                            Start Your Planning <ArrowRight size={18} />
+                        </Link>
                     </div>
                 </div>
             </section>
 
-            {/* --- FINAL CTA --- */}
-            <section className="relative py-24 bg-[#0F3D2E] text-white text-center px-6 overflow-hidden">
-                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/black-linen.png')] opacity-20" />
-                <div className="relative z-10 max-w-3xl mx-auto space-y-8">
-                    <h2 className="text-4xl md:text-5xl font-serif font-medium">Ready to Green Your Office?</h2>
-                    <p className="text-xl text-white/80">
-                        Join 100+ corporates who trust Heart Leaf Blooms for their workspace transformation.
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-                        <Link to="/contact" className="px-10 py-4 bg-[#C6A15B] hover:bg-[#D4AF37] text-[#0F3D2E] font-bold rounded-lg transition-transform hover:scale-105 shadow-xl">
-                            Request Corporate Quote
-                        </Link>
-                        <a href="tel:+919876543210" className="px-10 py-4 border border-white/30 hover:bg-white/10 rounded-lg font-bold transition-colors">
-                            Call Our Experts
-                        </a>
+            {/* --- FINAL CTA (Creative Bento Grid) --- */}
+            <section className="py-24 px-6 md:px-12 bg-white">
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-left mb-12">
+                        <motion.h2
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            className="text-4xl md:text-7xl font-serif font-bold text-[#0F3D2E] leading-[0.9]"
+                        >
+                            Green Your <br /> <span className="text-[#C6A15B]">Office.</span>
+                        </motion.h2>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto md:h-[500px]">
+
+                        {/* 1. Main Action Card (Large) */}
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            whileHover={{ scale: 0.99 }}
+                            transition={{ duration: 0.4 }}
+                            className="md:col-span-8 relative rounded-[2rem] overflow-hidden bg-[#0F3D2E] text-white p-6 md:p-12 flex flex-col justify-between group cursor-pointer shadow-2xl"
+                        >
+                            <Link to="/contact" className="absolute inset-0 z-20" />
+                            <div className="absolute inset-0 z-0">
+                                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2301" className="w-full h-full object-cover opacity-50 group-hover:scale-110 group-hover:opacity-40 transition-all duration-700" alt="Office" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#0F3D2E] via-transparent to-transparent" />
+                            </div>
+
+                            <div className="relative z-10 flex justify-between items-start">
+                                <div className="bg-[#C6A15B] text-[#0F3D2E] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-sm shadow-lg">Most Popular</div>
+                                <div className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center group-hover:bg-[#C6A15B] group-hover:text-[#0F3D2E] transition-all duration-300">
+                                    <ArrowRight className="w-6 h-6 -rotate-45 group-hover:rotate-0 transition-transform duration-300" />
+                                </div>
+                            </div>
+
+                            <div className="relative z-10 mt-20 md:mt-0">
+                                <h3 className="text-3xl md:text-5xl font-serif font-medium mb-4">Request a <br /> Site Visit</h3>
+                                <p className="text-white/80 max-w-sm text-lg leading-relaxed border-l-2 border-[#C6A15B] pl-4">
+                                    Our experts will measure your light, space, and flow to propose a custom greenprint for free.
+                                </p>
+                            </div>
+                        </motion.div>
+
+                        {/* 2. Secondary Column */}
+                        <div className="md:col-span-4 flex flex-col gap-6">
+
+                            {/* Top: Download Brochure */}
+                            <motion.div
+                                initial={{ opacity: 0, x: 20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                whileHover={{ y: -5 }}
+                                transition={{ delay: 0.1 }}
+                                className="flex-1 bg-[#F5F7F6] rounded-[2rem] p-8 flex flex-col justify-center relative border border-gray-100 group cursor-pointer shadow-lg hover:shadow-xl transition-all"
+                            >
+                                <Link to="/contact" className="absolute inset-0 z-20" />
+                                <div className="absolute top-8 right-8 text-[#C6A15B]">
+                                    <ArrowRight size={24} className="-rotate-45 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                                </div>
+                                <div className="w-12 h-12 bg-[#0F3D2E] rounded-xl flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform">
+                                    <Layout size={24} />
+                                </div>
+                                <h3 className="text-2xl font-bold text-[#0F3D2E] mb-1">Catalogue '26</h3>
+                                <p className="text-gray-500 text-sm">Download our complete corporate collection guide PDF.</p>
+                            </motion.div>
+
+                            {/* Bottom: Quick Contact */}
+                            <motion.div
+                                initial={{ opacity: 0, x: 20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                whileHover={{ y: -5 }}
+                                transition={{ delay: 0.2 }}
+                                className="flex-1 bg-[#C6A15B] rounded-[2rem] p-8 flex flex-col justify-center text-[#0F3D2E] relative overflow-hidden group cursor-pointer shadow-lg hover:shadow-xl transition-all"
+                            >
+                                <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                                    <Leaf size={120} />
+                                </div>
+                                <div className="relative z-10">
+                                    <h3 className="text-xl font-bold mb-1 flex items-center gap-2"><CheckCircle2 size={18} /> Expert Support</h3>
+                                    <p className="text-[#0F3D2E]/80 text-xs mb-4">Immediate assistance for bulk orders</p>
+                                    <div className="text-3xl font-serif font-bold tracking-tight group-hover:scale-105 transition-transform origin-left">+91 98765 00000</div>
+                                </div>
+                            </motion.div>
+
+                        </div>
                     </div>
                 </div>
             </section>
