@@ -24,4 +24,5 @@ export const PATHS = {
     ADMIN_LOGIN: '/admin/login',
     OFFERS: '/offers',
     CONTACT: '/contact',
+    CORPORATE_PACKAGE: '/corporate-package',
 };

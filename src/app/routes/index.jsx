@@ -21,6 +21,7 @@ import Category from '@/features/catalog/pages/Category';
 import About from '@/features/info/pages/About';
 import Offers from '@/features/catalog/pages/Offers';
 import Contact from '@/features/info/pages/Contact';
+import CorporatePackage from '@/features/info/pages/CorporatePackage';
 import OrderTracking from '@/features/orders/pages/OrderTracking';
 import Payment from '@/features/checkout/pages/Payment';
 import AddressList from '@/features/profile/pages/AddressList';
@@ -48,6 +49,7 @@ const AppRoutes = () => {
                 <Route path={PATHS.ABOUT} element={<About />} />
                 <Route path={PATHS.OFFERS} element={<Offers />} />
                 <Route path={PATHS.CONTACT} element={<Contact />} />
+                <Route path={PATHS.CORPORATE_PACKAGE} element={<CorporatePackage />} />
                 {isMultivendor && <Route path={PATHS.VENDORS} element={<VendorList />} />}
                 <Route path={PATHS.PRODUCTS} element={<Category />} />
                 <Route path="/products/:id" element={<ProductDetails />} />

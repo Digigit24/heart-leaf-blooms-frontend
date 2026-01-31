@@ -38,6 +38,7 @@ export default function Header() {
     { name: 'Home', path: PATHS.HOME },
     { name: 'Shop', path: PATHS.PRODUCTS },
     { name: 'Offers', path: PATHS.OFFERS },
+    { name: 'Corporate', path: PATHS.CORPORATE_PACKAGE },
     ...(isMultivendor ? [{ name: 'Vendors', path: PATHS.VENDORS }] : []),
     { name: 'About', path: PATHS.ABOUT },
     { name: 'Contact', path: PATHS.CONTACT },
