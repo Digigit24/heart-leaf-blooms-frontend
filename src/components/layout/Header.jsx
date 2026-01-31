@@ -53,7 +53,7 @@ export default function Header() {
       {/* Announcement Bar - Static, does not collapse to avoid jitter */}
       <div className="bg-[#0F3D2E] text-white text-[9px] uppercase tracking-wider py-2 font-medium relative z-50">
         <div className="max-w-container mx-auto px-4 flex justify-between items-center">
-          <p className="hidden sm:block text-[11px]">Free shipping on orders over $75</p>
+          <p className="hidden sm:block text-[11px]">Free shipping on orders over ₹499</p>
           <div className="flex items-center gap-6 mx-auto sm:mx-0">
             <span className="flex items-center gap-1.5"><Truck className="w-3 h-3" /> Fast Delivery</span>
             <span className="flex items-center gap-1.5"><Phone className="w-3 h-3" /> Support 24/7</span>

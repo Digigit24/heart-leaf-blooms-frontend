@@ -42,7 +42,8 @@
 /* Base */
 html,
 body {
-    height: 100%;
+    /* Allow body to grow naturally for sticky positioning to work correctly */
+    min-height: 100%;
 }
 
 body {

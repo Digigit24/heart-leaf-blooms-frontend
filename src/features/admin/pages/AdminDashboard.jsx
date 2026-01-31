@@ -1,12 +1,11 @@
 import { Link } from 'react-router-dom';
-import { Package, Users, ShoppingBag, TrendingUp, IndianRupee, Store, ArrowRight, Activity, Calendar, MoreHorizontal, Clock, CheckCircle } from 'lucide-react';
+import { Package, ShoppingBag, TrendingUp, IndianRupee, Store, ArrowRight, Activity, Calendar, MoreHorizontal, Clock, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const STATS = [
   { label: 'Total Revenue', value: '₹1,24,500', icon: IndianRupee, trend: '+12.5% this week', trendUp: true },
   { label: 'Active Orders', value: '24', icon: ShoppingBag, trend: '+4 new today', trendUp: true },
   { label: 'Products', value: '145', icon: Package, trend: 'Stock healthy', trendUp: true },
-  { label: 'Vendors', value: '18', icon: Users, trend: '2 pending approval', trendUp: false },
 ];
 
 export default function AdminDashboard() {
@@ -31,7 +30,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Stats Overview */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {STATS.map((stat, index) => {
           const Icon = stat.icon;
           return (
@@ -167,15 +166,7 @@ export default function AdminDashboard() {
                 </div>
                 <ArrowRight size={16} className="text-gray-300 group-hover:text-gray-600" />
               </Link>
-              <Link to="/admin/vendors" className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 border border-transparent hover:border-gray-200 transition-all group">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-purple-50 text-purple-600 rounded-md group-hover:bg-purple-100 transition-colors">
-                    <Users size={18} />
-                  </div>
-                  <span className="font-medium text-gray-700 group-hover:text-gray-900">Verify Vendors</span>
-                </div>
-                <ArrowRight size={16} className="text-gray-300 group-hover:text-gray-600" />
-              </Link>
+
             </div>
           </div>
 

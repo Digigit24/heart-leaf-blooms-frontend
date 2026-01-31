@@ -25,5 +25,5 @@ export default function SmoothScroll({ children }) {
         };
     }, []);
 
-    return <div className="w-full">{children}</div>;
+    return children;
 }
