@@ -192,27 +192,52 @@ export default function CorporatePackage() {
             </section>
 
             {/* --- CONSIDERATIONS (We Help You Choose) --- */}
-            <section className="py-24 px-6 md:px-12 bg-white">
-                <div className="max-w-7xl mx-auto">
+            <section className="py-24 px-6 md:px-12 relative overflow-hidden">
+                {/* Background Image & Overlay */}
+                <div className="absolute inset-0 z-0">
+                    <motion.img
+                        src="/assets/corporate/selection-bg.png"
+                        alt="Botanical Texture"
+                        className="w-full h-full object-cover opacity-80"
+                        initial={{ scale: 1.1 }}
+                        animate={{
+                            scale: [1.1, 1.25, 1.1],
+                            y: [0, -15, 0],
+                        }}
+                        transition={{
+                            duration: 15,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                        }}
+                    />
+                    <div className="absolute inset-0 bg-[#0F231C]/60 mix-blend-multiply" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#0F231C] via-transparent to-[#0F231C]" />
+                </div>
+
+                {/* Decorative Background Elements */}
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#C6A15B]/10 rounded-full blur-[100px] translate-x-1/2 -translate-y-1/2 pointer-events-none z-0" />
+                <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-[#56BA39]/5 rounded-full blur-[80px] -translate-x-1/2 translate-y-1/2 pointer-events-none z-0" />
+
+                <div className="max-w-7xl mx-auto relative z-10">
                     <div className="text-center mb-20">
-                        <h2 className="text-3xl md:text-4xl font-serif font-bold text-[#0F3D2E] mb-4">Selection Criteria</h2>
+                        <h2 className="text-3xl md:text-4xl font-serif font-bold !text-white mb-4">Selection Criteria</h2>
                         <div className="w-16 h-1 bg-[#C6A15B] mx-auto rounded-full mb-6" />
-                        <p className="text-gray-500 max-w-2xl mx-auto text-lg">
+                        <p className="text-white/70 max-w-2xl mx-auto text-lg">
                             We analyze six key factors to ensure your green space is beautiful, sustainable, and functional.
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8">
                         {CONSIDERATIONS.map((item, idx) => {
                             const Icon = item.icon;
                             return (
-                                <div key={idx} className="flex gap-5 group items-start">
-                                    <div className="shrink-0 w-14 h-14 rounded-full bg-[#F5F5F5] group-hover:bg-[#0F3D2E] flex items-center justify-center transition-colors duration-300">
-                                        <Icon size={24} className="text-[#0F3D2E] group-hover:text-[#C6A15B] transition-colors" />
+                                <div key={idx} className="flex gap-5 group items-start p-6 rounded-2xl hover:bg-white/5 transition-all duration-300 border border-transparent hover:border-white/10">
+                                    <div className="shrink-0 w-14 h-14 rounded-full bg-[#C6A15B]/10 group-hover:bg-[#C6A15B] flex items-center justify-center transition-all duration-300 shadow-lg shadow-black/20 group-hover:shadow-[#C6A15B]/20">
+                                        <Icon size={24} className="text-[#C6A15B] group-hover:text-[#0F2F24] transition-colors" />
                                     </div>
                                     <div>
-                                        <h3 className="text-xl font-bold text-[#0F3D2E] mb-2">{item.title}</h3>
-                                        <p className="text-gray-600 leading-relaxed text-sm md:text-[15px]">{item.desc}</p>
+                                        <h3 className="text-xl font-bold !text-white mb-2">{item.title}</h3>
+                                        <p className="!text-gray-300 leading-relaxed text-sm md:text-[15px] group-hover:!text-white transition-colors">{item.desc}</p>
                                     </div>
                                 </div>
                             )

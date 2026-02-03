@@ -27,11 +27,18 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Login form submitted", formData);
+    // DEBUG ALERTS
+    // alert(`Submitting Form with: ${JSON.stringify(formData)}`);
+
     setLoading(true);
     setError('');
 
-    // DEMO LOGIN BYPASS
+    // DEMO LOGIN BYPASS MOVED TO CATCH BLOCK
+    // Attempts API first, then falls back if credentials match demo user.
+    /*
     if (formData.user_email === 'user@demo.com' && formData.user_password === 'demo') {
+      console.log("Using demo bypass");
       const demoUser = {
         _id: 'demo-user-123',
         name: 'Demo User',
@@ -47,9 +54,17 @@ export default function Login() {
       setLoading(false);
       return;
     }
+    */
 
     try {
+      console.log("Calling authApi.loginUser with:", formData);
+      // alert("About to call API");
+
       const response = await authApi.loginUser(formData);
+
+      console.log("Login API Response:", response);
+      // alert(`API Response Recieved: ${response.status}`);
+
       const data = response.data;
       const user = data.user || data;
       const token = data.token;
@@ -70,9 +85,31 @@ export default function Login() {
         localStorage.setItem('userId', userId);
       }
 
+      console.log("Login successful, navigating home");
       navigate(PATHS.HOME);
     } catch (err) {
       console.error("Login Error:", err);
+
+      // FALLBACK FOR DEMO USER (If API fails with 404/etc)
+      if (formData.user_email === 'user@demo.com' && formData.user_password === 'demo') {
+        console.log("API failed for demo user, using local fallback");
+        const demoUser = {
+          _id: 'demo-user-123',
+          name: 'Demo User',
+          email: 'user@demo.com',
+          role: 'user',
+          phone: '1234567890',
+          address: '123 Demo St, Demo City'
+        };
+        login(demoUser);
+        localStorage.setItem('token', 'demo-token-123');
+        localStorage.setItem('userId', demoUser._id);
+        navigate(PATHS.HOME);
+        setLoading(false);
+        return;
+      }
+
+      // alert(`Login Failed: ${err.message}`);
       setError(err.response?.data?.message || 'Login failed. Please check your credentials.');
     } finally {
       setLoading(false);
