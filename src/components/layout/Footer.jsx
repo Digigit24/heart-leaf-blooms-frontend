@@ -101,23 +101,32 @@ export default function Footer() {
               <span className="w-8 h-px bg-[#C6A15B]"></span> Get in Touch
             </h4>
             <ul className="space-y-6">
+              {/* Address */}
               <li className="flex items-start gap-4 text-white/70 font-light hover:text-white transition-colors group">
                 <div className="p-2 rounded-full bg-white/5 group-hover:bg-[#C6A15B]/20 transition-colors mt-[-4px]">
                   <MapPin size={18} className="text-[#C6A15B]" />
                 </div>
                 <span>123 Botanical Garden St,<br />Pune, MH 411001, India</span>
               </li>
-              <li className="flex items-center gap-4 text-white/70 font-light hover:text-white transition-colors group">
-                <div className="p-2 rounded-full bg-white/5 group-hover:bg-[#C6A15B]/20 transition-colors">
+
+              {/* Emails */}
+              <li className="flex items-start gap-4 text-white/70 font-light transition-colors group">
+                <div className="p-2 rounded-full bg-white/5 group-hover:bg-[#C6A15B]/20 transition-colors mt-[-4px]">
                   <Mail size={18} className="text-[#C6A15B]" />
                 </div>
-                <a href="mailto:hello@heartleafblooms.com">hello@heartleafblooms.com</a>
+                <div className="flex flex-col gap-2">
+                  <a href="mailto:heartleafbloomsonline@gmail.com" className="hover:text-white transition-colors">heartleafbloomsonline@gmail.com</a>
+                  <a href="mailto:sales@heartleafblooms.com" className="hover:text-white transition-colors">sales@heartleafblooms.com</a>
+                  <a href="mailto:enquiry@heartleafblooms.com" className="hover:text-white transition-colors">enquiry@heartleafblooms.com</a>
+                </div>
               </li>
+
+              {/* Phone */}
               <li className="flex items-center gap-4 text-white/70 font-light hover:text-white transition-colors group">
                 <div className="p-2 rounded-full bg-white/5 group-hover:bg-[#C6A15B]/20 transition-colors">
                   <Phone size={18} className="text-[#C6A15B]" />
                 </div>
-                <a href="tel:+919876543210">+91 987 654 3210</a>
+                <a href="tel:+919011600622">+91 90116 00622</a>
               </li>
             </ul>
           </div>

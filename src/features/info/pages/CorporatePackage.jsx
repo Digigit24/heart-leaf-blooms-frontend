@@ -425,7 +425,7 @@ export default function CorporatePackage() {
                                 <div className="relative z-10">
                                     <h3 className="text-xl font-bold mb-1 flex items-center gap-2"><CheckCircle2 size={18} /> Expert Support</h3>
                                     <p className="text-[#0F3D2E]/80 text-xs mb-4">Immediate assistance for bulk orders</p>
-                                    <div className="text-3xl font-serif font-bold tracking-tight group-hover:scale-105 transition-transform origin-left">+91 98765 00000</div>
+                                    <div className="text-3xl font-serif font-bold tracking-tight group-hover:scale-105 transition-transform origin-left"> +91 9011600622</div>
                                 </div>
                             </motion.div>
 
