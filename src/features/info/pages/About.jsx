@@ -278,17 +278,17 @@ const About = () => {
 
                     <div className="space-y-32">
                         {/* Founder 1: Geetanjali Makhija */}
-                        <div className="grid lg:grid-cols-12 gap-12 items-start">
+                        <div className="grid lg:grid-cols-12 gap-12 items-center">
                             <motion.div
                                 initial={{ opacity: 0, x: -50 }}
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.8 }}
-                                className="lg:col-span-5 sticky top-24 self-start"
+                                className="lg:col-span-5 relative"
                             >
-                                <div className="relative rounded-[3rem] overflow-hidden shadow-2xl shadow-[#0F3D2E]/20 group">
+                                <div className="relative rounded-4xl overflow-hidden shadow-2xl shadow-[#0F3D2E]/20 group aspect-3/4 max-h-[600px] w-full mx-auto">
                                     <div className="absolute inset-0 bg-[#0F3D2E]/10 group-hover:bg-transparent transition-colors duration-500 z-10"></div>
-                                    <img src="/images/Geetanjali-Makhija.jpeg" alt="Geetanjali Makhija" className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700" />
+                                    <img src="/images/Geetanjali-Makhija.jpeg" alt="Geetanjali Makhija" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
                                 </div>
                                 <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-[#FDF0D5] rounded-full -z-10 blur-xl opacity-60"></div>
                                 <div className="absolute -top-6 -left-6 w-24 h-24 bg-[#E6F4EA] rounded-full -z-10 blur-xl opacity-60"></div>
@@ -306,48 +306,19 @@ const About = () => {
                                     <p className="text-[#C6A15B] font-serif italic text-xl">Co-Founder of Heartleaf Blooms</p>
                                 </div>
 
-                                <blockquote className="p-6 border-l-4 border-[#C6A15B] bg-white/50 backdrop-blur-sm rounded-r-xl italic text-[#0F3D2E]/80">
-                                    "Dynamic professional with a unique trifecta of a Computer Engineering foundation, a Masters in Management and International Business from the UK, and extensive MNC corporate experience."
-                                </blockquote>
+                                <div className="bg-white p-8 rounded-4xl border border-[#0F3D2E]/10 shadow-sm relative overflow-hidden">
+                                    <div className="absolute top-0 right-0 w-32 h-32 bg-[#FDF0D5]/50 rounded-full blur-2xl -translate-y-1/2 translate-x-1/3"></div>
 
-                                <div className="space-y-6">
-                                    <h4 className="font-heading font-bold text-[#0F3D2E] text-xl border-b border-[#0F3D2E]/10 pb-2">Professional Narrative</h4>
+                                    <div className="relative z-10 space-y-6 text-[#0F3D2E]/80 font-light text-lg leading-relaxed">
+                                        <p>
+                                            Geetanjali holds a unique trifecta of skills: a <strong className="font-medium text-[#0F3D2E]">Computer Engineering foundation</strong>, a UK Master’s in International Management, and extensive MNC experience. She leverages this technical rigour to architect scalable digital infrastructures that serve as the backbone of modern business.
+                                        </p>
 
-                                    <div className="grid gap-6">
-                                        {[
-                                            {
-                                                title: "The Engineering Foundation",
-                                                text: "My career began with a deep dive into Computer Engineering, where I developed a first-principles approach to problem-solving. This technical rigors allows me to communicate effectively with developers and architect scalable digital infrastructures that serve as the backbone of modern business."
-                                            },
-                                            {
-                                                title: "The Global Management Perspective",
-                                                text: "Earning my Masters in Management and International Business in the United Kingdom provided a global lens on organizational behaviour, international trade, and strategic finance. This period sharpened my ability to navigate diverse markets and understand the nuances of global consumer trends."
-                                            },
-                                            {
-                                                title: "The Corporate Rigor (MNC Experience)",
-                                                text: "With a proven track record across various functions in Multi-National Corporations, I have mastered the art of operational excellence. I bring the discipline of corporate governance, structured project management, and high-level stakeholder management to every venture I touch."
-                                            },
-                                            {
-                                                title: "The Current Venture: Heartleaf Blooms",
-                                                text: "I am currently channeling my technical expertise and business acumen into building a next-generation E-commerce venture. By automating operations and focusing on a Horticulture Market and value to customers simultaneous, I am scaling a brand that prioritizes both technological efficiency and market relevance."
-                                            }
-                                        ].map((item, idx) => (
-                                            <div key={idx} className="group">
-                                                <h5 className="font-bold text-[#0F3D2E] mb-1 group-hover:text-[#C6A15B] transition-colors">{idx + 1}. {item.title}</h5>
-                                                <p className="text-sm text-[#0F3D2E]/70 leading-relaxed text-justify">{item.text}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                <div className="bg-[#0F3D2E] text-white p-6 rounded-2xl space-y-4">
-                                    <div>
-                                        <p className="text-[#C6A15B] text-xs font-bold uppercase tracking-wider mb-1">Vision</p>
-                                        <p className="font-light italic">Harmonizing technology with environmental stewardship to build ventures that promote ecological health.</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-[#C6A15B] text-xs font-bold uppercase tracking-wider mb-1">Mission</p>
-                                        <p className="font-light italic">We strongly believe that the next industrial revolution must be a biological one. Technically horticulturalist can use AI to monitor soil, Plant health and promote urban greening.</p>
+                                        <div className="pl-4 border-l-2 border-[#C6A15B]">
+                                            <p className="italic text-base">
+                                                "My vision is to harmonize technology with environmental stewardship—driving a biological industrial revolution where <span className="font-medium text-[#0F3D2E]">AI and automation</span> actively nurture urban greening."
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </motion.div>
@@ -362,9 +333,9 @@ const About = () => {
                                 transition={{ duration: 0.8 }}
                                 className="lg:col-span-5 lg:order-2 sticky top-24 self-start"
                             >
-                                <div className="relative rounded-[3rem] overflow-hidden shadow-2xl shadow-[#0F3D2E]/20 group">
+                                <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl shadow-[#0F3D2E]/20 group aspect-3/4 max-h-[600px] w-full mx-auto">
                                     <div className="absolute inset-0 bg-[#0F3D2E]/10 group-hover:bg-transparent transition-colors duration-500 z-10"></div>
-                                    <img src="/images/Bintu-Kisan-Pawar.jpeg" alt="Bintu Kisan Pawar" className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700" />
+                                    <img src="/images/Bintu-Kisan-Pawar.jpeg" alt="Bintu Kisan Pawar" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
                                 </div>
                                 <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-[#FDF0D5] rounded-full -z-10 blur-xl opacity-60"></div>
                             </motion.div>
@@ -389,61 +360,7 @@ const About = () => {
 
                                 {/* Accordion for Comprehensive Profile */}
                                 <div className="space-y-4">
-                                    <details className="group bg-white rounded-xl border border-[#0F3D2E]/10 overflow-hidden transition-all duration-300 open:shadow-md">
-                                        <summary className="flex items-center justify-between p-4 cursor-pointer bg-[#F5F3EF] hover:bg-[#EBE8E0]">
-                                            <span className="font-bold text-[#0F3D2E]">Key Ventures & Responsibilities</span>
-                                            <span className="transform group-open:rotate-180 transition-transform duration-300 text-[#0F3D2E]">▼</span>
-                                        </summary>
-                                        <div className="p-6 space-y-6 bg-white max-h-[400px] overflow-y-auto custom-scrollbar overscroll-contain" data-lenis-prevent>
-                                            {[
-                                                {
-                                                    role: "Director and Partner",
-                                                    company: "Ramvatika Agribiotech LLP",
-                                                    period: "Jan-2021 To Date",
-                                                    desc: "Managing all operations of production and selling ornamental, Seasonal, Tissue culture and rooted cutting saplings. Producing and selling 30 million plants of more than 400 products. Target FY 2023-24 is ₹10 crore INR business."
-                                                },
-                                                {
-                                                    role: "Director and Partner",
-                                                    company: "RamRehyann Agrotech LLP",
-                                                    period: "Feb-2022 To Date",
-                                                    desc: "Heading as CEO. Managing operations of Geranium oil extraction project, plantation, contract farming, and international sales. Target for next 3 years business is > ₹50 crore INR."
-                                                },
-                                                {
-                                                    role: "Director and Partner",
-                                                    company: "Deccan Planet Agrotech LLP",
-                                                    period: "Sept-2021 To Date",
-                                                    desc: "Selling customized cocopeat, cocochips, Pots, Trays, Peatmoss, etc., with a ₹8 Crore INR target."
-                                                },
-                                                {
-                                                    role: "Partner and CFO",
-                                                    company: "Rehyann Nursery (NPL Group)",
-                                                    period: "Jan-2021 To Date",
-                                                    desc: "Handling commercial production and selling of pot plants in 20 Acres. Target: 1 million pots."
-                                                },
-                                                {
-                                                    role: "Director",
-                                                    company: "RamRehyann Aroma and Perfumes Pvt Ltd",
-                                                    period: "Nov-2022 To Date",
-                                                    desc: "Strategic planning, product development, and sales of essential oils. Own Distillation unit and GC Lab setup."
-                                                },
-                                                {
-                                                    role: "Senior Production & Marketing Manager",
-                                                    company: "Scientific Seedlings India Pvt. Ltd",
-                                                    period: "Jan-2005 To Mar-2021",
-                                                    desc: "Managed 30+ labors, dealer networks, and end-to-end customer relations. Production of vegetable products, flowers, and ornamental seedlings."
-                                                }
-                                            ].map((job, i) => (
-                                                <div key={i} className="border-b border-gray-100 last:border-0 pb-4 last:pb-0">
-                                                    <div className="flex justify-between items-baseline mb-1">
-                                                        <h5 className="font-bold text-[#0F3D2E] text-sm">{job.role}</h5>
-                                                        <span className="text-xs text-[#0F3D2E]/50 font-mono">{job.period}</span>
-                                                    </div>
-                                                    <p className="text-xs font-semibold text-[#8BC34A] mb-2">{job.company}</p>
-                                                    <p className="text-xs text-[#0F3D2E]/70">{job.desc}</p>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </details>
+
 
                                     <details className="group bg-white rounded-xl border border-[#0F3D2E]/10 overflow-hidden transition-all duration-300 open:shadow-md">
                                         <summary className="flex items-center justify-between p-4 cursor-pointer bg-[#F5F3EF] hover:bg-[#EBE8E0]">
