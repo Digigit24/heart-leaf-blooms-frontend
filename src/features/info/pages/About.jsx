@@ -347,55 +347,66 @@ const About = () => {
                                 transition={{ duration: 0.8, delay: 0.2 }}
                                 className="lg:col-span-7 lg:order-1 space-y-8"
                             >
-                                <div>
-                                    <h3 className="text-4xl font-heading font-bold text-[#0F3D2E] mb-2">Bintu Kisan Pawar</h3>
-                                    <p className="text-[#C6A15B] font-serif italic text-xl">Director at Ramvatika Agribiotech LLP</p>
-                                </div>
-
-                                <div className="prose prose-stone text-[#0F3D2E]/80">
-                                    <p className="lead border-l-4 border-[#8BC34A] pl-4 italic">
-                                        "To use at best my knowledge of Agriculture & Management of almost 19 years in agriculture field & effective co-ordination of both to attain objective of perusing PhD to gain more knowledge in Agriculture and Floriculture field for betterment of Indian Farmers."
-                                    </p>
+                                <div className="bg-white p-8 rounded-4xl border border-[#0F3D2E]/10 shadow-sm relative overflow-hidden mb-8">
+                                    <div className="absolute top-0 left-0 w-32 h-32 bg-[#E6F4EA]/50 rounded-full blur-2xl -translate-y-1/2 -translate-x-1/3"></div>
+                                    <div className="relative z-10 space-y-6">
+                                        <div>
+                                            <h3 className="text-4xl font-heading font-bold text-[#0F3D2E] mb-2">Bintu Kisan Pawar</h3>
+                                            <p className="text-[#C6A15B] font-serif italic text-xl">Director at Ramvatika Agribiotech LLP</p>
+                                        </div>
+                                        <div className="pl-4 border-l-2 border-[#8BC34A]">
+                                            <p className="italic text-[#0F3D2E]/80 text-lg font-light leading-relaxed">
+                                                "With over 19 years of expertise in Agriculture & Management, my mission is to bridge the gap between traditional farming and modern innovation—pursuing advanced research to uplift the Indian farming community."
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 {/* Accordion for Comprehensive Profile */}
                                 <div className="space-y-4">
-
-
-                                    <details className="group bg-white rounded-xl border border-[#0F3D2E]/10 overflow-hidden transition-all duration-300 open:shadow-md">
-                                        <summary className="flex items-center justify-between p-4 cursor-pointer bg-[#F5F3EF] hover:bg-[#EBE8E0]">
-                                            <span className="font-bold text-[#0F3D2E]">Achievements & Milestones</span>
-                                            <span className="transform group-open:rotate-180 transition-transform duration-300 text-[#0F3D2E]">▼</span>
+                                    <details className="group bg-white rounded-2xl border border-[#0F3D2E]/5 overflow-hidden transition-all duration-300 open:shadow-lg open:border-[#0F3D2E]/20">
+                                        <summary className="flex items-center justify-between p-5 cursor-pointer bg-[#F9F8F6] hover:bg-[#F0EEE6] transition-colors duration-300">
+                                            <span className="font-bold text-[#0F3D2E] text-lg tracking-wide">Achievements & Milestones</span>
+                                            <span className="relative w-6 h-6 flex items-center justify-center transform group-open:rotate-180 transition-transform duration-500">
+                                                <span className="absolute w-full h-0.5 bg-[#0F3D2E] rounded-full"></span>
+                                                <span className="absolute h-full w-0.5 bg-[#0F3D2E] rounded-full group-open:scale-y-0 transition-transform duration-300"></span>
+                                            </span>
                                         </summary>
-                                        <div className="p-6 bg-white">
-                                            <ul className="space-y-3">
-                                                <li className="flex gap-3 text-sm text-[#0F3D2E]/80">
-                                                    <span className="text-[#C6A15B] font-bold">•</span>
-                                                    <span>Part of Ahmedabad Municipal Corporation team achieving <strong className="text-[#0F3D2E]">Guineas World Record</strong> for Longest Flower structure (221 mtr).</span>
+                                        <div className="p-6 bg-white border-t border-[#0F3D2E]/5">
+                                            <ul className="space-y-4">
+                                                <li className="flex gap-4 text-[#0F3D2E]/80 group/item hover:bg-[#F9F8F6] p-3 rounded-xl transition-colors duration-300">
+                                                    <span className="text-[#C6A15B] font-bold text-xl mt-1">•</span>
+                                                    <span className="text-sm leading-relaxed">Part of Ahmedabad Municipal Corporation team achieving <strong className="text-[#0F3D2E]">Guinness World Record</strong> for Longest Flower structure (221 mtr).</span>
                                                 </li>
-                                                <li className="flex gap-3 text-sm text-[#0F3D2E]/80">
-                                                    <span className="text-[#C6A15B] font-bold">•</span>
-                                                    <span>Ram Mandir Ayodhya Garbha Gruha and Sajja Decoration (Volunteer basis).</span>
+                                                <li className="flex gap-4 text-[#0F3D2E]/80 group/item hover:bg-[#F9F8F6] p-3 rounded-xl transition-colors duration-300">
+                                                    <span className="text-[#C6A15B] font-bold text-xl mt-1">•</span>
+                                                    <span className="text-sm leading-relaxed">Ram Mandir Ayodhya Garbha Gruha and Sajja Decoration (Volunteer basis).</span>
                                                 </li>
-                                                <li className="flex gap-3 text-sm text-[#0F3D2E]/80">
-                                                    <span className="text-[#C6A15B] font-bold">•</span>
-                                                    <span>Successfully executed 22+ National and International projects/Flower Shows (Statue of Unity, International Jambooree, Daman Flower Show, etc.) in extremely short timelines.</span>
+                                                <li className="flex gap-4 text-[#0F3D2E]/80 group/item hover:bg-[#F9F8F6] p-3 rounded-xl transition-colors duration-300">
+                                                    <span className="text-[#C6A15B] font-bold text-xl mt-1">•</span>
+                                                    <span className="text-sm leading-relaxed">Successfully executed 22+ National and International projects/Flower Shows (Statue of Unity, International Jambooree, Daman Flower Show, etc.) in extremely short timelines.</span>
                                                 </li>
                                             </ul>
                                         </div>
                                     </details>
 
-                                    <details className="group bg-white rounded-xl border border-[#0F3D2E]/10 overflow-hidden transition-all duration-300 open:shadow-md">
-                                        <summary className="flex items-center justify-between p-4 cursor-pointer bg-[#F5F3EF] hover:bg-[#EBE8E0]">
-                                            <span className="font-bold text-[#0F3D2E]">Education</span>
-                                            <span className="transform group-open:rotate-180 transition-transform duration-300 text-[#0F3D2E]">▼</span>
+                                    <details className="group bg-white rounded-2xl border border-[#0F3D2E]/5 overflow-hidden transition-all duration-300 open:shadow-lg open:border-[#0F3D2E]/20">
+                                        <summary className="flex items-center justify-between p-5 cursor-pointer bg-[#F9F8F6] hover:bg-[#F0EEE6] transition-colors duration-300">
+                                            <span className="font-bold text-[#0F3D2E] text-lg tracking-wide">Education</span>
+                                            <span className="relative w-6 h-6 flex items-center justify-center transform group-open:rotate-180 transition-transform duration-500">
+                                                <span className="absolute w-full h-0.5 bg-[#0F3D2E] rounded-full"></span>
+                                                <span className="absolute h-full w-0.5 bg-[#0F3D2E] rounded-full group-open:scale-y-0 transition-transform duration-300"></span>
+                                            </span>
                                         </summary>
-                                        <div className="p-6 bg-white">
-                                            <div className="mb-4">
-                                                <h6 className="font-bold text-[#0F3D2E] text-sm">Masters degree in Botany</h6>
-                                                <p className="text-xs text-[#0F3D2E]/60">Savitribai Phule Pune University (SPPU)</p>
-                                                <p className="text-xs text-[#0F3D2E]/60">Specialization: Genetics and Plant breeding</p>
-                                                <p className="text-xs text-[#0F3D2E]/60 mt-1">Grade: 7.22</p>
+                                        <div className="p-6 bg-white border-t border-[#0F3D2E]/5">
+                                            <div className="hover:bg-[#F9F8F6] p-4 rounded-xl transition-colors duration-300">
+                                                <h6 className="font-bold text-[#0F3D2E] text-base mb-1">Masters degree in Botany</h6>
+                                                <p className="text-sm text-[#0F3D2E]/60 italic font-serif">Savitribai Phule Pune University (SPPU)</p>
+                                                <div className="mt-3 flex flex-wrap gap-2">
+                                                    <span className="px-3 py-1 bg-[#E6F4EA] text-[#0F3D2E] text-xs font-bold rounded-full">Genetics</span>
+                                                    <span className="px-3 py-1 bg-[#E6F4EA] text-[#0F3D2E] text-xs font-bold rounded-full">Plant Breeding</span>
+                                                    <span className="px-3 py-1 bg-[#FDF0D5] text-[#C6A15B] text-xs font-bold rounded-full">Grade: 7.22</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </details>
