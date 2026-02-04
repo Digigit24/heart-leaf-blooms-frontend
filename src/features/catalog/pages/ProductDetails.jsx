@@ -150,8 +150,8 @@ export default function ProductDetails() {
     ),
     "reviews": (
       <div className="max-w-3xl mx-auto">
-        <ReviewForm productId={id} />
-        <ReviewList productId={id} />
+        <ReviewForm productId={product?.id} />
+        <ReviewList productId={product?.id} />
       </div>
     )
   };

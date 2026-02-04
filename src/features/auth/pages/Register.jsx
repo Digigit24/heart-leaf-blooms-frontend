@@ -22,13 +22,28 @@ export default function Register() {
     setError('');
 
     try {
-      // Basic validation or mapping if needed
-      await authApi.registerUser(formData);
+      // Construct payload matching the required API structure
+      const payload = {
+        user_id: "", // Backend likely generates this, but included as per structure
+        username: formData.username,
+        user_email: formData.user_email,
+        mobile_number: formData.user_mobile,
+        addresses: [],
+        createdAt: new Date().toISOString(),
+        user_password: formData.user_password,
+        google_id: "",
+        cart: [],
+        wishlist: []
+      };
+
+      await authApi.registerUser(payload);
       // On success, redirect to login
       navigate(PATHS.LOGIN);
     } catch (err) {
       console.error("Register Error:", err);
-      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+      // specific error message handling if backend returns detailed error
+      const message = err.response?.data?.error || err.response?.data?.message || 'Registration failed. Please try again.';
+      setError(message);
     } finally {
       setLoading(false);
     }

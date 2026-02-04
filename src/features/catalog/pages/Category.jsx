@@ -9,6 +9,7 @@ import { useCartStore } from '@/app/store/cart.store';
 import { useAuthStore } from '@/app/store/auth.store';
 import { toast } from 'react-hot-toast';
 import { PATHS } from '@/app/routes/paths';
+import LiquidHero from '@/components/ui/LiquidHero';
 
 export default function Category() {
     const navigate = useNavigate();
@@ -19,37 +20,7 @@ export default function Category() {
     const { addItem } = useCartStore();
     const { user } = useAuthStore();
 
-    // --- Water Effect Refs ---
-    const turbulenceRef = useRef(null);
-    const displacementRef = useRef(null);
-    const animationFrameRef = useRef(null);
-    const progressRef = useRef(0);
-    const scaleRef = useRef(0);
-    const isHoveringRef = useRef(false);
 
-    useEffect(() => {
-        const animate = () => {
-            if (turbulenceRef.current && displacementRef.current) {
-                // Animate 'water flow' - Lower frequency = Larger waves
-                progressRef.current += 0.005;
-                const freqX = 0.002 + 0.001 * Math.sin(progressRef.current);
-                const freqY = 0.01 + 0.002 * Math.cos(progressRef.current);
-                turbulenceRef.current.setAttribute('baseFrequency', `${freqX} ${freqY}`);
-
-                // Smoothly animate 'scale' based on hover
-                const targetScale = isHoveringRef.current ? 30 : 0;
-                scaleRef.current += (targetScale - scaleRef.current) * 0.1;
-
-                if (!isHoveringRef.current && scaleRef.current < 0.1) scaleRef.current = 0;
-                displacementRef.current.setAttribute('scale', scaleRef.current);
-            }
-            animationFrameRef.current = requestAnimationFrame(animate);
-        };
-        animationFrameRef.current = requestAnimationFrame(animate);
-        return () => {
-            if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
-        };
-    }, []);
 
     const handleAddToCart = (e, product) => {
         e.stopPropagation();
@@ -215,39 +186,13 @@ export default function Category() {
                 </AnimatePresence>
 
                 {/* --- Hero Banner --- */}
-                <div
-                    className="mb-8 relative h-40 md:h-48 lg:h-52 rounded-2xl overflow-hidden bg-[#0F3D2E] shadow-xl group cursor-pointer"
-                    onMouseEnter={() => (isHoveringRef.current = true)}
-                    onMouseLeave={() => (isHoveringRef.current = false)}
-                >
-                    {/* Water Effect SVG Filter */}
-                    <svg className="absolute w-0 h-0">
-                        <filter id="water-effect">
-                            <feTurbulence
-                                ref={turbulenceRef}
-                                type="fractalNoise"
-                                baseFrequency="0.002 0.01"
-                                numOctaves="2"
-                                seed="1"
-                            />
-                            <feDisplacementMap
-                                ref={displacementRef}
-                                in="SourceGraphic"
-                                scale="0"
-                            />
-                        </filter>
-                    </svg>
+                {/* --- Hero Banner --- */}
+                <div className="mb-8 relative h-40 md:h-48 lg:h-52 rounded-2xl overflow-hidden bg-[#0F3D2E] shadow-xl group cursor-pointer">
+                    {/* WebGL Liquid Background */}
+                    <LiquidHero />
 
-                    {/* Background with Filter */}
-                    <div
-                        className="absolute inset-0 bg-[url('/images/hero-1.png')] bg-cover bg-center opacity-40 transition-opacity duration-700"
-                        style={{ filter: 'url(#water-effect)' }}
-                    ></div>
-
-                    {/* Dark Green Gradient Overlay */}
-                    <div className="absolute inset-0 bg-linear-to-r from-[#0F3D2E]/90 via-[#0F3D2E]/70 to-transparent"></div>
-
-                    <div className="relative h-full flex flex-col justify-center items-start text-left px-8 md:px-12 z-10">
+                    {/* Content Overlay */}
+                    <div className="relative h-full flex flex-col justify-center items-start text-left px-8 md:px-12 z-10 pointer-events-none">
                         <h1 className="font-heading font-black text-2xl md:text-5xl text-white mb-2 drop-shadow-md">Best Deal <span className="text-[#C6A15B]">With Best Plant</span></h1>
                         <p className="text-white/90 font-medium max-w-lg text-sm md:text-lg">Upgrade your home with our premium selection of indoor greenery.</p>
                     </div>

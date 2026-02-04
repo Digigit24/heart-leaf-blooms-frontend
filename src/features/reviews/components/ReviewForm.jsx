@@ -39,13 +39,28 @@ export default function ReviewForm({ productId }) {
       return;
     }
 
+    // Extract user_id with multiple fallbacks
+    const userId = user.user_id || user.id || user._id;
+
+    // Debug logging
+    console.log('User object:', user);
+    console.log('Extracted userId:', userId);
+
+    // Validate that we have a valid user_id
+    if (!userId || userId === 'undefined') {
+      toast.error('Invalid user session. Please login again.');
+      console.error('Invalid user_id. User object:', user);
+      return;
+    }
+
     const payload = {
-      user_id: String(user.id || user._id),
-      product_id: parseInt(productId),
-      admin_product_id: parseInt(productId),
+      user_id: String(userId),
+      product_id: String(productId),
+      admin_product_id: String(productId),
       rating: Number(rating),
       review: data.review
     };
+
     console.log('Submitting review payload:', payload);
 
     mutation.mutate(payload);

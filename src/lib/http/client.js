@@ -3,7 +3,10 @@ import { useAuthStore } from '@/app/store/auth.store';
 
 const client = axios.create({
   // Direct URL as requested to bypass localhost/proxy issues
-  baseURL: 'https://heart-leaf-blooms-backend.onrender.com',
+  // baseURL: 'https://heart-leaf-blooms-backend.onrender.com',
+     baseURL: `http://localhost:7071`,
+
+
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
