@@ -23,7 +23,7 @@ export default function ManageReviews() {
     const filteredReviews = reviews.filter(review => {
         const matchesSearch =
             review.review?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            review.user_name?.toLowerCase().includes(searchTerm.toLowerCase());
+            review.user?.username?.toLowerCase().includes(searchTerm.toLowerCase());
 
         const matchesRating = ratingFilter === 'all' || Math.round(review.rating) === parseInt(ratingFilter);
 
@@ -129,11 +129,11 @@ export default function ManageReviews() {
                                 <div className="flex flex-col md:flex-row justify-between items-start gap-4">
                                     <div className="flex items-start gap-4">
                                         <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#1C5B45] to-[#4caf50] text-white flex items-center justify-center font-bold text-lg shadow-lg shadow-[#1C5B45]/20 shrink-0">
-                                            {review.user_name ? review.user_name.charAt(0) : <User size={20} />}
+                                            {review.user?.username ? review.user.username.charAt(0).toUpperCase() : <User size={20} />}
                                         </div>
                                         <div>
                                             <div className="flex items-center gap-2 mb-1">
-                                                <h3 className="font-bold text-gray-900">{review.user_name || 'Anonymous User'}</h3>
+                                                <h3 className="font-bold text-gray-900">{review.user?.username || 'Anonymous User'}</h3>
                                                 <span className="text-xs px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full font-medium">Verified Purchase</span>
                                             </div>
                                             <div className="flex items-center gap-2 mb-2">
@@ -157,11 +157,11 @@ export default function ManageReviews() {
                                     <div className="flex flex-row md:flex-col items-center md:items-end gap-2 text-xs text-gray-400 font-medium shrink-0 ml-16 md:ml-0">
                                         <div className="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-lg">
                                             <Calendar size={14} />
-                                            <span>{review.created_at ? new Date(review.created_at).toLocaleDateString() : 'Recently'}</span>
+                                            <span>{review.createdAt ? new Date(review.createdAt).toLocaleDateString() : 'Recently'}</span>
                                         </div>
                                         <div className="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-lg">
                                             <Package size={14} />
-                                            <span>Product ID: {review.product_id}</span>
+                                            <span>{review.adminProduct?.product_name || 'Product'}</span>
                                         </div>
                                     </div>
                                 </div>

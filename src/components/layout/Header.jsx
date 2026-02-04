@@ -148,14 +148,16 @@ export default function Header() {
                   <div className="relative group hidden sm:block">
                     <button className="flex items-center gap-2 py-1">
                       <div className="w-9 h-9 rounded-full bg-[#0F3D2E] text-white flex items-center justify-center shadow-sm">
-                        <span className="font-serif italic font-bold text-sm">{user?.name?.[0] || 'U'}</span>
+                        <span className="font-serif italic font-bold text-sm">
+                          {(user?.username || user?.name || 'U').charAt(0).toUpperCase()}
+                        </span>
                       </div>
                     </button>
                     {/* Dropdown */}
                     <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-border/50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[60] p-1">
                       <div className="px-3 py-2 border-b border-border/50 mb-1">
                         <p className="text-xs text-muted">Signed in as</p>
-                        <p className="font-medium text-primary truncate">{user?.name}</p>
+                        <p className="font-medium text-primary truncate">{user?.username || user?.name || 'User'}</p>
                       </div>
                       <Link to={PATHS.ORDERS} className="block px-3 py-2 text-sm text-text/80 hover:bg-surface-2 rounded-lg transition-colors">
                         My Orders
@@ -247,10 +249,10 @@ export default function Header() {
               <div className="space-y-4">
                 <div className="flex items-center gap-3 p-3 rounded-2xl bg-white border border-brand/5 shadow-sm">
                   <div className="w-10 h-10 rounded-full bg-brand text-white flex items-center justify-center font-bold font-heading">
-                    {user?.name?.[0]}
+                    {(user?.username || user?.name || 'U').charAt(0).toUpperCase()}
                   </div>
                   <div>
-                    <p className="font-medium text-brand-dark font-heading">{user?.name}</p>
+                    <p className="font-medium text-brand-dark font-heading">{user?.username || user?.name || 'User'}</p>
                     <p className="text-xs text-muted">View Profile</p>
                   </div>
                 </div>
