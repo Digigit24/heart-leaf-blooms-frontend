@@ -26,7 +26,7 @@ export const useWishlistStore = create((set, get) => ({
         );
     },
 
-    // Fetch wishlist from server (optional - only if GET endpoint exists)
+    // Fetch wishlist from server
     fetchWishlist: async (userId) => {
         if (!userId) return;
 
@@ -37,10 +37,8 @@ export const useWishlistStore = create((set, get) => ({
             set({ items: wishlistItems, isLoading: false });
             console.log('Wishlist fetched successfully:', wishlistItems);
         } catch (error) {
-            console.warn('Failed to fetch wishlist (GET endpoint might not exist):', error);
-            // Don't set error state - just log it and continue
-            // The wishlist will work with just POST/DELETE
-            set({ isLoading: false });
+            console.error('Failed to fetch wishlist:', error);
+            set({ error: error.message, isLoading: false });
         }
     },
 

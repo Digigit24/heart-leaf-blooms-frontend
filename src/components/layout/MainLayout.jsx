@@ -2,7 +2,6 @@ import { Outlet } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import CartSidebar from './CartSidebar';
-import WishlistSidebar from './WishlistSidebar';
 
 const MainLayout = () => {
     return (
@@ -13,7 +12,6 @@ const MainLayout = () => {
             </main>
             <Footer />
             <CartSidebar />
-            <WishlistSidebar />
         </div>
     );
 };

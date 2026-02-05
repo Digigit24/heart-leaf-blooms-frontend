@@ -26,6 +26,7 @@ import OrderTracking from '@/features/orders/pages/OrderTracking';
 import Payment from '@/features/checkout/pages/Payment';
 import AddressList from '@/features/profile/pages/AddressList';
 import AddressForm from '@/features/profile/pages/AddressForm';
+import WishlistPage from '@/features/wishlist/pages/WishlistPage';
 
 import MainLayout from '@/components/layout/MainLayout';
 import AdminLayout from '@/features/admin/components/AdminLayout';
@@ -77,6 +78,7 @@ const AppRoutes = () => {
                     <Route path="/profile/addresses" element={<AddressList />} />
                     <Route path="/profile/addresses/new" element={<AddressForm />} />
                     <Route path="/profile/addresses/edit/:id" element={<AddressForm />} />
+                    <Route path={PATHS.WISHLIST} element={<WishlistPage />} />
                 </Route>
 
                 {/* Vendor Protected Routes */}

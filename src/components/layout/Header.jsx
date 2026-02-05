@@ -118,7 +118,7 @@ export default function Header() {
                 </button>
 
                 <button
-                  onClick={toggleWishlist}
+                  onClick={() => navigate(PATHS.WISHLIST)}
                   className="p-2 text-[#2F6E1E] hover:text-brand hover:bg-brand-soft/50 rounded-full transition-all duration-300 hidden sm:block relative"
                 >
                   <Heart className="w-5 h-5 stroke-[1.5px]" />
@@ -242,7 +242,7 @@ export default function Header() {
             {/* Wishlist Link */}
             <button
               onClick={() => {
-                toggleWishlist();
+                navigate(PATHS.WISHLIST);
                 setIsMobileMenuOpen(false);
               }}
               className="w-full flex items-center justify-between px-5 py-3.5 rounded-2xl text-lg font-heading font-medium transition-all text-text-secondary hover:bg-[#EAF6E6]/50 hover:text-[#2F6E1E]"

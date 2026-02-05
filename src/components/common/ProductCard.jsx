@@ -113,9 +113,9 @@ export default function ProductCard({ product, ...props }) {
           </div>
           <div className="flex flex-col md:flex-row md:items-center gap-0.5 md:gap-1.5">
             <div className="flex items-center gap-1.5">
-              <span className="font-bold text-sm text-primary">₹{product.price.toFixed(0)}</span>
+              <span className="font-bold text-sm text-primary">₹{product.price?.toFixed(0) || 'N/A'}</span>
               {product.originalPrice && (
-                <span className="text-[10px] md:text-xs text-muted/60 line-through">₹{product.originalPrice.toFixed(0)}</span>
+                <span className="text-[10px] md:text-xs text-muted/60 line-through">₹{product.originalPrice?.toFixed(0)}</span>
               )}
             </div>
             {/* Discount Label like Reference Image */}

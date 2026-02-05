@@ -25,4 +25,5 @@ export const PATHS = {
     OFFERS: '/offers',
     CONTACT: '/contact',
     CORPORATE_PACKAGE: '/corporate-package',
+    WISHLIST: '/wishlist',
 };
