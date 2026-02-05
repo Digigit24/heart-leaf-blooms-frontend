@@ -93,7 +93,7 @@ export default function ProductDetails() {
       variant: (product.category === 'Flower Pots' && activeSize && activePot)
         ? `${activeSize.label} - ${activePot.label}`
         : activeSize ? activeSize.label : 'Standard',
-    }, user?.id || user?._id);
+    }, user?.user_id || user?.id || user?._id);
 
     setIsAdded(true);
     setTimeout(() => setIsAdded(false), 2000);
@@ -383,72 +383,82 @@ export default function ProductDetails() {
             </div>
 
 
-            {/* Action Bar */}
-            <div className="flex gap-4 mt-auto">
-              <div className="flex items-center bg-white border border-border/40 rounded-full h-14 px-2 shadow-sm shrink-0">
+            {/* Action Bar - Responsive Layout */}
+            <div className="space-y-3 sm:space-y-0 mt-auto">
+              {/* Quantity Selector - Full width on mobile, auto on desktop */}
+              <div className="flex items-center bg-white border border-border/40 rounded-full h-14 px-2 shadow-sm w-full sm:w-auto sm:inline-flex mb-3 sm:mb-0">
                 <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 h-full flex items-center justify-center text-muted hover:text-primary hover:bg-black/5 transition-all rounded-full cursor-pointer active:scale-95"><Minus size={16} /></button>
-                <span className="w-8 text-center font-bold text-lg text-primary tabular-nums">{quantity}</span>
+                <span className="flex-1 sm:w-8 text-center font-bold text-lg text-primary tabular-nums">{quantity}</span>
                 <button onClick={() => setQuantity(quantity + 1)} className="w-10 h-full flex items-center justify-center text-muted hover:text-primary hover:bg-black/5 transition-all rounded-full cursor-pointer active:scale-95"><Plus size={16} /></button>
               </div>
 
-              <button
-                onClick={handleAddToCart}
-                disabled={isAdded}
-                className={`flex-1 h-14 font-heading font-black uppercase tracking-widest text-sm rounded-full shadow-xl shadow-primary/20 transition-all flex items-center justify-center gap-3 group cursor-pointer active:scale-[0.98]
-                  ${isAdded ? 'bg-green-600 text-white' : 'bg-[#0F3D2E] text-white hover:bg-[#0F3D2E]/90 hover:-translate-y-0.5'}
-                `}
-              >
-                {isAdded ? (
-                  <>
-                    <ShoppingBag size={18} />
-                    <span>Added to Cart!</span>
-                  </>
-                ) : (
-                  <>
-                    <ShoppingBag size={18} className="group-hover:scale-110 transition-transform" />
-                    <span className="hidden sm:inline">Add to Cart</span>
-                    <span className="w-px h-4 bg-white/20 mx-1"></span>
-                    <span>₹{(currentPrice * quantity).toFixed(0)}</span>
-                  </>
-                )}
-              </button>
+              {/* Buttons Container - Stacks on mobile, row on tablet+ */}
+              <div className="flex flex-col sm:flex-row gap-3">
+                {/* Add to Cart Button */}
+                <button
+                  onClick={handleAddToCart}
+                  disabled={isAdded}
+                  className={`w-full sm:flex-1 h-14 font-heading font-black uppercase tracking-widest text-xs sm:text-sm rounded-full shadow-xl shadow-primary/20 transition-all flex items-center justify-center gap-2 sm:gap-3 group cursor-pointer active:scale-[0.98]
+                    ${isAdded ? 'bg-green-600 text-white' : 'bg-[#0F3D2E] text-white hover:bg-[#0F3D2E]/90 hover:-translate-y-0.5'}
+                  `}
+                >
+                  {isAdded ? (
+                    <>
+                      <ShoppingBag size={18} />
+                      <span className="text-xs sm:text-sm">Added to Cart!</span>
+                    </>
+                  ) : (
+                    <>
+                      <ShoppingBag size={18} className="group-hover:scale-110 transition-transform" />
+                      <span>Add to Cart</span>
+                      <span className="w-px h-4 bg-white/20 mx-1"></span>
+                      <span>₹{(currentPrice * quantity).toFixed(0)}</span>
+                    </>
+                  )}
+                </button>
 
-              <button
-                onClick={() => {
-                  if (!user) {
-                    navigate(PATHS.LOGIN);
-                    return;
-                  }
-                  // Add to cart and immediately go to checkout
-                  addItem({
-                    id: product.id,
-                    name: product.name,
-                    price: currentPrice,
-                    image: product.image,
-                    quantity: quantity,
-                    variant: (product.category === 'Flower Pots' && activeSize && activePot)
-                      ? `${activeSize.label} - ${activePot.label}`
-                      : activeSize ? activeSize.label : 'Standard',
-                  }, user?.id || user?._id);
-                  navigate('/checkout');
-                }}
-                className="h-14 px-8 font-heading font-black uppercase tracking-widest text-sm rounded-full border-2 border-[#0F3D2E] text-[#0F3D2E] hover:bg-[#0F3D2E] hover:text-white transition-all cursor-pointer active:scale-[0.98] flex items-center gap-2"
-              >
-                Buy Now
-              </button>
+                {/* Buy Now Button */}
+                <button
+                  onClick={() => {
+                    if (!user) {
+                      navigate(PATHS.LOGIN);
+                      return;
+                    }
+                    // Add to cart and immediately go to checkout
+                    addItem({
+                      id: product.id,
+                      name: product.name,
+                      price: currentPrice,
+                      image: product.image,
+                      quantity: quantity,
+                      variant: (product.category === 'Flower Pots' && activeSize && activePot)
+                        ? `${activeSize.label} - ${activePot.label}`
+                        : activeSize ? activeSize.label : 'Standard',
+                    }, user?.user_id || user?.id || user?._id);
+                    navigate('/checkout');
+                  }}
+                  className="w-full sm:w-auto h-14 px-6 sm:px-8 font-heading font-black uppercase tracking-widest text-xs sm:text-sm rounded-full border-2 border-[#0F3D2E] text-[#0F3D2E] hover:bg-[#0F3D2E] hover:text-white transition-all cursor-pointer active:scale-[0.98] flex items-center justify-center gap-2"
+                >
+                  <span>Buy Now</span>
+                </button>
 
-              <button
-                onClick={() => {
-                  if (!user) {
-                    navigate(PATHS.LOGIN);
-                    return;
-                  }
-                  addToWishlist(product, user.id || user._id);
-                }}
-                className={`h-14 w-14 rounded-full border border-border/40 flex items-center justify-center transition-all group cursor-pointer active:scale-95 shadow-sm ${isWishlisted ? 'bg-red-50 text-red-500 border-red-200' : 'bg-white text-primary/80 hover:bg-red-50 hover:text-red-500 hover:border-red-200'}`}
-              >
-                <Heart size={20} className={`transition-colors ${isWishlisted ? 'fill-current' : 'group-hover:fill-current'}`} />
-              </button>
+                {/* Wishlist Button */}
+                <button
+                  onClick={() => {
+                    if (!user) {
+                      navigate(PATHS.LOGIN);
+                      return;
+                    }
+                    addToWishlist(product, user.user_id || user.id || user._id);
+                  }}
+                  className={`h-14 w-full sm:w-14 rounded-full border border-border/40 flex items-center justify-center gap-2 transition-all group cursor-pointer active:scale-95 shadow-sm ${isWishlisted ? 'bg-red-50 text-red-500 border-red-200' : 'bg-white text-primary/80 hover:bg-red-50 hover:text-red-500 hover:border-red-200'}`}
+                >
+                  <Heart size={20} className={`transition-colors ${isWishlisted ? 'fill-current' : 'group-hover:fill-current'}`} />
+                  <span className="sm:hidden font-bold text-sm">
+                    {isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
+                  </span>
+                </button>
+              </div>
             </div>
           </div>
         </div>

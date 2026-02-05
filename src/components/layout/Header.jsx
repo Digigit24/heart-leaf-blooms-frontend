@@ -75,7 +75,7 @@ export default function Header() {
           <div className="max-w-container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between">
               {/* Logo - Large & Visible */}
-              <div className="flex-shrink-0">
+              <div className="shrink-0">
                 <Link to={PATHS.HOME} className="flex items-center gap-3 group">
                   <img
                     src="/images/logo.png"
@@ -141,7 +141,7 @@ export default function Header() {
                   )}
                 </button>
 
-                <div className="w-[1px] h-6 bg-border mx-2 hidden sm:block"></div>
+                <div className="w-px h-6 bg-border mx-2 hidden sm:block"></div>
 
                 {/* User Profile / Login */}
                 {isAuthenticated ? (
@@ -154,7 +154,7 @@ export default function Header() {
                       </div>
                     </button>
                     {/* Dropdown */}
-                    <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-border/50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[60] p-1">
+                    <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-border/50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-60 p-1">
                       <div className="px-3 py-2 border-b border-border/50 mb-1">
                         <p className="text-xs text-muted">Signed in as</p>
                         <p className="font-medium text-primary truncate">{user?.username || user?.name || 'User'}</p>
@@ -167,7 +167,7 @@ export default function Header() {
                           Vendor Dashboard
                         </Link>
                       )}
-                      <div className="h-[1px] bg-border/50 my-1"></div>
+                      <div className="h-px bg-border/50 my-1"></div>
                       <button
                         onClick={handleLogout}
                         className="w-full text-left px-3 py-2 text-sm text-red-500 hover:bg-red-50 rounded-lg flex items-center gap-2 transition-colors"
@@ -235,6 +235,43 @@ export default function Header() {
                 {link.name}
               </Link>
             ))}
+
+            {/* Divider */}
+            <div className="h-px bg-border/20 my-4"></div>
+
+            {/* Wishlist Link */}
+            <button
+              onClick={() => {
+                toggleWishlist();
+                setIsMobileMenuOpen(false);
+              }}
+              className="w-full flex items-center justify-between px-5 py-3.5 rounded-2xl text-lg font-heading font-medium transition-all text-text-secondary hover:bg-[#EAF6E6]/50 hover:text-[#2F6E1E]"
+            >
+              <span className="flex items-center gap-3">
+                <Heart className="w-5 h-5 stroke-[1.5px]" />
+                <span>Wishlist</span>
+              </span>
+              {wishlistItems.length > 0 && (
+                <span className="inline-flex items-center justify-center min-w-[24px] h-6 px-2 text-xs font-bold text-white bg-red-400 rounded-full">
+                  {wishlistItems.length}
+                </span>
+              )}
+            </button>
+
+            {/* My Orders Link - Only show when authenticated */}
+            {isAuthenticated && (
+              <Link
+                to={PATHS.ORDERS}
+                className={cn(
+                  'block px-5 py-3.5 rounded-2xl text-lg font-heading font-medium transition-all',
+                  location.pathname === PATHS.ORDERS
+                    ? 'bg-[#EAF6E6] text-[#56BA39] font-bold shadow-sm'
+                    : 'text-text-secondary hover:bg-[#EAF6E6]/50 hover:text-[#2F6E1E]'
+                )}
+              >
+                My Orders
+              </Link>
+            )}
           </div>
 
           <div className="p-6 border-t border-brand/10 bg-brand-soft/10">

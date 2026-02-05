@@ -1,13 +1,23 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { authApi } from '@/features/auth/api/auth.api';
+import { useWishlistStore } from '@/app/store/wishlist.store';
 
 export const useAuthStore = create(
     persist(
         (set, get) => ({
             user: null,
             isAuthenticated: false,
-            login: (user) => set({ user, isAuthenticated: true }),
+            login: (user) => {
+                set({ user, isAuthenticated: true });
+
+                // Fetch wishlist after login
+                const userId = user?.user_id || user?.id || user?._id;
+                if (userId) {
+                    const { fetchWishlist } = useWishlistStore.getState();
+                    fetchWishlist(userId);
+                }
+            },
             logout: async () => {
                 const { user } = get();
 
@@ -53,6 +63,10 @@ export const useAuthStore = create(
                 };
 
                 ['token', 'admin_token', 'vendor_token'].forEach(clearCookie);
+
+                // Clear wishlist on logout
+                const { clearWishlist } = useWishlistStore.getState();
+                clearWishlist();
 
                 set({ user: null, isAuthenticated: false });
             },

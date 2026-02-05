@@ -26,7 +26,9 @@ export default function WishlistSidebar() {
     };
 
     const handleRemove = (product) => {
-        addToWishlist(product, user?.id || user?._id); // This toggles it off
+        const wishlistItemId = product.id || product._id;
+        const { removeFromWishlist } = useWishlistStore.getState();
+        removeFromWishlist(wishlistItemId, user?.user_id || user?.id || user?._id);
     };
 
     return (

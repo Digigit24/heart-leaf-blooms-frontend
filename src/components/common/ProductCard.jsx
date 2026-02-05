@@ -19,7 +19,7 @@ export default function ProductCard({ product, ...props }) {
         navigate(PATHS.LOGIN);
         return;
       }
-      addItem({ ...product, quantity: 1 }, user?.id || user?._id);
+      addItem({ ...product, quantity: 1 }, user?.user_id || user?.id || user?._id);
       toast.success('Added to cart!');
     }
   };
@@ -89,7 +89,7 @@ export default function ProductCard({ product, ...props }) {
                   navigate(PATHS.LOGIN);
                   return;
                 }
-                addItem({ ...product, quantity: 1 }, user?.id || user?._id);
+                addItem({ ...product, quantity: 1 }, user?.user_id || user?.id || user?._id);
                 navigate('/checkout');
               }}
               disabled={!inStock}
