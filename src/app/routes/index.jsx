@@ -27,6 +27,12 @@ import Payment from '@/features/checkout/pages/Payment';
 import AddressList from '@/features/profile/pages/AddressList';
 import AddressForm from '@/features/profile/pages/AddressForm';
 import WishlistPage from '@/features/wishlist/pages/WishlistPage';
+import TermsPage from '@/features/info/pages/TermsPage';
+import CancellationRefundPage from '@/features/info/pages/CancellationRefundPage';
+
+import ShippingPolicyPage from '@/features/info/pages/ShippingPolicyPage';
+import PrivacyPolicyPage from '@/features/info/pages/PrivacyPolicyPage';
+import SitemapPage from '@/features/info/pages/SitemapPage';
 
 import MainLayout from '@/components/layout/MainLayout';
 import AdminLayout from '@/features/admin/components/AdminLayout';
@@ -55,6 +61,13 @@ const AppRoutes = () => {
                 <Route path={PATHS.PRODUCTS} element={<Category />} />
                 <Route path="/products/:id" element={<ProductDetails />} />
                 <Route path={PATHS.CART} element={<Cart />} />
+
+                {/* Legal Pages */}
+                <Route path={PATHS.TERMS} element={<TermsPage />} />
+                <Route path={PATHS.CANCELLATION_REFUND} element={<CancellationRefundPage />} />
+                <Route path={PATHS.SHIPPING_POLICY} element={<ShippingPolicyPage />} />
+                <Route path={PATHS.PRIVACY_POLICY} element={<PrivacyPolicyPage />} />
+                <Route path="/sitemap" element={<SitemapPage />} />
 
                 {/* Auth Routes (Public Only) */}
                 <Route element={<PublicRoute />}>

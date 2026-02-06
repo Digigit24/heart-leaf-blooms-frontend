@@ -26,4 +26,8 @@ export const PATHS = {
     CONTACT: '/contact',
     CORPORATE_PACKAGE: '/corporate-package',
     WISHLIST: '/wishlist',
+    TERMS: '/terms-and-conditions',
+    CANCELLATION_REFUND: '/cancellation-refund',
+    SHIPPING_POLICY: '/shipping-delivery',
+    PRIVACY_POLICY: '/privacy-policy',
 };

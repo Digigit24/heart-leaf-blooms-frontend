@@ -136,13 +136,15 @@ export default function Footer() {
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-white/40 font-light">
           <p>&copy; {currentYear} Heart Leaf Blooms. All rights reserved.</p>
           <div className="flex items-center gap-8">
-            <Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+            <Link to={PATHS.PRIVACY_POLICY} className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link to={PATHS.TERMS} className="hover:text-white transition-colors">Terms of Service</Link>
+            <Link to={PATHS.SHIPPING_POLICY} className="hover:text-white transition-colors">Shipping Policy</Link>
+            <Link to={PATHS.CANCELLATION_REFUND} className="hover:text-white transition-colors">Cancellation Policy</Link>
             <Link to="/sitemap" className="hover:text-white transition-colors">Sitemap</Link>
           </div>
         </div>
       </div>
-    </footer>
+    </footer >
   );
 }
 
