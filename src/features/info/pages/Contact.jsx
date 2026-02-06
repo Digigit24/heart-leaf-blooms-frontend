@@ -188,9 +188,8 @@ const Contact = () => {
                             <div className="space-y-4 mb-8 shrink-0">
                                 <ContactItem
                                     icon={MapPin}
-                                    title="Location"
-                                    content="Pune, Maharashtra, India"
-
+                                    title="Address"
+                                    content="123 Botanical Garden St, Pune, MH 411001, India"
                                     href="https://maps.google.com/?q=Pune"
                                 />
                                 <ContactItem
@@ -204,6 +203,7 @@ const Contact = () => {
                                     icon={Mail}
                                     title="Email"
                                     content="heartleafbloomsonline@gmail.com"
+                                    sub="sales@heartleafblooms.com | enquiry@heartleafblooms.com"
                                     href="mailto:heartleafbloomsonline@gmail.com"
                                 />
                             </div>
