@@ -2,18 +2,22 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Save, ChevronLeft, MapPin, Briefcase, Home } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { authApi } from '@/features/auth/api/auth.api';
+import { useAuthStore } from '@/app/store/auth.store';
+import { toast } from 'react-hot-toast';
 
 export default function AddressForm() {
     const navigate = useNavigate();
+    const { user } = useAuthStore();
+    const [loading, setLoading] = useState(false);
     const [type, setType] = useState('Home');
     const [formData, setFormData] = useState({
-        name: 'Jane Doe',
+        name: '',
         phone: '',
-        line1: '',
-        line2: '',
+        address: '', // Combined address
         city: '',
         state: '',
-        zip: '',
+        pincode: '',
         default: false
     });
 
@@ -25,10 +29,41 @@ export default function AddressForm() {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Logic to save address
-        navigate('/profile/addresses');
+        if (!user) {
+            toast.error("You must be logged in to add an address.");
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const userId = user._id || user.id;
+            const payload = {
+                address: formData.address,
+                city: formData.city,
+                state: formData.state,
+                pincode: formData.pincode,
+                // Add extra fields if backend supports them, or store them in address string if strictly limited
+                name: formData.name,
+                phone: formData.phone,
+                type: type,
+                isDefault: formData.default
+            };
+
+            // If API is strict about schema {address, city, state, pincode}, pass only those or ensure backend handles extras.
+            // Assuming strict schema from prompt, but keeping name/phone might be necessary for a real app.
+            // I'll send the strict ones plus extras just in case.
+
+            await authApi.addUserAddress(userId, payload);
+            toast.success("Address added successfully!");
+            navigate('/profile/addresses');
+        } catch (error) {
+            console.error("Failed to add address", error);
+            toast.error(error.response?.data?.message || "Failed to add address.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -104,25 +139,15 @@ export default function AddressForm() {
 
                         {/* Address Lines */}
                         <div className="space-y-2">
-                            <label className="text-sm font-bold text-[#0F3D2E]">Address Line 1</label>
-                            <input
-                                type="text"
-                                name="line1"
-                                value={formData.line1}
+                            <label className="text-sm font-bold text-[#0F3D2E]">Full Address</label>
+                            <textarea
+                                name="address"
+                                value={formData.address}
                                 onChange={handleChange}
-                                className="w-full bg-[#FDFBF7] border border-[#0F3D2E]/10 rounded-xl px-4 py-3 text-[#0F3D2E] focus:outline-hidden focus:border-[#C6A15B] transition-colors"
-                                placeholder="House No., Building Name"
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <label className="text-sm font-bold text-[#0F3D2E]">Address Line 2 (Optional)</label>
-                            <input
-                                type="text"
-                                name="line2"
-                                value={formData.line2}
-                                onChange={handleChange}
-                                className="w-full bg-[#FDFBF7] border border-[#0F3D2E]/10 rounded-xl px-4 py-3 text-[#0F3D2E] focus:outline-hidden focus:border-[#C6A15B] transition-colors"
-                                placeholder="Area, Landmark"
+                                rows={3}
+                                className="w-full bg-[#FDFBF7] border border-[#0F3D2E]/10 rounded-xl px-4 py-3 text-[#0F3D2E] focus:outline-hidden focus:border-[#C6A15B] transition-colors resize-none"
+                                placeholder="Flat No., Building, Area, Landmark"
+                                required
                             />
                         </div>
 
@@ -151,14 +176,15 @@ export default function AddressForm() {
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="text-sm font-bold text-[#0F3D2E]">Zip Code</label>
+                                <label className="text-sm font-bold text-[#0F3D2E]">Pincode</label>
                                 <input
                                     type="text"
-                                    name="zip"
-                                    value={formData.zip}
+                                    name="pincode"
+                                    value={formData.pincode}
                                     onChange={handleChange}
                                     className="w-full bg-[#FDFBF7] border border-[#0F3D2E]/10 rounded-xl px-4 py-3 text-[#0F3D2E] focus:outline-hidden focus:border-[#C6A15B] transition-colors"
                                     placeholder="411001"
+                                    required
                                 />
                             </div>
                         </div>
@@ -179,7 +205,7 @@ export default function AddressForm() {
                         <div className="pt-6">
                             <button type="submit" className="w-full bg-[#0F3D2E] text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl hover:shadow-[#0F3D2E]/20 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2">
                                 <Save size={20} />
-                                <span>Save Address</span>
+                                <span>{loading ? 'Saving...' : 'Save Address'}</span>
                             </button>
                         </div>
 

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '@/app/store/auth.store';
 import { authApi } from '@/features/auth/api/auth.api';
@@ -17,6 +18,24 @@ export default function Login() {
   const [error, setError] = useState('');
   const [focusedField, setFocusedField] = useState(null);
   const [animationData, setAnimationData] = useState(null);
+  const [googleClientId, setGoogleClientId] = useState(null);
+
+  useEffect(() => {
+    // Fetch Google Client ID
+    const fetchClientId = async () => {
+      try {
+        const response = await authApi.getGoogleClientId();
+        if (response.data && response.data.clientId) {
+          setGoogleClientId(response.data.clientId);
+        } else if (typeof response.data === 'string') {
+          setGoogleClientId(response.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch Google Client ID", error);
+      }
+    };
+    fetchClientId();
+  }, []);
 
   useEffect(() => {
     fetch('/images/animations/blooming-flowers.json')
@@ -114,6 +133,46 @@ export default function Login() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      setLoading(true);
+      console.log("Google Credential Response:", credentialResponse);
+      const response = await authApi.googleLogin(credentialResponse.credential);
+
+      console.log("Google Login API Response:", response);
+      const data = response.data;
+      const user = data.user || data;
+      const token = data.token;
+
+      if (token) {
+        localStorage.setItem('token', token);
+        const host = window.location.hostname;
+        document.cookie = `token=${token}; path=/; max-age=604800; secure; samesite=strict`;
+        document.cookie = `token=${token}; path=/; domain=${host}; max-age=604800; secure; samesite=strict`;
+      }
+
+      if (user) {
+        login(user);
+        const userId = user._id || user.id;
+        if (userId) {
+          localStorage.setItem('userId', userId);
+        }
+        navigate(PATHS.HOME);
+      }
+
+    } catch (error) {
+      console.error("Google Login Failed:", error);
+      setError(error.response?.data?.message || 'Google Login failed.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleError = () => {
+    console.log('Google Login Failed');
+    setError('Google Login failed. Please try again.');
   };
 
   return (
@@ -320,6 +379,22 @@ export default function Login() {
                 </Link>
               )}
             </div>
+
+            {googleClientId && (
+              <div className="w-full flex justify-center mt-4 pb-4">
+                <GoogleOAuthProvider clientId={googleClientId}>
+                  <GoogleLogin
+                    onSuccess={handleGoogleSuccess}
+                    onError={handleGoogleError}
+                    theme="outline"
+                    size="large"
+                    width="300"
+                    text="signin_with"
+                    shape="pill"
+                  />
+                </GoogleOAuthProvider>
+              </div>
+            )}
 
           </div>
         </div>
