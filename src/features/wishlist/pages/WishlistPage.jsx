@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, ArrowRight, Sprout, ShoppingBag } from 'lucide-react';
+import { Heart, ArrowRight, Sprout, ShoppingBag, X } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useWishlistStore } from '@/app/store/wishlist.store';
 import { useAuthStore } from '@/app/store/auth.store';
@@ -133,8 +133,22 @@ export default function WishlistPage() {
                                         key={item.wishlist_id || item.id || item._id || item._tempId}
                                         variants={itemAnim}
                                         layout
+                                        className="relative group"
                                     >
-                                        <ProductCard product={productData} />
+                                        <ProductCard product={productData} hideCategory={true} />
+                                        <button
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                const wishlistItemId = item.wishlist_id || item.id || item._id;
+                                                // Assuming removeFromWishlist is available from useWishlistStore hook above
+                                                items.find(i => i === item) && fetchWishlist && useWishlistStore.getState().removeFromWishlist(wishlistItemId, user?.user_id || user?.id || user?._id);
+                                            }}
+                                            className="absolute top-4 right-4 p-2 bg-white/90 rounded-full shadow-md text-gray-400 hover:text-red-500 hover:bg-white transition-all opacity-0 group-hover:opacity-100 z-20 transform hover:scale-110"
+                                            title="Remove from Wishlist"
+                                        >
+                                            <X size={18} />
+                                        </button>
                                     </motion.div>
                                 );
                             })}

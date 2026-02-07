@@ -20,17 +20,6 @@ const FILTERS = {
         { id: '500_1000', label: '₹500 - ₹1000' },
         { id: '1000_2000', label: '₹1000 - ₹2000' },
         { id: 'over_2000', label: '₹2000+' },
-    ],
-    brands: [
-        { id: 'Plant Co', label: 'The Plant Co' },
-        { id: 'Green Life', label: 'Green Life' },
-        { id: 'Nature@Home', label: 'Nature@Home' }
-    ],
-    colors: [
-        { id: 'green', label: 'Green', color: '#166534' },
-        { id: 'dark_green', label: 'Dark Green', color: '#064e3b' },
-        { id: 'lime', label: 'Lime', color: '#bef264' },
-        { id: 'variegated', label: 'Variegated', color: '#fcd34d' }
     ]
 };
 

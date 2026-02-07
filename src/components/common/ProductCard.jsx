@@ -108,9 +108,11 @@ export default function ProductCard({ product, ...props }) {
         </h3>
 
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-1">
-          <div className="flex flex-col">
-            <span className="text-[10px] md:text-xs text-muted/80">{product.category}</span>
-          </div>
+          {!props.hideCategory && (
+            <div className="flex flex-col">
+              <span className="text-[10px] md:text-xs text-muted/80">{product.category}</span>
+            </div>
+          )}
           <div className="flex flex-col md:flex-row md:items-center gap-0.5 md:gap-1.5">
             <div className="flex items-center gap-1.5">
               <span className="font-bold text-sm text-primary">₹{product.price?.toFixed(0) || 'N/A'}</span>

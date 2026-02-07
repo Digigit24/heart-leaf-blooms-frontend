@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { wishlistApi } from '@/features/wishlist/api/wishlist.api';
+import { toast } from 'react-hot-toast';
 
 export const useWishlistStore = create((set, get) => ({
     items: [], // Array of wishlist items with { id, product_id, product details, etc. }
@@ -119,9 +120,17 @@ export const useWishlistStore = create((set, get) => ({
         );
         set({ items: newItems });
 
+        // Get Product Name
+        const productName = itemToRemove?.product?.name ||
+            itemToRemove?.adminProduct?.product_name ||
+            itemToRemove?.adminProduct?.product_title ||
+            itemToRemove?.name ||
+            'Product';
+
         try {
             await wishlistApi.removeFromWishlist(userId, wishlistId);
             console.log('Removed from wishlist successfully');
+            toast.success(`${productName} has been removed from your wishlist.`, { duration: 3000 });
         } catch (error) {
             // Rollback on error
             if (itemToRemove) {

@@ -36,8 +36,6 @@ export default function Category() {
     const [selectedFilters, setSelectedFilters] = useState({
         availability: [],
         price: [],
-        brands: [],
-        colors: [],
         category: []
     });
     const [sortBy, setSortBy] = useState('featured');
@@ -63,7 +61,7 @@ export default function Category() {
     };
 
     const clearFilters = () => {
-        setSelectedFilters({ availability: [], price: [], brands: [], colors: [], category: [] });
+        setSelectedFilters({ availability: [], price: [], category: [] });
         navigate('/products');
     };
 
@@ -88,13 +86,7 @@ export default function Category() {
                 if (wantsOutStock && !wantsInStock && product.inStock) return false;
             }
 
-            if (selectedFilters.brands.length > 0 && !selectedFilters.brands.includes(product.brand)) {
-                return false;
-            }
 
-            if (selectedFilters.colors.length > 0 && !selectedFilters.colors.includes(product.color)) {
-                return false;
-            }
 
             if (selectedFilters.category.length > 0) {
                 const productCat = product.category.toLowerCase();
@@ -202,7 +194,7 @@ export default function Category() {
                 <div className="flex flex-col md:flex-row gap-8 lg:gap-12 items-start">
 
                     {/* Sidebar - Sticky on Desktop */}
-                    <aside className="hidden md:block w-64 shrink-0 sticky top-28 self-start max-h-[calc(100vh-140px)] overflow-y-auto pb-8">
+                    <aside className="hidden md:block w-64 shrink-0 sticky top-28 self-start max-h-[calc(100vh-140px)] overflow-y-hidden hover:overflow-y-auto scroll-smooth pb-8 transition-all duration-300">
                         <CategorySidebar
                             selectedFilters={selectedFilters}
                             toggleFilter={toggleFilter}
