@@ -1,32 +1,32 @@
-# Tasks Completed Today (Feb 5, 2026)
+# Tasks Completed Today (Feb 6, 2026)
 
-## 🚀 Key Achievements
+## 📜 Razorpay Compliance & Business Policies
 
-### 1. Wishlist Backend Integration (Major Task)
-- **Converted from Local State to API:**
-  - Connected `POST /wishlist/{id}` (Add Item)
-  - Connected `DELETE /wishlist/{userId}/{wishlistId}` (Remove Item)
-  - Connected `GET /wishlist/{id}` (Fetch Items)
+### 1. Created Essential Policy Pages
+Implemented 5 new pages to meet Razorpay merchant onboarding requirements:
+- **Terms & Conditions:** Covers IP rights, user responsibilities, and liability.
+- **Cancellation & Refund Policy:** Explicit refund timelines (5-7 days for online, 24-48 hrs for UPI) and cancellation rules.
+- **Shipping & Delivery Policy:** Details shipping areas (Pan-India), processing time (24-48 hrs), and delivery estimates.
+- **Privacy Policy:** Compliant data collection, usage, and security disclosures.
+- **Sitemap:** Clean overview of all site links.
 
-- **Fixed User ID Mismatch:**
-  - Patched `ProductDetails`, `ProductCard`, `AuthStore`, and `Sidebar` to accept `user.user_id`, fixing "User must be logged in" errors.
+### 2. Full Site Integration
+- **Routes:** Added new routes (`/terms-and-conditions`, `/cancellation-refund`, `/shipping-delivery`, `/privacy-policy`, `/sitemap`).
+- **Footer:** Updated footer links to point to these new pages using centralized path constants.
+- **Navigation:** Ensured seamless navigation from any part of the site.
 
-- **Frontend Resilience:**
-  - Added "Safe Mode" to `ProductCard.jsx` to prevent crashes when backend data is incomplete (e.g., missing price/name).
-  - Added robust validation to `WishlistPage` to handle data mapping issues.
+### 3. Contact & Business Details Update
+- **Updated Contact Page:** Added verifiable business contact details required for compliance:
+  - **Phone:** +91 90116 00622
+  - **Email:** heartleafbloomsonline@gmail.com, sales@heartleafblooms.com
+  - **Address:** 123 Botanical Garden St, Pune, MH 411001, India
+- **Updated Footer:** Reflected the same contact details for consistency.
 
-### 2. New Wishlist Page
-- **Removed Sidebar:** Replaced the slide-out wishlist with a dedicated page.
-- **Created `/wishlist` Route:**
-  - Premium design with `framer-motion` animations.
-  - Responsive grid layout for products.
-  - "Empty State" design with call-to-action.
-- **Header Update:** Updated navigation menu and heart icon to link to the new page.
-
-### 3. Debugging & QA
-- **Fixed Crash:** Resolved `Cannot read properties of undefined (reading 'toFixed')` error.
-- **Identified Backend Issue:** Confirmed that backend is returning IDs but missing product details (needs `.include()` in Prisma query).
+### 4. Technical Updates
+- **API Configuration:** Switched `client.js` base URL to the live backend (`https://heart-leaf-blooms.celiyo.com/`) to prepare for production/deployment.
+- **Build Checks:** Verified successful build (`npm run build`) and resolved routing syntax errors.
 
 ## 📝 Git Commits
-- `9233b84` - wishlist api integer
-- `52fb2b3` - slove the wishlist
+- `b1be0e4` - Create business policy pages
+- `7d2b2df` - Change base URL
+- `7457d52` - Policy pages for Razorpay approve

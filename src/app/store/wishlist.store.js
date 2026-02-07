@@ -10,8 +10,10 @@ export const useWishlistStore = create((set, get) => ({
     isInWishlist: (productId) => {
         return get().items.some(item =>
             item.product_id === productId ||
+            item.admin_product_id === productId ||
             item.id === productId ||
             item._id === productId ||
+            item.wishlist_id === productId ||
             item.product?.id === productId
         );
     },
@@ -20,8 +22,10 @@ export const useWishlistStore = create((set, get) => ({
     getWishlistItem: (productId) => {
         return get().items.find(item =>
             item.product_id === productId ||
+            item.admin_product_id === productId ||
             item.id === productId ||
             item._id === productId ||
+            item.wishlist_id === productId ||
             item.product?.id === productId
         );
     },
@@ -54,7 +58,7 @@ export const useWishlistStore = create((set, get) => ({
 
         if (exists) {
             // Item already in wishlist, remove it (toggle behavior)
-            await get().removeFromWishlist(exists.id || exists._id, userId);
+            await get().removeFromWishlist(exists.wishlist_id || exists.id || exists._id, userId);
         } else {
             // Optimistically add to UI
             const tempItem = {
@@ -108,10 +112,10 @@ export const useWishlistStore = create((set, get) => ({
 
         // Optimistically remove from UI
         const itemToRemove = items.find(item =>
-            item.id === wishlistId || item._id === wishlistId
+            item.wishlist_id === wishlistId || item.id === wishlistId || item._id === wishlistId
         );
         const newItems = items.filter(item =>
-            item.id !== wishlistId && item._id !== wishlistId
+            item.wishlist_id !== wishlistId && item.id !== wishlistId && item._id !== wishlistId
         );
         set({ items: newItems });
 

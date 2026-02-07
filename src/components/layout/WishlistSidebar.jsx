@@ -25,8 +25,8 @@ export default function WishlistSidebar() {
         navigate(`/products/${product.id}`);
     };
 
-    const handleRemove = (product) => {
-        const wishlistItemId = product.id || product._id;
+    const handleRemove = (item) => {
+        const wishlistItemId = item.wishlist_id || item.id || item._id;
         const { removeFromWishlist } = useWishlistStore.getState();
         removeFromWishlist(wishlistItemId, user?.user_id || user?.id || user?._id);
     };
@@ -44,16 +44,28 @@ export default function WishlistSidebar() {
             ) : (
                 <div className="space-y-6">
                     {items.map((item) => {
+                        // Normalize product data
+                        const product = item.product || (item.adminProduct ? {
+                            id: item.adminProduct.product_id,
+                            name: item.adminProduct.product_name || item.adminProduct.product_title,
+                            image: item.adminProduct.images?.[0]?.large_url || item.adminProduct.images?.[0]?.medium_url || item.adminProduct.images?.[0]?.small_url,
+                            price: parseFloat(item.adminProduct.discount_price || item.adminProduct.product_price),
+                            originalPrice: parseFloat(item.adminProduct.product_price),
+                            inStock: item.adminProduct.stock > 0,
+                            tag: item.adminProduct.is_featured ? 'Featured' : null,
+                            category: item.adminProduct.category_id
+                        } : item);
+
                         // Check if in cart
-                        const cartItem = itemsInCart.find(c => c.id === item.id);
+                        const cartItem = itemsInCart.find(c => c.id === product.id);
                         const isInCart = !!cartItem;
                         // Image resolution
-                        const imageSrc = item.images?.[0]?.small_url || item.images?.[0]?.medium_url || item.images?.[0] || item.image;
+                        const imageSrc = product.image || (product.images?.[0]?.small_url || product.images?.[0]?.medium_url || product.images?.[0]);
 
                         return (
-                            <div key={item.id} className="group relative flex gap-4 p-2 hover:bg-gray-50 rounded-xl transition-colors">
-                                <div className="w-20 h-24 bg-gray-100 rounded-lg overflow-hidden shrink-0 cursor-pointer relative" onClick={() => handleAddToCart(item)}>
-                                    <img src={imageSrc} alt={item.name} className="w-full h-full object-cover" />
+                            <div key={item.wishlist_id || item.id || item._id} className="group relative flex gap-4 p-2 hover:bg-gray-50 rounded-xl transition-colors">
+                                <div className="w-20 h-24 bg-gray-100 rounded-lg overflow-hidden shrink-0 cursor-pointer relative" onClick={() => handleAddToCart(product)}>
+                                    <img src={imageSrc} alt={product.name} className="w-full h-full object-cover" />
                                     {isInCart && (
                                         <div className="absolute bottom-0 inset-x-0 bg-black/60 text-white text-[10px] font-bold text-center py-0.5 backdrop-blur-sm">
                                             In Cart
@@ -61,9 +73,9 @@ export default function WishlistSidebar() {
                                     )}
                                 </div>
                                 <div className="flex-1">
-                                    <h3 className="font-heading font-bold text-primary line-clamp-1 cursor-pointer" onClick={() => handleAddToCart(item)}>{item.name}</h3>
+                                    <h3 className="font-heading font-bold text-primary line-clamp-1 cursor-pointer" onClick={() => handleAddToCart(product)}>{product.name}</h3>
                                     <div className="flex items-center gap-2 mt-1">
-                                        <p className="text-sm font-bold text-primary">₹{item.price}</p>
+                                        <p className="text-sm font-bold text-primary">₹{product.price}</p>
                                         {isInCart && (
                                             <span className="text-[10px] font-bold bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">
                                                 Qty: {cartItem.quantity}
@@ -72,7 +84,7 @@ export default function WishlistSidebar() {
                                     </div>
 
                                     <button
-                                        onClick={() => handleAddToCart(item)}
+                                        onClick={() => handleAddToCart(product)}
                                         className="mt-3 text-xs font-bold text-primary uppercase tracking-wider hover:underline flex items-center gap-1"
                                     >
                                         View Product

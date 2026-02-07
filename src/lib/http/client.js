@@ -3,8 +3,8 @@ import { useAuthStore } from '@/app/store/auth.store';
 
 const client = axios.create({
   // Direct URL as requested to bypass localhost/proxy issues
-  baseURL: 'https://heart-leaf-blooms.celiyo.com/',
-  //  baseURL: `http://localhost:7071`,
+  // baseURL: 'https://heart-leaf-blooms.celiyo.com/',
+   baseURL: `http://localhost:7071`,
 
 
   withCredentials: true,

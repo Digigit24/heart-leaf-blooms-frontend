@@ -116,15 +116,28 @@ export default function WishlistPage() {
                         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8"
                     >
                         <AnimatePresence>
-                            {items.map((item) => (
-                                <motion.div
-                                    key={item.id || item._id || item._tempId}
-                                    variants={itemAnim}
-                                    layout
-                                >
-                                    <ProductCard product={item.product || item} />
-                                </motion.div>
-                            ))}
+                            {items.map((item) => {
+                                const productData = item.product || (item.adminProduct ? {
+                                    id: item.adminProduct.product_id,
+                                    name: item.adminProduct.product_name || item.adminProduct.product_title,
+                                    image: item.adminProduct.images?.[0]?.large_url || item.adminProduct.images?.[0]?.medium_url || item.adminProduct.images?.[0]?.small_url,
+                                    price: parseFloat(item.adminProduct.discount_price || item.adminProduct.product_price),
+                                    originalPrice: parseFloat(item.adminProduct.product_price),
+                                    inStock: item.adminProduct.stock > 0,
+                                    tag: item.adminProduct.is_featured ? 'Featured' : null,
+                                    category: item.adminProduct.category_id
+                                } : item);
+
+                                return (
+                                    <motion.div
+                                        key={item.wishlist_id || item.id || item._id || item._tempId}
+                                        variants={itemAnim}
+                                        layout
+                                    >
+                                        <ProductCard product={productData} />
+                                    </motion.div>
+                                );
+                            })}
                         </AnimatePresence>
                     </motion.div>
                 )}
