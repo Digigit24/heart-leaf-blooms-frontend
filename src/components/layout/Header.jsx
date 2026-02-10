@@ -159,6 +159,9 @@ export default function Header() {
                         <p className="text-xs text-muted">Signed in as</p>
                         <p className="font-medium text-primary truncate">{user?.username || user?.name || 'User'}</p>
                       </div>
+                      <Link to={PATHS.PROFILE} className="block px-3 py-2 text-sm text-text/80 hover:bg-surface-2 rounded-lg transition-colors">
+                        My Profile
+                      </Link>
                       <Link to={PATHS.ORDERS} className="block px-3 py-2 text-sm text-text/80 hover:bg-surface-2 rounded-lg transition-colors">
                         My Orders
                       </Link>
@@ -284,7 +287,7 @@ export default function Header() {
               </Link>
             ) : (
               <div className="space-y-4">
-                <div className="flex items-center gap-3 p-3 rounded-2xl bg-white border border-brand/5 shadow-sm">
+                <Link to={PATHS.PROFILE} className="flex items-center gap-3 p-3 rounded-2xl bg-white border border-brand/5 shadow-sm hover:shadow-md transition-shadow">
                   <div className="w-10 h-10 rounded-full bg-brand text-white flex items-center justify-center font-bold font-heading">
                     {(user?.username || user?.name || 'U').charAt(0).toUpperCase()}
                   </div>
@@ -292,7 +295,7 @@ export default function Header() {
                     <p className="font-medium text-brand-dark font-heading">{user?.username || user?.name || 'User'}</p>
                     <p className="text-xs text-muted">View Profile</p>
                   </div>
-                </div>
+                </Link>
                 <button
                   onClick={handleLogout}
                   className="w-full text-left px-4 py-3 text-sm font-medium text-red-500 hover:bg-red-50 rounded-xl flex items-center justify-center gap-2 transition-colors border border-red-100"

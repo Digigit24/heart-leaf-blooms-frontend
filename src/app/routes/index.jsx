@@ -27,6 +27,7 @@ import Payment from '@/features/checkout/pages/Payment';
 import AddressList from '@/features/profile/pages/AddressList';
 import AddressForm from '@/features/profile/pages/AddressForm';
 import WishlistPage from '@/features/wishlist/pages/WishlistPage';
+import ProfileDashboard from '@/features/profile/pages/ProfileDashboard';
 import TermsPage from '@/features/info/pages/TermsPage';
 import CancellationRefundPage from '@/features/info/pages/CancellationRefundPage';
 
@@ -43,6 +44,7 @@ import ManageOrders from '@/features/admin/pages/ManageOrders';
 import ManageBanners from '@/features/admin/pages/ManageBanners';
 import ManageCategories from '@/features/admin/pages/ManageCategories';
 import ManageReviews from '@/features/admin/pages/ManageReviews';
+import ManageUsers from '@/features/admin/pages/ManageUsers';
 
 import { useConfig } from '@/context/ConfigContext';
 
@@ -88,6 +90,7 @@ const AppRoutes = () => {
                     <Route path="/orders/track/:id" element={<OrderTracking />} />
 
                     {/* Profile Routes */}
+                    <Route path="/profile" element={<ProfileDashboard />} />
                     <Route path="/profile/addresses" element={<AddressList />} />
                     <Route path="/profile/addresses/new" element={<AddressForm />} />
                     <Route path="/profile/addresses/edit/:id" element={<AddressForm />} />
@@ -109,6 +112,7 @@ const AppRoutes = () => {
                     <Route path={PATHS.ADMIN_PRODUCTS} element={<ManageProducts />} />
                     {isMultivendor && <Route path={PATHS.ADMIN_VENDORS} element={<ManageVendors />} />}
                     <Route path={PATHS.ADMIN_ORDERS} element={<ManageOrders />} />
+                    <Route path={PATHS.ADMIN_USERS} element={<ManageUsers />} />
                     <Route path={PATHS.ADMIN_BANNERS} element={<ManageBanners />} />
                     <Route path={PATHS.ADMIN_CATEGORIES} element={<ManageCategories />} />
                     <Route path={PATHS.ADMIN_REVIEWS} element={<ManageReviews />} />

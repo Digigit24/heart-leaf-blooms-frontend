@@ -1,14 +1,38 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Package, ShoppingBag, TrendingUp, IndianRupee, Store, ArrowRight, Activity, Calendar, MoreHorizontal, Clock, CheckCircle } from 'lucide-react';
+import { Package, ShoppingBag, IndianRupee, Users, ArrowRight, Activity, Calendar } from 'lucide-react';
 import { motion } from 'framer-motion';
-
-const STATS = [
-  { label: 'Total Revenue', value: '₹1,24,500', icon: IndianRupee, trend: '+12.5% this week', trendUp: true },
-  { label: 'Active Orders', value: '24', icon: ShoppingBag, trend: '+4 new today', trendUp: true },
-  { label: 'Products', value: '145', icon: Package, trend: 'Stock healthy', trendUp: true },
-];
+import { adminApi } from '@/features/admin/api/admin.api';
 
 export default function AdminDashboard() {
+  const [stats, setStats] = useState([
+    { label: 'Total Revenue', value: '₹1,24,500', icon: IndianRupee, trend: '+12.5% this week', trendUp: true },
+    { label: 'Active Orders', value: '24', icon: ShoppingBag, trend: '+4 new today', trendUp: true },
+    { label: 'Total Users', value: '0', icon: Users, trend: 'Just updated', trendUp: true },
+  ]);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await adminApi.getAllUsers();
+        // Assuming response.data is an array of users or has a count property
+        // The prompt says "Get all users ... to see how many user have login"
+        const users = response.data.users || response.data;
+        const userCount = Array.isArray(users) ? users.length : (users.count || 0);
+
+        setStats(prevStats => prevStats.map(stat =>
+          stat.label === 'Total Users'
+            ? { ...stat, value: userCount.toString() }
+            : stat
+        ));
+      } catch (error) {
+        console.error("Failed to fetch dashboard stats", error);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
   return (
     <div className="space-y-8 max-w-[1600px] mx-auto">
       {/* Header Section */}
@@ -31,7 +55,7 @@ export default function AdminDashboard() {
 
       {/* Stats Overview */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {STATS.map((stat, index) => {
+        {stats.map((stat, index) => {
           const Icon = stat.icon;
           return (
             <motion.div
@@ -163,6 +187,15 @@ export default function AdminDashboard() {
                     <Package size={18} />
                   </div>
                   <span className="font-medium text-gray-700 group-hover:text-gray-900">Manage Inventory</span>
+                </div>
+                <ArrowRight size={16} className="text-gray-300 group-hover:text-gray-600" />
+              </Link>
+              <Link to="/admin/users" className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 border border-transparent hover:border-gray-200 transition-all group">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-indigo-50 text-indigo-600 rounded-md group-hover:bg-indigo-100 transition-colors">
+                    <Users size={18} />
+                  </div>
+                  <span className="font-medium text-gray-700 group-hover:text-gray-900">Manage Users</span>
                 </div>
                 <ArrowRight size={16} className="text-gray-300 group-hover:text-gray-600" />
               </Link>

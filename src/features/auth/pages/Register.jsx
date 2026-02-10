@@ -1,11 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { authApi } from '@/features/auth/api/auth.api';
+import { useAuthStore } from '@/app/store/auth.store';
 import { PATHS } from '@/app/routes/paths';
-import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, Loader2, Sparkles, ArrowRight } from 'lucide-react';
+import Lottie from "lottie-react";
 
 export default function Register() {
   const navigate = useNavigate();
+  const { login } = useAuthStore();
   const [formData, setFormData] = useState({
     username: '',
     user_email: '',
@@ -15,6 +19,33 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [focusedField, setFocusedField] = useState(null);
+  const [animationData, setAnimationData] = useState(null);
+  const [googleClientId, setGoogleClientId] = useState(null);
+
+  useEffect(() => {
+    // Fetch Google Client ID
+    const fetchClientId = async () => {
+      try {
+        const response = await authApi.getGoogleClientId();
+        if (response.data && response.data.clientId) {
+          setGoogleClientId(response.data.clientId);
+        } else if (typeof response.data === 'string') {
+          setGoogleClientId(response.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch Google Client ID", error);
+      }
+    };
+    fetchClientId();
+  }, []);
+
+  useEffect(() => {
+    fetch('/images/animations/blooming-flowers.json')
+      .then((res) => res.json())
+      .then((data) => setAnimationData(data))
+      .catch((err) => console.error("Failed to load Lottie animation:", err));
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,9 +53,8 @@ export default function Register() {
     setError('');
 
     try {
-      // Construct payload matching the required API structure
       const payload = {
-        user_id: "", // Backend likely generates this, but included as per structure
+        user_id: "",
         username: formData.username,
         user_email: formData.user_email,
         mobile_number: formData.user_mobile,
@@ -37,11 +67,9 @@ export default function Register() {
       };
 
       await authApi.registerUser(payload);
-      // On success, redirect to login
       navigate(PATHS.LOGIN);
     } catch (err) {
       console.error("Register Error:", err);
-      // specific error message handling if backend returns detailed error
       const message = err.response?.data?.error || err.response?.data?.message || 'Registration failed. Please try again.';
       setError(message);
     } finally {
@@ -49,92 +77,262 @@ export default function Register() {
     }
   };
 
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      setLoading(true);
+      console.log("Google Credential Response:", credentialResponse);
+      const response = await authApi.googleLogin(credentialResponse.credential);
+
+      console.log("Google Login API Response:", response);
+      const data = response.data;
+      const user = data.user || data;
+      const token = data.token;
+
+      if (token) {
+        localStorage.setItem('token', token);
+        const host = window.location.hostname;
+        document.cookie = `token=${token}; path=/; max-age=604800; secure; samesite=strict`;
+        document.cookie = `token=${token}; path=/; domain=${host}; max-age=604800; secure; samesite=strict`;
+      }
+
+      if (user) {
+        login(user);
+        const userId = user._id || user.id;
+        if (userId) {
+          localStorage.setItem('userId', userId);
+        }
+        navigate(PATHS.HOME);
+      }
+
+    } catch (error) {
+      console.error("Google Login Failed:", error);
+      setError(error.response?.data?.message || 'Google Login failed.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleError = () => {
+    console.log('Google Login Failed');
+    setError('Google Login failed. Please try again.');
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#FDFBF7] px-4 py-12">
-      <div className="w-full max-w-md bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
-        <div className="text-center mb-8">
-          <h1 className="font-serif text-3xl text-primary font-bold mb-2">Join Our Community</h1>
-          <p className="text-muted text-sm">Create an account to start your journey.</p>
-        </div>
+    <div className="min-h-screen w-full flex items-center justify-center bg-[#FDFBF7] p-4">
+      <div className="bg-white w-full max-w-[1000px] h-[700px] rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col lg:flex-row shadow-[#0F3D2E]/10">
 
-        {error && (
-          <div className="mb-6 p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100 text-center">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-5">
-
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-widest text-[#0F3D2E]/70 mb-2">Full Name</label>
-            <input
-              type="text"
-              required
-              className="w-full h-12 px-4 rounded-xl border border-gray-200 focus:border-[#0F3D2E] focus:ring-1 focus:ring-[#0F3D2E] outline-none transition-all bg-surface-2/50"
-              placeholder="John Doe"
-              value={formData.username}
-              onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-widest text-[#0F3D2E]/70 mb-2">Email Address</label>
-            <input
-              type="email"
-              required
-              className="w-full h-12 px-4 rounded-xl border border-gray-200 focus:border-[#0F3D2E] focus:ring-1 focus:ring-[#0F3D2E] outline-none transition-all bg-surface-2/50"
-              placeholder="you@example.com"
-              value={formData.user_email}
-              onChange={(e) => setFormData({ ...formData, user_email: e.target.value })}
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-widest text-[#0F3D2E]/70 mb-2">Password</label>
-            <div className="relative">
-              <input
-                type={showPassword ? 'text' : 'password'}
-                required
-                className="w-full h-12 px-4 rounded-xl border border-gray-200 focus:border-[#0F3D2E] focus:ring-1 focus:ring-[#0F3D2E] outline-none transition-all bg-surface-2/50 pr-12"
-                placeholder="••••••••"
-                value={formData.user_password}
-                onChange={(e) => setFormData({ ...formData, user_password: e.target.value })}
+        {/* Left Panel - Visual */}
+        <div className="hidden lg:flex w-5/12 relative text-white overflow-hidden">
+          <div className="absolute inset-0 z-0">
+            {animationData && (
+              <Lottie
+                animationData={animationData}
+                loop={true}
+                className="w-full h-full object-cover opacity-90 scale-110"
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#0F3D2E] transition-colors"
-              >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
+            )}
+            <div className="absolute inset-0 bg-linear-to-t from-[#0F3D2E]/50 to-transparent" />
+          </div>
+
+          <div className="relative z-10 flex flex-col justify-between p-10 w-full h-full">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
+                <Sparkles size={14} className="text-[#C6A15B]" />
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="font-serif text-3xl leading-tight">Begin Your Floral Journey</h3>
+              <p className="text-white/80 text-sm font-light">Join our community and discover the finest collection of blooms tailored just for you.</p>
             </div>
           </div>
+        </div>
 
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-widest text-[#0F3D2E]/70 mb-2">Mobile Number (Optional)</label>
-            <input
-              type="tel"
-              className="w-full h-12 px-4 rounded-xl border border-gray-200 focus:border-[#0F3D2E] focus:ring-1 focus:ring-[#0F3D2E] outline-none transition-all bg-surface-2/50"
-              placeholder="+91 98765 43210"
-              value={formData.user_mobile}
-              onChange={(e) => setFormData({ ...formData, user_mobile: e.target.value })}
-            />
+        {/* Right Panel - Register Form */}
+        <div className="w-full lg:w-7/12 h-full flex flex-col justify-center p-8 lg:p-12 relative bg-white overflow-y-auto">
+          <div className="w-full max-w-sm mx-auto space-y-5">
+
+            <div className="text-center lg:text-left mb-4">
+              <h2 className="font-serif text-3xl text-[#0F3D2E] mb-2">Create Account</h2>
+              <p className="text-[#5C6B63] text-sm">Enter your details to register.</p>
+            </div>
+
+            {error && (
+              <div className="p-3 bg-red-50 text-red-700 text-xs font-medium rounded-lg border border-red-100 flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
+                {error}
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+
+              {/* Full Name */}
+              <div className="relative group">
+                <input
+                  type="text"
+                  required
+                  className={`peer w-full h-11 px-4 bg-[#F8F9FA] rounded-xl border outline-none transition-all duration-300 font-medium text-[#0F3D2E] placeholder-transparent focus:bg-white
+                    ${focusedField === 'username' || formData.username ? 'border-[#0F3D2E] ring-1 ring-[#0F3D2E]/5' : 'border-transparent hover:border-gray-200'}
+                  `}
+                  id="username"
+                  placeholder="Full Name"
+                  value={formData.username}
+                  onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                  onFocus={() => setFocusedField('username')}
+                  onBlur={() => setFocusedField(null)}
+                />
+                <label
+                  htmlFor="username"
+                  className={`absolute left-4 transition-all duration-300 pointer-events-none text-[#5C6B63] font-medium
+                    ${focusedField === 'username' || formData.username
+                      ? '-top-2 bg-white px-2 text-[10px] text-[#0F3D2E] font-bold tracking-widest'
+                      : 'top-1/2 -translate-y-1/2 text-xs'}
+                  `}
+                >
+                  FULL NAME
+                </label>
+              </div>
+
+              {/* Email */}
+              <div className="relative group">
+                <input
+                  type="email"
+                  required
+                  className={`peer w-full h-11 px-4 bg-[#F8F9FA] rounded-xl border outline-none transition-all duration-300 font-medium text-[#0F3D2E] placeholder-transparent focus:bg-white
+                    ${focusedField === 'email' || formData.user_email ? 'border-[#0F3D2E] ring-1 ring-[#0F3D2E]/5' : 'border-transparent hover:border-gray-200'}
+                  `}
+                  id="email"
+                  placeholder="Email"
+                  value={formData.user_email}
+                  onChange={(e) => setFormData({ ...formData, user_email: e.target.value })}
+                  onFocus={() => setFocusedField('email')}
+                  onBlur={() => setFocusedField(null)}
+                />
+                <label
+                  htmlFor="email"
+                  className={`absolute left-4 transition-all duration-300 pointer-events-none text-[#5C6B63] font-medium
+                    ${focusedField === 'email' || formData.user_email
+                      ? '-top-2 bg-white px-2 text-[10px] text-[#0F3D2E] font-bold tracking-widest'
+                      : 'top-1/2 -translate-y-1/2 text-xs'}
+                  `}
+                >
+                  EMAIL ADDRESS
+                </label>
+              </div>
+
+              {/* Mobile */}
+              <div className="relative group">
+                <input
+                  type="tel"
+                  className={`peer w-full h-11 px-4 bg-[#F8F9FA] rounded-xl border outline-none transition-all duration-300 font-medium text-[#0F3D2E] placeholder-transparent focus:bg-white
+                    ${focusedField === 'mobile' || formData.user_mobile ? 'border-[#0F3D2E] ring-1 ring-[#0F3D2E]/5' : 'border-transparent hover:border-gray-200'}
+                  `}
+                  id="mobile"
+                  placeholder="Mobile"
+                  value={formData.user_mobile}
+                  onChange={(e) => setFormData({ ...formData, user_mobile: e.target.value })}
+                  onFocus={() => setFocusedField('mobile')}
+                  onBlur={() => setFocusedField(null)}
+                />
+                <label
+                  htmlFor="mobile"
+                  className={`absolute left-4 transition-all duration-300 pointer-events-none text-[#5C6B63] font-medium
+                    ${focusedField === 'mobile' || formData.user_mobile
+                      ? '-top-2 bg-white px-2 text-[10px] text-[#0F3D2E] font-bold tracking-widest'
+                      : 'top-1/2 -translate-y-1/2 text-xs'}
+                  `}
+                >
+                  MOBILE (OPTIONAL)
+                </label>
+              </div>
+
+              {/* Password */}
+              <div className="relative group">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  className={`peer w-full h-11 px-4 bg-[#F8F9FA] rounded-xl border outline-none transition-all duration-300 font-medium text-[#0F3D2E] placeholder-transparent focus:bg-white pr-10
+                    ${focusedField === 'password' || formData.user_password ? 'border-[#0F3D2E] ring-1 ring-[#0F3D2E]/5' : 'border-transparent hover:border-gray-200'}
+                  `}
+                  id="password"
+                  placeholder="Password"
+                  value={formData.user_password}
+                  onChange={(e) => setFormData({ ...formData, user_password: e.target.value })}
+                  onFocus={() => setFocusedField('password')}
+                  onBlur={() => setFocusedField(null)}
+                />
+                <label
+                  htmlFor="password"
+                  className={`absolute left-4 transition-all duration-300 pointer-events-none text-[#5C6B63] font-medium
+                    ${focusedField === 'password' || formData.user_password
+                      ? '-top-2 bg-white px-2 text-[10px] text-[#0F3D2E] font-bold tracking-widest'
+                      : 'top-1/2 -translate-y-1/2 text-xs'}
+                  `}
+                >
+                  PASSWORD
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#5C6B63] hover:text-[#0F3D2E] transition-colors p-1"
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
+
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full h-12 bg-[#0F3D2E] text-white font-bold rounded-xl hover:bg-[#0F3D2E]/90 transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed uppercase tracking-widest text-xs shadow-lg hover:shadow-[#0F3D2E]/20"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="animate-spin" size={16} />
+                      <span>Creating Account...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Sign Up</span>
+                      <ArrowRight size={16} />
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+
+            <div className="flex items-center gap-3 opacity-60">
+              <div className="h-px bg-gray-300 flex-1" />
+              <span className="text-[10px] text-[#5C6B63] font-bold uppercase tracking-wider">Or</span>
+              <div className="h-px bg-gray-300 flex-1" />
+            </div>
+
+            <div className="text-center">
+              <p className="text-[#5C6B63] text-xs mb-4">
+                Already have an account?{' '}
+                <Link to={PATHS.LOGIN} className="font-bold text-[#0F3D2E] hover:underline decoration-[#C6A15B] decoration-2 underline-offset-4">
+                  Sign In
+                </Link>
+              </p>
+
+              {googleClientId && (
+                <div className="w-full flex justify-center pb-4">
+                  <GoogleOAuthProvider clientId={googleClientId}>
+                    <GoogleLogin
+                      onSuccess={handleGoogleSuccess}
+                      onError={handleGoogleError}
+                      theme="outline"
+                      size="large"
+                      width="300"
+                      text="signup_with"
+                      shape="pill"
+                    />
+                  </GoogleOAuthProvider>
+                </div>
+              )}
+            </div>
+
           </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full h-12 bg-[#0F3D2E] text-white font-bold rounded-xl hover:bg-[#0F3D2E]/90 transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed uppercase tracking-widest text-sm"
-          >
-            {loading ? <Loader2 className="animate-spin" size={18} /> : 'Create Account'}
-          </button>
-        </form>
-
-        <div className="mt-8 text-center text-sm text-muted">
-          Already have an account?{' '}
-          <Link to={PATHS.LOGIN} className="font-bold text-[#0F3D2E] hover:underline">
-            Sign In
-          </Link>
         </div>
       </div>
     </div>

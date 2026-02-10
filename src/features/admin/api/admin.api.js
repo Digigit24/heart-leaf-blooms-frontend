@@ -34,4 +34,7 @@ export const adminApi = {
 
   // Orders
   getAllOrders: () => client.get('/order/admin'),
+
+  // Users
+  getAllUsers: () => client.get('/user'),
 };
