@@ -245,3 +245,42 @@ h4 {
     opacity: 0.7;
     cursor: not-allowed;
 }
+
+/* Sidebar Scrollbar - Custom Premium Look */
+.sidebar-scrollbar {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    /* Firefox */
+    scrollbar-color: transparent transparent;
+    /* Firefox */
+}
+
+.sidebar-scrollbar:hover {
+    scrollbar-color: rgba(47, 110, 30, 0.4) transparent;
+    /* Firefox hover */
+}
+
+/* Webkit (Chrome, Edge, Safari) */
+.sidebar-scrollbar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border-radius: 20px;
+    border: none;
+}
+
+.sidebar-scrollbar:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(15, 61, 46, 0.2);
+    /* Darker brand (brand-dark) with low opacity */
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(15, 61, 46, 0.5);
+    /* Darker on direct grab */
+}

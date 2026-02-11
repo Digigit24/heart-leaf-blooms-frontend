@@ -194,7 +194,7 @@ export default function Category() {
                 <div className="flex flex-col md:flex-row gap-8 lg:gap-12 items-start">
 
                     {/* Sidebar - Sticky on Desktop */}
-                    <aside className="hidden md:block w-64 shrink-0 sticky top-28 self-start max-h-[calc(100vh-140px)] overflow-y-hidden hover:overflow-y-auto scroll-smooth pb-8 transition-all duration-300">
+                    <aside className="hidden md:block w-64 shrink-0 sticky top-28 self-start max-h-[calc(100vh-140px)] sidebar-scrollbar scroll-smooth pb-8 transition-all duration-300">
                         <CategorySidebar
                             selectedFilters={selectedFilters}
                             toggleFilter={toggleFilter}
